@@ -108,7 +108,15 @@
         return res.json();
       })
       .then(function(data) {
-        var normalized = normalizeCloudData(data.data || data);
+        var rawHub = data.data || data;
+        var CURRENT_EPOCH = '20260914_panic_v11';
+        // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH!
+        if (!rawHub || rawHub.epoch !== CURRENT_EPOCH || (rawHub.version && rawHub.version < 11)) {
+          console.warn('[HealimCloudDB] Remote static hub is outdated (' + (rawHub ? rawHub.epoch : 'none') + '). Preserving local canonical seeds.');
+          if (onDone) onDone(false, null);
+          return;
+        }
+        var normalized = normalizeCloudData(rawHub);
         applyDataToLocal(normalized);
         broadcastUpdate('static_hub_pull', normalized);
         isConnected = true;
@@ -298,6 +306,12 @@
 
   function applyBoardToLocal(bKey, remoteList) {
     if (!Array.isArray(remoteList)) return;
+    var badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기', '교감신경 항진증과 부교감', '기립성'];
+    remoteList = remoteList.filter(function(item) {
+      if (!item || !item.title) return false;
+      var t = String(item.title);
+      return !badKeywords.some(function(bk) { return t.indexOf(bk) !== -1; });
+    });
     var vKey = 'healim_vault_all_posts_' + bKey;
     var rawV = localStorage.getItem(vKey);
     var localList = rawV ? (JSON.parse(rawV) || []) : [];
