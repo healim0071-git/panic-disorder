@@ -541,6 +541,18 @@
     <script src="/js/healim_cloud_db.js"></script>
     <script>
     (function() {
+      // Community Epoch v9 System: isolate & purge obsolete vaults
+      var CURRENT_COMMUNITY_EPOCH = '20260914_panic_v9';
+      try {
+        if (localStorage.getItem('healim_community_epoch') !== CURRENT_COMMUNITY_EPOCH) {
+          ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
+            localStorage.removeItem('healim_board_' + k);
+            localStorage.removeItem('healim_vault_all_posts_' + k);
+          });
+          localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
+        }
+      } catch(e) {}
+
       // 1. Default Seed Data Libraries for Fallback and Merge
       var defaultFaqList = [
         {

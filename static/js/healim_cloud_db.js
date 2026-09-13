@@ -307,9 +307,9 @@
     var seenIds = {};
     var merged = [];
 
-    // Local user posts and edited posts have absolute priority
+    // 1. Locally created custom posts (written by admin in browser) have top precedence
     localList.forEach(function(p) {
-      if (p && p.id) {
+      if (p && p.id && (p.isCustom || String(p.id).indexOf('custom') !== -1)) {
         var strId = String(p.id);
         var finalP = editedMap[strId] ? editedMap[strId] : p;
         seenIds[strId] = true;
@@ -317,6 +317,7 @@
       }
     });
 
+    // 2. Authoritative Canonical Hub Posts from server (Primary Baseline)
     remoteList.forEach(function(p) {
       if (p && p.id && !seenIds[String(p.id)]) {
         var strId = String(p.id);

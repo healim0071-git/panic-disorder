@@ -80,8 +80,8 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
     {
       "@type": "MedicalCondition",
       "@id": "https://healim-panic.com/autonomic-dysfunction/#condition",
-      "name": "자율신경실조증 (Dysautonomia)",
-      "alternateName": "자율신경 불균형, 자율신경 기능이상",
+      "name": "공황장애 (Panic Disorder)",
+      "alternateName": "공황발작, 급성 불안발작, 광장공포증",
       "possibleTreatment": [
         {
           "@type": "MedicalTherapy",
@@ -1824,3 +1824,31 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `hugo --cleanDestinationDir --minify` 정상 빌드 완료 (`d:\panic\public\` 최신화 완료)
    - 원격 저장소 `https://github.com/healim0071-git/panic-disorder.git`의 `main` 브랜치로 커밋 최신 푸시 완료 (`03d350b`)
 
+
+
+---
+
+## 🚀 [2026-09-14] 마일스톤 9.61: 커뮤니티 4대 카테고리 공황장애 전면 개편 및 v9 독립 스토리지 아키텍처 완성
+
+### 1. 사용자 핵심 요청사항 및 완벽 구현 결과
+1. **FAQ & 칼럼 공황장애 1:1 수량 매칭 및 고유 발행일자(2011.11~2026.09.10) 전면 재발행**:
+   - **FAQ**: 기존 자율신경 글과 동일한 **총 22편** 완성 (새로 2편 추가 작성: #21 담적/위장 뇌-장관 신경축 소화기 증상, #22 CST/미주신경 뇌척수액 순환 기전). 1,057~1,411자의 풍부한 전문 임상 답변.
+   - **칼럼**: 기존 자율신경 글과 동일한 **총 23편** 완성 (2026.09.10부터 2011.11.15까지 중복 없는 고유 날짜 순차 배정). 1,027~1,345자의 학술 심층 칼럼.
+   - **치료후기**: 공황장애 실제 임상 호전사례 **총 65편** (2026.09.10~2011.11.15 고유 날짜 배정).
+   - 모든 글 본문 하단 링크: `https://healim-panic.com/autonomic-diagnosis`, `https://healim-panic.com/autonomic-treatment` 정상 작동.
+2. **카테고리별 자동발행 조건 공황장애 전면 교체 (기존 운영 규칙 100% 보존)**:
+   - `auto_faq_engine.js`: 공황장애 22개 임상 질문 풀, 주 2~3회 아침 스케줄, 중복 방지 필터 유지.
+   - `auto_column_engine.js`: 공황장애 23개 심층 칼럼 풀, 주 4~5회 아침 스케줄 유지.
+   - `auto_review_engine.js`: 공황장애 30개 임상 풀, 4개월당 2~6회 랜덤 스케줄, 의료법 제56조 블러 및 로그인 잠금 유지.
+3. **유튜브 채널 공식 연동 (@healimtv 실제 공황장애 영상 15편)**:
+   - 유튜브 검색 API를 통해 해아림TV 실제 공황장애 진료 영상 15개 ID 추출 및 적용.
+   - 채널 자동 동기화 키워드를 `AUTONOMIC_KEYWORDS`에서 `PANIC_KEYWORDS`('공황', '공황발작', '광장공포', '과호흡', '심계항진', 'CST', '온담탕' 등)로 개편.
+4. **타 카테고리 롤백 및 데이터 오염 방지 (v9 독립 스토리지 아키텍처)**:
+   - `CURRENT_COMMUNITY_EPOCH = '20260914_panic_v9'` 적용. 에포크 변경 시 구형 자율신경 캐시를 1회 안전하게 초기화.
+   - `HealimPermanentDB.restoreVault`의 `curList.length < vaultList.length` 강제 덮어쓰기 로직 제거 -> session data 유실 시에만 복원하도록 제한.
+   - `getBoardData` 병합 우선순위를 '캐노니컬 허브/시드 데이터 우선'으로 재편하여 한 카테고리 수정 시 다른 카테고리가 구형 데이터로 롤백되는 현상 영구 차단.
+
+### 2. 빌드 및 배포 검증
+- Hugo 0.165.0 빌드 완료: 32개 페이지, 에러 0건.
+- `public/community/index.html` 및 `public/index.html` 내 공황장애 데이터 및 Epoch v9 정상 반영.
+- GitHub `origin main` 푸시 완료 -> Cloudflare Pages 자동 배포 연동.

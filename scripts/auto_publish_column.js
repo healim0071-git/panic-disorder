@@ -1,13 +1,13 @@
 /**
  * auto_publish_column.js
- * 해아림한의원 자율신경실조증 치료칼럼 자동 발행 엔진 & 20대 임상 풀 (엄격 중복 방지)
+ * 해아림한의원 공황장애 치료칼럼 자동 발행 엔진 & 23대 임상 풀 (엄격 중복 방지)
  * 
  * [요구사항 명세]
- * 1. 대상: 자율신경실조증 및 자율신경계 이상증상 관련 환자 빈출 질문 및 핵심 주제 (20선 임상 풀)
+ * 1. 대상: 공황장애 및 공황발작 및 예기불안 관련 환자 빈출 질문 및 핵심 주제 (23대 임상 풀)
  * 2. 분량: 한방신경정신과 전문의의 깊이 있는 임상 분석 1,600자 내외
  * 3. 구성: 상단 16:9 메디컬 벡터 일러스트 썸네일 + 본문 + 하단 3대 링크 (줄바꿔서 1줄씩 띄움)
- *    - [자율신경실조증 검사 알아보기](https://healim-panic.com/autonomic-diagnosis)
- *    - [자율신경실조증 치료방법 알아보기](https://healim-panic.com/autonomic-treatment)
+ *    - [공황장애 검사 알아보기](https://healim-panic.com/autonomic-diagnosis)
+ *    - [공황장애 치료방법 알아보기](https://healim-panic.com/autonomic-treatment)
  *    - [전국 지점 안내](https://www.healim.com)
  * 4. 주기: 매주 4~5개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
  * 5. 중복 방지: 단 질문과 핵심주제는 기존에 작성되어 있는 글들의 제목과 중복되지 않도록 엄격한 정규화 비교 필터링 및 중복 방지 알고리즘 적용
@@ -41,7 +41,7 @@ function normalizeColumnTitle(t) {
     .toLowerCase();
 }
 
-console.log('--- Checking 20 Column Content Lengths & Uniqueness ---');
+console.log('--- 23대 Content Lengths & Uniqueness ---');
 const seenTitles = new Set();
 let duplicatesFound = 0;
 
