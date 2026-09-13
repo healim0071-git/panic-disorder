@@ -1,0 +1,123 @@
+{{/* Canonical URL & SEO / AEO Meta Tags */}}
+<link rel="canonical" href="{{ with .Params.canonical }}{{ . }}{{ else }}https://healim-autonomic.com{{ .RelPermalink }}{{ end }}" />
+<meta name="naver-site-verification" content="836208818085e544698873f0c1ffb747afffafc1" />
+<meta name="google-site-verification" content="_N0B2WUEnqrfLepyAViYz0LWNDXNfyDgWENcUl__ZfY" />
+<meta name="google-site-verification" content="Gws95OtuZVLv56ltYTNSLCxav3NX5G8CtDedQ1D61CQ" />
+<meta name="keywords" content="{{ with .Params.keywords }}{{ if reflect.IsSlice . }}{{ delimit . ", " }}{{ else }}{{ . }}{{ end }}{{ else }}공황장애, 공황발작, 공황장애한의원, 공황장애치료, 과호흡증후군, 심계항진, 광장공포증, 예기불안, 자율신경실조증, 공황장애완치, 공황장애자가진단, 해아림한의원{{ end }}" />
+<meta name="author" content="해아림한의원" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="해아림한의원" />
+
+{{/* Google Fonts (Pretendard & Outfit) */}}
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+{{/* Favicon & Touch Icons */}}
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+
+{{/* JSON-LD Structured Data: MedicalClinic, MedicalCondition, FAQPage, Physician */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "@id": "https://healim-autonomic.com/#clinic",
+      "name": "해아림한의원",
+      "url": "https://healim-autonomic.com/",
+      "logo": "https://healim-autonomic.com/media/logo.png",
+      "description": "공황장애 치료 16여년 임상 노하우의 전국 15개 네트워크 한의원",
+      "medicalSpecialty": "Psychiatric",
+      "telephone": "053-751-0071",
+      "areaServed": "KR",
+      "availableService": [
+        {
+          "@type": "MedicalTherapy",
+          "name": "공황장애 1:1 맞춤 한방 치료"
+        },
+        {
+          "@type": "MedicalTest",
+          "name": "HRV(Heart Rate Variability) 자율신경계 정밀 검사"
+        },
+        {
+          "@type": "MedicalTest",
+          "name": "뇌기능 뇌파검사 및 스트레스 저항도 검사"
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "뇌기능 활성화 및 생기능 자기조절 바이오피드백 훈련"
+        }
+      ]
+    },
+    {
+      "@type": "MedicalCondition",
+      "@id": "https://healim-autonomic.com/autonomic-dysfunction/#condition",
+      "name": "공황장애 (Panic Disorder)",
+      "alternateName": ["공황발작", "불안장애", "과호흡증후군"],
+      "possibleTreatment": [
+        {
+          "@type": "MedicalTherapy",
+          "name": "체질 맞춤 한약 처방 (교감신경 과흥분 완화 및 편도체 안정, 뇌 자가조절력 강화)"
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "생기능 자기조절 바이오피드백 & 인지행동치료(CBT)"
+        },
+        {
+          "@type": "MedicalTherapy",
+          "name": "침구 및 경락 치료, 두개천골요법(CST)"
+        }
+      ],
+      "signOrSymptom": [
+        {"@type": "MedicalSymptom", "name": "가슴 두근거림 및 빈맥 (심계항진)"},
+        {"@type": "MedicalSymptom", "name": "호흡곤란 및 질식감"},
+        {"@type": "MedicalSymptom", "name": "죽을 것 같은 극심한 공포감"},
+        {"@type": "MedicalSymptom", "name": "어지럼증, 현기증 및 실신할 것 같은 느낌"},
+        {"@type": "MedicalSymptom", "name": "손발 저림, 마비감 및 사지 떨림"},
+        {"@type": "MedicalSymptom", "name": "비현실감(이인증) 및 통제력 상실 두려움"},
+        {"@type": "MedicalSymptom", "name": "예기불안 및 광장공포증 (회피 행동)"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://healim-autonomic.com/community/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "응급실이나 심장내과 검사에서 정상이라는데, 왜 숨이 막히고 가슴이 터질 듯 뛸까요? 공황장애 검사로 알 수 있나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황장애는 심장이나 폐의 기질적 이상이 아닌, 뇌의 공포 경보 회로(편도체)와 교감신경의 급격한 과흥분으로 발생하는 질환입니다. 일반 응급실 검사에서는 정상으로 나타나지만, 해아림한의원의 HRV 자율신경 검사와 뇌파 뇌기능 검사를 통해 신경계 과각성 상태를 객관적으로 파악하고 1:1 맞춤 치료로 안정시킬 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "공황장애와 자율신경실조증은 어떤 점이 다른가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황장애는 10~30분 이내에 최고조에 달하는 급격한 공황발작과 '죽을 것 같다'는 극심한 공포, 예기불안이 주를 이루는 반면, 자율신경실조증은 만성적인 두근거림, 어지럼증, 소화장애, 피로감 등 신체 전반의 조절 이상이 24시간 잔잔하게 지속되는 특징이 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "공황발작이 올 때 어떻게 대처해야 하나요? 약 없이도 한방으로 완치가 가능한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황발작이 시작되면 호흡을 4초간 들이마시고 6초간 길게 내쉬는 복식호흡을 통해 과호흡을 진정시켜야 합니다. 발작으로는 신체적 위험이 발생하지 않는다는 점을 인지하는 것이 중요하며, 해아림한의원의 뇌기능 회복 한약과 생기능 자기조절훈련으로 신경계의 흥분 역치를 정상화하면 재발 없는 완치가 가능합니다."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Physician",
+      "@id": "https://healim-autonomic.com/#physician",
+      "name": "해아림한의원 전문 의료진",
+      "medicalSpecialty": "Psychiatric",
+      "description": "한방신경정신과 전문의, 한의학 박사 및 석사로 구성된 16여 년 임상 노하우의 의료진 네트워크"
+    }
+  ]
+}
+</script>
