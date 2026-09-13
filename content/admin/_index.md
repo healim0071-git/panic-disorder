@@ -303,13 +303,13 @@ sections:
         <ol style="margin: 0; padding-left: 18px; space-y: 4px;">
         <li><a href="https://developers.naver.com" target="_blank" style="color: #0284c7; text-decoration: underline; font-weight: 600;">developers.naver.com</a> 접속 후 로그인</li>
         <li>[Application] &gt; [내 애플리케이션] &gt; [API 설정]</li>
-        <li><strong>서비스 URL</strong>: <code>https://healim-autonomic.com</code></li>
-        <li><strong>Callback URL (고정)</strong>: <code>https://healim-autonomic.com/login/</code></li>
+        <li><strong>서비스 URL</strong>: <code>https://healim-panic.com</code></li>
+        <li><strong>Callback URL (고정)</strong>: <code>https://healim-panic.com/login/</code></li>
         <li>발급된 <strong>Client ID</strong>: <code>h2nuQi_Y9Z0DOB0j6kby</code></li>
         </ol>
         </div>
         <div style="margin-top: 10px; font-size: 11px; color: #64748b;">
-        ※ 네이버 개발자센터의 Callback URL에 <code>https://healim-autonomic.com/login/</code>이 정확히 등록되어 있어야 오류 없이 정상 동작합니다.
+        ※ 네이버 개발자센터의 Callback URL에 <code>https://healim-panic.com/login/</code>이 정확히 등록되어 있어야 오류 없이 정상 동작합니다.
         </div>
         </div>
         <!-- Input Fields Form -->

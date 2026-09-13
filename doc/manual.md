@@ -13,7 +13,7 @@
 ## 1. 프로젝트 개요 (Project Overview)
 
 - **사이트 명칭**: 마음까지 헤아리는 해아림한의원 자율신경클리닉
-- **공식 도메인**: `https://healim-autonomic.com/` (운영 기준)
+- **공식 도메인**: `https://healim-panic.com/` (운영 기준)
 - **원격 저장소**: `https://github.com/healim0071-git/home-a.git`
 - **핵심 목표**:
   1. 두근거림·어지럼증·불면·호흡곤란 등 복합적으로 나타나는 자율신경실조증 환자에게 정확하고 신뢰할 수 있는 의학 정보 제공

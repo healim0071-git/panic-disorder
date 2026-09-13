@@ -23,7 +23,7 @@
     기립성 어지럼 &amp; 혈관 수축 반사
   </text>
   <text x="760" y="52" text-anchor="end" font-family="'Pretendard', sans-serif" font-size="13" font-weight="600" fill="#666666">
-    해아림한의원 자율신경 클리닉 FAQ
+    해아림한의원 공황장애 클리닉 FAQ
   </text>
 
   <!-- Title and Subtitle -->
@@ -63,6 +63,6 @@
   <!-- Bottom CTA / Watermark Bar -->
   <rect x="40" y="392" width="720" height="34" rx="17" fill="url(#headGrad)"/>
   <text x="400" y="414" text-anchor="middle" font-family="'Pretendard', sans-serif" font-size="13" font-weight="700" fill="#ffffff">
-    해아림한의원 네트워크 전국 15개 지점 | 1:1 맞춤 자율신경 클리닉
+    해아림한의원 네트워크 전국 15개 지점 | 1:1 맞춤 공황장애 클리닉
   </text>
 </svg>

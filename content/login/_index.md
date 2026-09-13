@@ -244,7 +244,7 @@ sections:
                 try {
                   var naverLogin = new window.naver.LoginWithNaverId({
                     clientId: clientId,
-                    callbackUrl: 'https://healim-autonomic.com/login/',
+                    callbackUrl: 'https://healim-panic.com/login/',
                     isPopup: false
                   });
                   naverLogin.init();
@@ -311,7 +311,7 @@ sections:
             localStorage.setItem('healim_naver_back_url', (targetBackUrl && targetBackUrl !== '/' && !targetBackUrl.includes('/login')) ? targetBackUrl : '/community/#reviews');
 
             // 네이버 개발자센터에 등록된 완전한 고정 Callback 주소 사용
-            const redirectUri = encodeURIComponent('https://healim-autonomic.com/login/');
+            const redirectUri = encodeURIComponent('https://healim-panic.com/login/');
             const state = Math.random().toString(36).substring(2, 11);
 
             location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;

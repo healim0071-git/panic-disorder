@@ -47,7 +47,7 @@ graph TD
 ## 3. SEO / AEO / GEO 및 시맨틱 아키텍처 계획
 
 ### 3.1 메타데이터 및 캐노니컬 규격
-- **Canonical URL:** `https://healim-autonomic.com/autonomic-dysfunction/`
+- **Canonical URL:** `https://healim-panic.com/autonomic-dysfunction/`
 - **Main Title:** 공황장애 | 해아림한의원
 - **Meta Description:** 갑작스러운 가슴 두근거림, 호흡곤란, 질식감, 극심한 공포와 예기불안 등 공황장애 증상을 진료합니다. 검사상 이상 없는 신체화 증상 및 공황발작 치료 병원을 찾는다면, 한방신경정신과 전문의/박사 진료의 해아림한의원 공황장애클리닉이 있습니다. 공황장애와 불안장애 | 공황장애와 자율신경실조증 | 재발 방지 평생 안심 치료
 - **Keywords:** 공황장애, 공황발작, 공황장애한의원, 공황장애치료, 과호흡증후군, 심계항진, 광장공포증, 예기불안, 자율신경실조증, 공황장애완치, 공황장애자가진단, 해아림한의원
@@ -61,9 +61,9 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
   "@graph": [
     {
       "@type": "MedicalClinic",
-      "@id": "https://healim-autonomic.com/#clinic",
+      "@id": "https://healim-panic.com/#clinic",
       "name": "해아림한의원",
-      "url": "https://healim-autonomic.com/",
+      "url": "https://healim-panic.com/",
       "description": "공황장애 치료 16여년 임상 노하우의 전국 15개 네트워크 한의원",
       "medicalSpecialty": "Psychiatric",
       "availableService": [
@@ -79,7 +79,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
     },
     {
       "@type": "MedicalCondition",
-      "@id": "https://healim-autonomic.com/autonomic-dysfunction/#condition",
+      "@id": "https://healim-panic.com/autonomic-dysfunction/#condition",
       "name": "자율신경실조증 (Dysautonomia)",
       "alternateName": "자율신경 불균형, 자율신경 기능이상",
       "possibleTreatment": [
@@ -98,7 +98,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
     },
     {
       "@type": "FAQPage",
-      "@id": "https://healim-autonomic.com/community/#faq",
+      "@id": "https://healim-panic.com/community/#faq",
       "mainEntity": [
         {
           "@type": "Question",
@@ -241,7 +241,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 ## 8. 품질 검증 및 릴리즈 체크리스트 (QA Checklist)
 
 - [x] **SEO & AEO:**
-  - [x] Canonical URL이 `https://healim-autonomic.com/autonomic-dysfunction/`로 정확히 지정되었는가?
+  - [x] Canonical URL이 `https://healim-panic.com/autonomic-dysfunction/`로 정확히 지정되었는가?
   - [x] H1 태그가 각 페이지별로 유일하게 1개만 존재하는가?
   - [x] JSON-LD 스키마 검증 도구에서 에러 없이 100% 패스하는가?
 - [x] **콘텐츠 무결성:**
@@ -533,8 +533,8 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - 기계적 AI 느낌(상투적인 요약, 목록 나열 등)을 완전히 배제하고, 각 질문에 대해 1,000자 내외의 깊이 있고 전문적인 한방신경정신과 임상 해설 작성
    - 본문 최상단에 해당 주제와 완벽히 매칭되는 고화질 시각 썸네일 이미지 삽입
    - 본문 최하단에 지정된 3대 CTA 바로가기 링크를 줄바꿈 및 1줄 공백을 두어 배치
-     - `[자율신경실조증 검사 알아보기]` → `https://healim-autonomic.com/autonomic-diagnosis`
-     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-autonomic.com/autonomic-treatment`
+     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/autonomic-diagnosis`
+     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/autonomic-treatment`
      - `[전국 지점 안내]` → `https://www.healim.com`
    - 매주 2~3개 글이 오전 8시에서 11시 사이에 랜덤으로 자동 발행되도록 스케줄링
    - **기존 작성글과의 중복 방지 원칙**: 기존 시드 글, 관리자 수동 작성글, 기발행글과 동일하거나 유사한 제목의 질문글은 발행 후보에서 원천 배제하여 고유성 100% 보장
@@ -566,8 +566,8 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - 각 칼럼별 **1,600자 내외**(순수 본문 1,350~1,500자, 서식 포함 1,550~1,750자)의 충실한 분량 준수
    - 본문 최상단에 16:9 메디컬 벡터 일러스트 썸네일 이미지(`![](/images/columns/...)`) 삽입
    - 본문 최하단에 지정된 3대 CTA 바로가기 링크를 1줄 공백을 두어 배치
-     - `[자율신경실조증 검사 알아보기]` → `https://healim-autonomic.com/autonomic-diagnosis`
-     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-autonomic.com/autonomic-treatment`
+     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/autonomic-diagnosis`
+     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/autonomic-treatment`
      - `[전국 지점 안내]` → `https://www.healim.com`
    - 매주 4~5개 글이 오전 8시에서 11시 사이에 랜덤으로 자동 발행되도록 스케줄링
    - **기존 작성글과의 중복 방지 원칙**: 질문과 핵심주제는 기존에 작성되어 있는 글들의 제목과 중복되지 않도록 엄격한 정규화 비교 필터링 및 중복 방지 알고리즘 적용
@@ -1208,12 +1208,12 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 - **커뮤니티 및 공통 하단 작성 글의 원격 저장소(GitHub/Cloudflare) 영구 반영 및 크로스 브라우저/타 기기 100% 동기화 완결 (Milestone 9.44 완료)**:
    1. **문제 현상 및 원인 분석 (Root Cause)**:
       - **원격 저장소 미반영**: 브라우저 화면에서 작성한 글은 사용자의 브라우저 내부 localStorage에만 기록되고, GitHub 원격 저장소(healim0071-git/home-a)의 소스 파일에는 커밋·푸시되지 않았음.
-      - **로컬 3030 허브의 프로덕션 무효화**: 이전 작업의 scripts/healim_sync_hub.js(Port 3030)는 개발자 PC의 127.0.0.1에서만 동작하여, 실제 배포 도메인(https://healim-autonomic.com)에서는 Mixed Content 보안 차단 및 웹서버 포트 부재로 전혀 작동할 수 없었음.
+      - **로컬 3030 허브의 프로덕션 무효화**: 이전 작업의 scripts/healim_sync_hub.js(Port 3030)는 개발자 PC의 127.0.0.1에서만 동작하여, 실제 배포 도메인(https://healim-panic.com)에서는 Mixed Content 보안 차단 및 웹서버 포트 부재로 전혀 작동할 수 없었음.
       - **Hugo data 폴더 미배포 404 결함**: data/healim_community_hub.json이 Hugo의 내부 데이터 폴더에만 위치하여 웹서버(public/)로 배포되지 않아 실제 URL 접속 시 404 Not Found가 발생함.
       - **타 브라우저/타 기기 공백 현상**: 브라우저 간 스토리지가 격리되어 있어, Chrome에서 작성한 후기(테스트를 해보려고합니다.)와 FAQ가 Edge나 모바일 기기의 빈 스토리지에서는 기본 구형 데이터(5개 FAQ, 6개 구형 후기)로만 대체 표시됨.
    2. **해결 및 개선 내역**:
       - **웹 배포 정적 허브 파이프라인 구축 (static/data/healim_community_hub.json)**:
-        - Hugo 빌드 시 public/data/healim_community_hub.json으로 자동 배포되어 https://healim-autonomic.com/data/healim_community_hub.json을 통해 전 세계 모든 기기/브라우저가 100% 안정적으로 다운로드 가능하도록 조치.
+        - Hugo 빌드 시 public/data/healim_community_hub.json으로 자동 배포되어 https://healim-panic.com/data/healim_community_hub.json을 통해 전 세계 모든 기기/브라우저가 100% 안정적으로 다운로드 가능하도록 조치.
       - **사용자 작성 글 및 최신 FAQ를 HTML 기본 시드에 1순위 영구 등록**:
         - 사용자 작성 치료후기 (테스트를 해보려고합니다.)를 defaultReviewsList 및 defaultReviewsData의 최우선 1위로 등록.
         - 사용자 작성 FAQ (아침에 눈을 뜨자마자 심장이 쿵쾅거리고..., 목에 뭔가 걸린 듯 답답하고...)를 defaultFaqList 및 defaultFaqData의 최우선 1위, 2위로 등록.
@@ -1286,7 +1286,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 
 1. **사용자 문제 및 긴급 요청 사항**:
    - 통합 최고관리자 센터 상단 배지의 `[☁️ 클라우드로 전체 동기화]` 및 하단 카드의 `[☁️ 현재 글 클라우드로 전체 동기화]` 버튼을 누를 때마다 `⚠️ 클라우드 동기화 중 일부 오류가 발생했습니다. 네트워크 상태를 확인 후 다시 시도해주세요.` 팝업이 발생.
-   - 타 브라우저(Edge, 모바일 등)로 `https://healim-autonomic.com` 접속 시 작성한 최근 글들이 보이지 않고 사라진 것처럼 느껴지는 현상 발생.
+   - 타 브라우저(Edge, 모바일 등)로 `https://healim-panic.com` 접속 시 작성한 최근 글들이 보이지 않고 사라진 것처럼 느껴지는 현상 발생.
 
 2. **근본 원인 분석**:
    - `static/js/healim_cloud_db.js` 내 기본 클라우드 URL 변수 `DEFAULT_CLOUD_DB_URL`에 미개설된 가상 Firebase 엔드포인트(`https://healim-autonerve-default-rtdb.firebaseio.com`)가 하드코딩되어 있어, 해당 주소로 `fetch` 요청 시 DNS/네트워크 에러가 발생하여 오류 팝업이 출력됨.
@@ -1320,7 +1320,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 ### [2026-09-09] 마일스톤 9.48: 브라우저 간 콘텐츠 불일치(Chrome vs Edge vs Mobile) 100% 원천 해결 및 전역 통일 기준선 동기화
 
 1. **사용자 문제 및 불일치 현상**:
-   - 동일 시간에 Chrome, Edge, 다른 기기/브라우저로 `https://healim-autonomic.com`에 접속했을 때 세 화면의 치료후기 및 치료칼럼이 서로 완전히 다르게 표시되는 현상 발생:
+   - 동일 시간에 Chrome, Edge, 다른 기기/브라우저로 `https://healim-panic.com`에 접속했을 때 세 화면의 치료후기 및 치료칼럼이 서로 완전히 다르게 표시되는 현상 발생:
      - **브라우저 1 (Chrome)**: 치료후기 3건(테스트 1, 2, 3), 치료칼럼 3건(#23, #22, #21) 노출.
      - **브라우저 2 (Edge)**: 치료후기 1건(테스트 3만), 치료칼럼 3건(#21, #1, #2) 노출.
      - **브라우저 3 (모바일/기타)**: 치료후기 1건(테스트 3만), 치료칼럼 3건(#1, #2, #3) 노출.
@@ -1535,14 +1535,14 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
      - 네이버 개발자센터(OAuth 2.0)는 요청 시 전송되는 `redirect_uri`와 개발자센터에 사전에 등록된 `Callback URL`이 **글자 하나(대소문자, 끝 슬래시, 쿼리스트링 포함)까지 100% 일치**해야 함.
      - 기존 코드에서 동적으로 `?back_url=...` 파라미터가 덧붙여진 주소를 네이버에 전송하여 Callback 불일치 보안 에러가 발생한 것임.
    - **해결 방안 (Gemini 권장안 반영 및 고도화)**:
-     - 네이버 인증 요청 시 Callback 주소를 사전에 등록된 완전한 고정 주소인 `'https://healim-autonomic.com/login/'`으로 단일화.
+     - 네이버 인증 요청 시 Callback 주소를 사전에 등록된 완전한 고정 주소인 `'https://healim-panic.com/login/'`으로 단일화.
      - 환자가 원래 열람하려던 목적지(`back_url`, 예: `/community/#reviews`)는 URL에 붙이지 않고 브라우저 `localStorage('healim_naver_back_url')`에 안전하게 임시 보관.
      - 사용자 실제 발급 키인 `'h2nuQi_Y9Z0DOB0j6kby'`를 표준 Client ID로 고정/연동.
 
 2. **구현 내역**:
    - **로그인 페이지 (`content/login/_index.md`)**:
      - `handleSocialLogin('naver')`:
-       - `clientId = 'h2nuQi_Y9Z0DOB0j6kby'` 및 고정 Callback 주소 `redirectUri = encodeURIComponent('https://healim-autonomic.com/login/')` 적용.
+       - `clientId = 'h2nuQi_Y9Z0DOB0j6kby'` 및 고정 Callback 주소 `redirectUri = encodeURIComponent('https://healim-panic.com/login/')` 적용.
        - 네이버 공식 인증창(`https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=...&redirect_uri=...&state=...`)으로 직결.
        - 복귀 주소는 `healim_naver_back_url`에 사전 격리 보관하여 네이버 측 파라미터 오염 방지.
      - `checkNaverOAuthCallback()`:
@@ -1550,14 +1550,14 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
      - `completeNaverLogin()`:
        - 로그인 성공 시 `healim_naver_back_url`을 읽어 원래 보려던 치료후기 페이지(`/community/#reviews`)로 자동 복귀 및 권한 활성화.
    - **간편가입 페이지 (`content/site_join_type_choice/_index.md`)**:
-     - `handleSocialRegister('naver')`에도 동일한 고정 Callback 주소(`https://healim-autonomic.com/login/`) 및 Client ID(`h2nuQi_Y9Z0DOB0j6kby`) 적용.
+     - `handleSocialRegister('naver')`에도 동일한 고정 Callback 주소(`https://healim-panic.com/login/`) 및 Client ID(`h2nuQi_Y9Z0DOB0j6kby`) 적용.
    - **관리자 센터 (`content/admin/_index.md`)**:
-     - 네이버 OAuth 2.0 관리 카드 안내 문구 업데이트: Client ID 기본값을 `h2nuQi_Y9Z0DOB0j6kby`로 지정, 가이드 내 서비스 URL(`https://healim-autonomic.com`) 및 Callback URL(`https://healim-autonomic.com/login/`) 명시.
+     - 네이버 OAuth 2.0 관리 카드 안내 문구 업데이트: Client ID 기본값을 `h2nuQi_Y9Z0DOB0j6kby`로 지정, 가이드 내 서비스 URL(`https://healim-panic.com`) 및 Callback URL(`https://healim-panic.com/login/`) 명시.
      - 기본값 복원 버튼 클릭 시 공식 Client ID(`h2nuQi_Y9Z0DOB0j6kby`)로 즉시 동기화.
 
 3. **검증 결과**:
    - `hugo --minify` 정적 사이트 빌드: 32개 페이지 에러 0건 정상 생성.
-   - 네이버 개발자센터 권장 스펙 100% 충족: `redirect_uri=https%3A%2F%2Fhealim-autonomic.com%2Flogin%2F` 고정값 전송 확인.
+   - 네이버 개발자센터 권장 스펙 100% 충족: `redirect_uri=https%3A%2F%2Fhealim-panic.com%2Flogin%2F` 고정값 전송 확인.
 
 ---
 

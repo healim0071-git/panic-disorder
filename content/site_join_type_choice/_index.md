@@ -263,7 +263,7 @@ sections:
             const targetBackUrl = getBackUrl();
             localStorage.setItem('healim_naver_back_url', (targetBackUrl && targetBackUrl !== '/' && !targetBackUrl.includes('/login') && !targetBackUrl.includes('/site_join_type_choice')) ? targetBackUrl : '/community/#reviews');
 
-            const redirectUri = encodeURIComponent('https://healim-autonomic.com/login/');
+            const redirectUri = encodeURIComponent('https://healim-panic.com/login/');
             const state = Math.random().toString(36).substring(2, 11);
 
             location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
