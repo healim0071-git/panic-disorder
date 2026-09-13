@@ -444,7 +444,7 @@ sections:
         <script src="/js/healim_cloud_db.js"></script>
         <script>        (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20260914_panic_v9';
+        var CURRENT_COMMUNITY_EPOCH = '20260914_panic_v10';
         try {
           var userEpoch = localStorage.getItem('healim_community_epoch');
           if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
@@ -453,6 +453,23 @@ sections:
               localStorage.removeItem('healim_board_' + k);
               localStorage.removeItem('healim_vault_all_posts_' + k);
             });
+            // Force purge any obsolete dysautonomia posts
+            try {
+              ['healim_board_columns', 'healim_vault_all_posts_columns'].forEach(function(ck) {
+                var raw = localStorage.getItem(ck);
+                if (raw) {
+                  var arr = JSON.parse(raw);
+                  if (Array.isArray(arr)) {
+                    var cleaned = arr.filter(function(p) {
+                      if (!p || !p.title) return false;
+                      var t = p.title;
+                      return !(['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기'].some(function(bk) { return t.indexOf(bk) !== -1; }));
+                    });
+                    localStorage.setItem(ck, JSON.stringify(cleaned));
+                  }
+                }
+              });
+            } catch(e) {}
             localStorage.removeItem('healim_community_posts_v2');
             localStorage.removeItem('healim_deleted_post_ids');
             localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);

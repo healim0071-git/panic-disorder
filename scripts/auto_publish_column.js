@@ -51,6 +51,11 @@ columnsPool.forEach((item, idx) => {
     .replace(/\[(.*?)\]\(.*?\)/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
+  const badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기'];
+  if (badKeywords.some(bk => item.title.includes(bk))) {
+    console.error(`[BLACKLISTED AUTONOMIC ARTICLE REJECTED]: ${item.title}`);
+    return;
+  }
   const norm = normalizeColumnTitle(item.title);
   if (seenTitles.has(norm)) {
     console.error(`[DUPLICATE DETECTED] Column #${idx + 1}: ${item.title}`);
