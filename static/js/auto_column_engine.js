@@ -585,7 +585,7 @@
     console.log('[Healim Auto-Column Engine] Published column: "' + newPost.title + '" | Next schedule: ' + formatDateTime(state.nextScheduledTime));
 
     if (isManual && typeof window.alert === 'function') {
-      alert('⚡ [자율신경 치료칼럼 신규 글 자동 발행 완료]\n\n' +
+      alert('⚡ [공황장애 치료칼럼 신규 글 자동 발행 완료]\n\n' +
             '제목: ' + newPost.title + '\n' +
             '작성자: ' + newPost.author + ' (' + dateStr + ')\n' +
             '분량: 1,600자 내외 임상 칼럼\n' +

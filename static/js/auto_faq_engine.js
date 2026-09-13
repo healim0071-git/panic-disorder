@@ -792,7 +792,7 @@ PMR의 원리는 놀랍게도 **'근육을 5초간 100% 힘으로 강하게 긴�
 
       var newPost = {
         id: 'faq-auto-' + pubTimestamp,
-        category: poolItem.category || '자율신경FAQ',
+        category: poolItem.category || '공황장애FAQ',
         author: '해아림한의원',
         date: dateStr,
         views: Math.floor(Math.random() * 80) + 140,
