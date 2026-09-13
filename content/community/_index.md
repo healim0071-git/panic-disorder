@@ -2249,13 +2249,15 @@ sections:
           });
         }
 
-        function purgeObsoleteMockPosts() {
+                function purgeObsoleteMockPosts() {
           try {
-            if (!localStorage.getItem('healim_faq_panic_v6')) {
+            if (!localStorage.getItem('healim_faq_panic_v8')) {
               localStorage.removeItem('healim_vault_all_posts_faq');
               localStorage.removeItem('healim_board_faq');
+              localStorage.removeItem('healim_custom_faq_posts');
+              localStorage.removeItem('healim_edited_posts_faq');
               localStorage.removeItem('healim_auto_faq_state');
-              localStorage.setItem('healim_faq_panic_v6', 'true');
+              localStorage.setItem('healim_faq_panic_v8', 'true');
             }
             if (localStorage.getItem('healim_mock_purge_done_v5')) return;
             ['faq', 'columns', 'reviews'].forEach(function(bKey) {
