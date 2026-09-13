@@ -1797,3 +1797,30 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `content/community/_index.md` 내 인라인 시드 데이터 23편 동기화 완료
    - `layouts/_partials/components/common_bottom_sections.html` 하단 정적 프리뷰 카드(상위 3편) 교체 완료
    - `hugo --cleanDestinationDir --minify` 정상 빌드 (32개 페이지 컴파일 완료)
+
+---
+
+## 📌 [2026-09-13/14] 마일스톤 10.3: 공황장애 FAQ 20편 130%+ 분량 전면 재작성 및 HTML 태그 렌더링/도메인 개편 완료
+1. **공황장애 신규 FAQ 20편 전면 교체**:
+   - 기존 구형 자율신경실조증 FAQ(기립성 조절 장애 등) 100% 완전 삭제
+   - 평균 1,338.5자(최소 1,187자 ~ 최대 1,540자)로 기존 대비 145%(130% 초과) 심층 임상 답변 작성
+   - 급성 발작 대처법, 벤조디아제핀 감약(테이퍼링), 신체화 증상(과호흡, 어지럼, 위장장애), 한방 맞춤 치료(귀비탕, CST 등) 수록
+2. **리치 콘텐츠 HTML 파서 (`renderRichContent`) 정밀 개편**:
+   - `<br>`, `<strong>`, `<a>`, `<span>`, `<div>` 등 서식 태그 지원 정규식 확충 (`/<(?:p|div|img|br|strong|b|a|span|h[1-6]|ul|ol|li)\b/i`)
+   - 2단계 안전 디코딩 탑재: 에디터 및 시드 데이터에서 전달된 태그가 화면에 문자열(`&lt;br&gt;`, `&lt;strong&gt;`)로 노출되는 현상 원천 차단
+3. **도메인 전면 교체**:
+   - `healim-autonomic.com` 잔존 520여 개 전체를 `https://healim-panic.com`으로 일괄 교체 완료
+
+---
+
+## 📌 [2026-09-14] 마일스톤 10.4: 하단 공통 컴포넌트·자동 엔진 3종 잔존 데이터 소거 및 v8 브라우저 자동 정화 탑재
+1. **하단 공통 컴포넌트 및 자동 엔진 동기화**:
+   - `layouts/_partials/components/common_bottom_sections.html` 내 `defaultFaqList` 및 상단 FAQ 3종 정적 카드 최신 공황장애 20편 데이터로 완전 교체
+   - `static/js/auto_review_engine.js`: 임상 치료후기 풀 30종을 공황장애 1:1 매칭 후기로 전면 교체
+   - `static/js/auto_column_engine.js` & `auto_faq_engine.js`: 알림 및 카테고리 태그(`공황장애 치료칼럼`, `공황장애FAQ`) 일치화
+2. **브라우저 스토리지 자동 정화 (`healim_faq_panic_v8`) 탑재**:
+   - 이전 버전 방문자의 브라우저 로컬스토리지(`healim_board_faq`, `healim_vault_all_posts_faq`) 및 IndexedDB(`HealimCommunityDB`)에 캐시된 구형 자율신경 FAQ를 페이지 로드 즉시 강제 초기화하고 최신 공황장애 FAQ로 갱신하는 v8 정화 스크립트 가동
+3. **로컬 빌드 및 원격 GitHub 푸시 동기화**:
+   - `hugo --cleanDestinationDir --minify` 정상 빌드 완료 (`d:\panic\public\` 최신화 완료)
+   - 원격 저장소 `https://github.com/healim0071-git/panic-disorder.git`의 `main` 브랜치로 커밋 최신 푸시 완료 (`03d350b`)
+
