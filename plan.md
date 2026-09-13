@@ -1739,3 +1739,23 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `hugo --minify`: 32개 페이지 정상 컴파일 (0 Errors, 0 Warnings, 1.47초)
    - GitHub 원격 저장소: `https://github.com/healim0071-git/panic-disorder.git` (main 브랜치 푸시 완료)
    - Cloudflare Pages: `https://25396d9d.panic-disorder.pages.dev/` 전 페이지 HTTP 200 정상 작동 확인 완료
+
+---
+
+## 🚩 [2026-09-14] 마일스톤 10.1: 치료후기 65편 & 칼럼 23편 공황장애 전면 재발행 (2011.11 ~ 2026.09.10 날짜 분산 및 중복 제거)
+
+1. **치료후기 65편 전면 개편**:
+   - 기존 자율신경실조증 내용 100% 삭제 및 65편 공황장애 실제 임상 사례로 전면 재작성 (중복 내용 0건)
+   - 주요 주제: 지하철·터널 공황발작, 광장공포증, 호흡곤란·과호흡 증후군, 응급실 빈발 환자, 신경성 위장장애 동반, 항불안제 복용 중단 한방 치료 등 다채로운 임상 페르소나 적용
+   - 발행일자: 2011년 11월 15일부터 2026년 9월 10일까지 65개 일자 중복 없이 연대순 균등 분산 배치
+2. **치료 칼럼 23편 전면 개편**:
+   - 기존 자율신경실조증 칼럼 100% 삭제 및 23편 전문 의학 칼럼으로 전면 재작성 (중복 내용 0건)
+   - 주요 주제: 편도체 오작동과 뇌간 경보체계, 야간 공황발작(Nocturnal Panic), 광장공포증 기전, 신경안정제 의존 탈출, 복식호흡 이완 훈련, 자율신경계 균형 회복 등 심층 의학 콘텐츠
+   - 발행일자: 2011년 11월 15일부터 2026년 9월 10일까지 23개 일자 중복 없이 연대순 균등 분산 배치
+3. **로컬 저장소 및 웹사이트 전면 반영**:
+   - `data/healim_community_hub.json`: 65편 후기 + 23편 칼럼 갱신 완료
+   - `static/data/healim_community_hub.json`: 정적 웹 허브 데이터 동기화 완료
+   - `content/community/_index.md`: 커뮤니티 페이지 기본 데이터(defaultReviewsData, defaultColumnsData) 동기화 완료
+   - `layouts/_partials/components/common_bottom_sections.html`: 메인/하단 정적 프리뷰 카드(후기 6개, 칼럼 3개) 최신 공황장애 글로 교체 및 스크립트 데이터 동기화 완료
+   - 로컬 빌드: `hugo --cleanDestinationDir --minify` 정상 빌드 (32개 페이지 컴파일 완료)
+   - 원격 저장소: `https://github.com/healim0071-git/panic-disorder.git` main 브랜치 커밋 및 푸시 완료
