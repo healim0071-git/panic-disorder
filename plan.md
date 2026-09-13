@@ -1,7 +1,7 @@
-# 해아림한의원 자율신경실조증 전문 클리닉 웹사이트 구축 계획서 (plan.md)
+# 해아림한의원 공황장애 전문 클리닉 웹사이트 구축 및 리뉴얼 계획서 (plan.md)
 
 > **문서 버전:** v1.0.0  
-> **기반 문서:** business_content.md (자율신경실조증 한방 클리닉 콘텐츠 명세서)  
+> **기반 문서:** business_content.md (해아림한의원 공황장애 클리닉 콘텐츠 명세서)  
 > **적용 분야:** Gemini Gems 기반 웹사이트 제작, SEO/AEO/GEO 최적화 및 고전환(High Conversion) 의료 웹 플랫폼 구축
 
 ---
@@ -9,8 +9,8 @@
 ## 1. 프로젝트 개요 및 기획 배경
 
 ### 1.1 프로젝트 정의
-본 프로젝트는 **16여 년의 임상 노하우**와 전국 15개 네트워크를 보유한 **해아림한의원**의 '자율신경실조증 전문 클리닉' 공식 웹사이트를 제작하기 위한 종합 구축 계획서입니다. 
-양방 검사(내과, 신경과, 이비인후과, 심장내과 등)에서 이상 소견이 발견되지 않아 불안해하는 환자들에게 질환의 원인 메커니즘을 명쾌하게 규명하고, HRV(자율신경계) 검사 및 뇌기능 검사를 통한 객관적 맞춤 한방 치료 솔루션을 제시하여 신뢰 구축과 진료 예약 전환을 극대화합니다.
+본 프로젝트는 **16여 년의 임상 노하우**와 전국 15개 네트워크를 보유한 **해아림한의원**의 '공황장애 전문 클리닉' 공식 웹사이트를 제작 및 리뉴얼하기 위한 종합 구축 계획서입니다. 
+응급실 및 양방 검사(내과, 신경과, 이비인후과, 심장내과 등)에서 이상 소견이 발견되지 않아 불안해하는 환자들에게 뇌 편도체 오작동과 급성 교감신경 폭주 메커니즘을 명쾌하게 규명하고, HRV(심박변이도) 검사 및 뇌파(QEEG) 검사를 통한 객관적 맞춤 한방 치료 솔루션을 제시하여 신뢰 구축과 진료 예약 전환을 극대화합니다.
 
 ### 1.2 핵심 타깃 페르소나
 - **타깃 A (3040 직장인):**
@@ -20,7 +20,7 @@
 
 ### 1.3 4대 핵심 구축 목표
 1. **의학적 신뢰성 및 전문성 확립:** 16여 년 임상 노하우, 한방신경정신과 전문의·박사·석사 등의 의료진, 전국 15개 네트워크 거점 부각.
-2. **환자 중심의 공감 및 불안 해소:** "검사상 이상 없는데 왜 아플까?"에 대한 자율신경계(교감 vs 부교감) 불균형 메커니즘 시각화.
+2. **환자 중심의 공감 및 불안 해소:** "검사상 이상 없는데 왜 숨이 멎을 것 같고 죽을 것 같은 공포가 올까?"에 대한 뇌 편도체 오작동 및 급성 교감신경 폭주 메커니즘 시각화.
 3. **AEO(AI Engine Optimization) & SEO 선점:** AI 검색(Gemini, SearchGPT, Perplexity) 및 네이버·구글 검색 결과 최상단 노출을 위한 JSON-LD 구조화 데이터 및 시맨틱 아키텍처 구현.
 4. **전국 15개 지점 연결 및 전환 극대화:** 100% 텍스트 기반 지점 정보, 1-Click 전화 연결, 위치 기반 상담 예약 유도.
 
@@ -30,7 +30,7 @@
 
 ```mermaid
 graph TD
-    Home["P1. 메인 (/)<br>• Hero & Trust Indicators<br>• 자율신경 균형 진단 프리뷰<br>• 15개 지점 빠른 안내"]
+    Home["P1. 메인 (/)<br>• Hero & Trust Indicators<br>• 공황장애 정밀 진단 프리뷰<br>• 15개 지점 빠른 안내"]
     
     Home --> Clinic["P2. 공황장애 클리닉 소개 (/autonomic-clinic/)<br>• 16년 노하우 조절 시스템<br>• 3대 신뢰 기준<br>• 공황장애 전담 진료팀"]
     Home --> Dysfunction["P3. 공황장애 구체적 설명 (/autonomic-dysfunction/)<br>• 편도체 오작동 정의 & 검사상 정상 이유<br>• 3040/5060 대표 사례<br>• 교감/부교감 불균형 메커니즘"]
@@ -64,12 +64,12 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
       "@id": "https://healim-autonomic.com/#clinic",
       "name": "해아림한의원",
       "url": "https://healim-autonomic.com/",
-      "description": "자율신경실조증 치료 16여년 임상 노하우의 전국 15개 네트워크 한의원",
+      "description": "공황장애 치료 16여년 임상 노하우의 전국 15개 네트워크 한의원",
       "medicalSpecialty": "Psychiatric",
       "availableService": [
         {
           "@type": "MedicalTherapy",
-          "name": "자율신경실조증 1:1 맞춤 한방 치료"
+          "name": "공황장애 1:1 맞춤 한방 치료"
         },
         {
           "@type": "MedicalTest",
@@ -1705,3 +1705,37 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
      - `<meta property="og:title" content="자율신경실조증 치료 | 해아림한의원">` 반영 확인.
      - `<meta name="description" ...>` '체계적인 치료병원' 100% 일치 확인.
      - `<meta property="og:description" ...>` '체계적인 치료병원' 100% 일치 확인.
+
+
+---
+
+## 🚩 [2026-09-13] 마일스톤 10: 해아림한의원 '공황장애 전문 클리닉' 전면 리뉴얼 및 Cloudflare 배포 완료
+
+### 1. 리뉴얼 목적 및 요구사항 100% 준수
+- **UI 및 스타일 보존**: 기존 웹사이트의 전체 UI 프레임, 레이아웃, 스타일(Vanilla CSS), 반응형 그리드, 폰트(Pretendard), 모달 팝업, 탭 전환 스크립트를 100% 손실 없이 원형 보존.
+- **주제 전면 개편**: 모든 텍스트, 의학적 설명, 헤드라인, 자가진단 문항, 증상 체크리스트의 주제를 '자율신경실조증'에서 **'공황장애'**로 자연스럽고 전문적인 한방신경정신과 의학 카피로 전면 개편.
+- **메타 태그 갱신**: `index.html` 및 글로벌 헤더의 `<title>`, `<meta name="description">` 태그를 `공황장애 | 해아림한의원` 규격으로 완벽 교체.
+
+### 2. 세부 개편 완료 내역
+1. **글로벌 설정 & SEO**:
+   - `config/_default/hugo.yaml`: `title: '공황장애 | 해아림한의원'`
+   - `config/_default/params.yaml`: 메타 타이틀, 키워드, 디스크립션 공황장애 최적화
+   - `config/_default/menus.yaml`: GNB 6개 메뉴명 공황장애 클리닉으로 전면 교체
+   - `layouts/_partials/hooks/head-end/seo_schema.html`: MedicalCondition(공황장애, F41.0), MedicalClinic, FAQPage 스키마 등록
+2. **핵심 6대 페이지 전면 개편**:
+   - `content/_index.md` (메인 홈): 공황장애 특화 헤드라인, 6대 평가 검사, 6대 치료 솔루션, 원장단 저서(『걱정과 공황장애』) 쇼케이스, 학술 논문 갤러리
+   - `content/autonomic-dysfunction/_index.md`: 공황장애란 무엇인가, 편도체 오작동 메커니즘, 병원 검사 정상 이유 해설, 6계통 신체화 증상 카드, 공황장애 vs 자율신경실조증 감별표, 8대 원인, 7문항 자가진단 체크리스트, 3040 직장인 & 5060 중장년 임상 페르소나
+   - `content/autonomic-symptoms/_index.md`: 4대 계통별 증상 체크리스트(뇌신경·정신, 순환·호흡, 소화·말초, 정서·수면) 및 4대 동반 질환(급성 공황발작, 야간 공황, 광장공포증/예기불안, 과호흡증후군)
+   - `content/autonomic-diagnosis/_index.md`: 8대 원인 분석, 공황 악순환 사슬 구조, 3단계 정밀 진단 시스템
+   - `content/autonomic-treatment/_index.md`: 7대 핵심 치료법, 3단계 회복 로드맵, 공황발작 시 3분 긴급 대처 3원칙(4-6 복식호흡, 인지 재구조화, 5-4-3-2-1 그라운딩 기법)
+   - `content/autonomic-clinic/_index.md`: 한방신경정신과 전문의/박사 원장단의 16년 임상 노하우와 3대 진료 원칙
+3. **공통 하단 컴포넌트 & 데이터 허브 완벽 동기화**:
+   - 공황장애 FAQ: 22개 전 문항 개편 (응급실 정상 원인, 약물 병행 및 테이퍼링 단약, 광장공포, 야간 공황 등)
+   - 공황장애 치료후기: 65건 전 데이터 개편 (지하철/운전 공황 극복, 응급실 방문 후 완치 수기 등)
+   - 공황장애 치료 칼럼: 23편 전 데이터 개편 (편도체 과민, 뇌-장관 신경축, 호흡성 알칼리증 등)
+   - 공황장애 유튜브: 15편 전 데이터 개편 (해아림TV 공황장애 특화 가이드 영상)
+   - 파일 동기화: `layouts/_partials/components/common_bottom_sections.html`, `data/healim_community_hub.json`, `static/data/healim_community_hub.json`, `static/js/auto_faq_engine.js`, `static/js/auto_column_engine.js`, `content/community/_index.md`
+4. **빌드 및 배포 검증**:
+   - `hugo --minify`: 32개 페이지 정상 컴파일 (0 Errors, 0 Warnings, 1.47초)
+   - GitHub 원격 저장소: `https://github.com/healim0071-git/panic-disorder.git` (main 브랜치 푸시 완료)
+   - Cloudflare Pages: `https://25396d9d.panic-disorder.pages.dev/` 전 페이지 HTTP 200 정상 작동 확인 완료
