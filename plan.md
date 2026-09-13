@@ -1852,3 +1852,23 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 - Hugo 0.165.0 빌드 완료: 32개 페이지, 에러 0건.
 - `public/community/index.html` 및 `public/index.html` 내 공황장애 데이터 및 Epoch v9 정상 반영.
 - GitHub `origin main` 푸시 완료 -> Cloudflare Pages 자동 배포 연동.
+
+---
+
+## 🛡️ [2026-09-14] 마일스톤 9.62: 원격 허브 구형 데이터 역유입 롤백 원천 차단 (Epoch v11) 및 FAQ 22편/치료칼럼 23편 영구 확정
+
+### 1. 롤백(되돌아감) 현상의 근본 원인 분석
+- **원인 1**: `HealimUniversalSync.pullFromHub()` 및 `HealimCloudDB.pullFromStaticHub()`가 10초마다 `/data/healim_community_hub.json`을 fetch하는데, 구형 호스팅 서버에 남아 있던 구형 자율신경 허브 파일(Version 9.48)을 무조건 수신하여 로컬 브라우저의 `localStorage` 및 `IndexedDB`에 덮어써버리는 역유입 버그가 존재했음.
+- **원인 2**: `applyHubData` 함수가 원격 리스트를 병합할 때 구형 자율신경 칼럼/FAQ 필터를 거치지 않아, 옛날 골반통, 미각, 살이쭉쭉 등의 글이 브라우저 화면에 재등장함.
+
+### 2. 완벽한 재발 방지 해결책 (Epoch v11 아키텍처)
+1. **원격 수신 차단 가드(Guard) 탑재**:
+   - `pullFromHub()` 및 `pullFromStaticHub()`에서 원격 서버 JSON의 에포크가 `20260914_panic_v11`이 아니거나 버전이 11 미만이면 **원격 데이터를 전면 거부(Reject)**하고 로컬의 최신 공황장애 캐노니컬 시드 데이터만 100% 신뢰하도록 방어벽 구축.
+2. **엄격한 블랙리스트 차단 필터 강화**:
+   - `골반통`, `빈뇨`, `비뇨생식기`, `미각`, `후각`, `삼차신경`, `살이 쭉쭉`, `체중 이상`, `부신 고갈`, `동결(Freeze)`, `장내 세균총`, `이갈이`, `배란기` 등을 블랙리스트로 등록하여 자동발행 엔진 및 화면 렌더러에서 영구 제외.
+3. **FAQ 22편 & 치료칼럼 23편 영구 확정**:
+   - FAQ: 22편 (2011.11.15 ~ 2026.09.10) 공황장애 100% 완료.
+   - 치료칼럼: 23편 (2011.11.15 ~ 2026.09.10) 공황장애 100% 완료.
+4. **빌드 및 배포**:
+   - `hugo --cleanDestinationDir --minify`로 `public/` 최신 빌드 완료.
+   - GitHub `origin main` 푸시 완료 (`7cb74f4`).
