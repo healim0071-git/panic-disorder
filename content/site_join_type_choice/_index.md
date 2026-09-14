@@ -201,12 +201,25 @@ sections:
           window.location.href = getBackUrl();
         }
 
+        (function autoPurgeOldSnsConfig() {
+          try {
+            var raw = localStorage.getItem('healim_sns_config');
+            if (raw && raw.includes('h2nuQi_Y9Z0DOB0j6kby')) {
+              localStorage.removeItem('healim_sns_config');
+            }
+          } catch(e){}
+        })();
+
         function getSnsConfig() {
           try {
             var raw = localStorage.getItem('healim_sns_config');
             var parsed = raw ? JSON.parse(raw) : {};
+            if (parsed.naverClientId === 'h2nuQi_Y9Z0DOB0j6kby') {
+              localStorage.removeItem('healim_sns_config');
+              return { naverClientId: 'RN5bqbZyHkRwM6xCnbuo' };
+            }
             return {
-              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5) ? parsed.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo'
+              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5 && parsed.naverClientId.trim() !== 'h2nuQi_Y9Z0DOB0j6kby') ? parsed.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo'
             };
           } catch(e) {
             return { naverClientId: 'RN5bqbZyHkRwM6xCnbuo' };

@@ -912,7 +912,11 @@ sections:
             try {
               var raw = localStorage.getItem('healim_sns_config');
               var config = raw ? JSON.parse(raw) : {};
-              var curId = (config.naverClientId && config.naverClientId.trim().length > 5) ? config.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo';
+              if (config.naverClientId === 'h2nuQi_Y9Z0DOB0j6kby') {
+                localStorage.removeItem('healim_sns_config');
+                config = {};
+              }
+              var curId = (config.naverClientId && config.naverClientId.trim().length > 5 && config.naverClientId.trim() !== 'h2nuQi_Y9Z0DOB0j6kby') ? config.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo';
               var naverInput = document.getElementById('adminNaverClientId');
               var badge = document.getElementById('snsStatusBadge');
               if (naverInput) naverInput.value = curId;
