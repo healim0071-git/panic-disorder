@@ -444,7 +444,7 @@ sections:
         <script src="/js/healim_cloud_db.js"></script>
         <script>        (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20260914_panic_v11';
+        var CURRENT_COMMUNITY_EPOCH = '20260914_panic_v12';
         try {
           var userEpoch = localStorage.getItem('healim_community_epoch');
           if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
@@ -2723,7 +2723,7 @@ sections:
                 if (json) {
                   var data = json.data || json;
                   // CRITICAL GUARD: Only accept hub data if epoch strictly matches CURRENT_COMMUNITY_EPOCH!
-                  if (!data || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 11)) {
+                  if (!data || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 12)) {
                     console.warn('[HealimUniversalSync] Remote hub is obsolete (epoch: ' + (data ? data.epoch : 'none') + '). Rejecting remote overwrite to preserve canonical seed.');
                     if (onDone) onDone(false);
                     return;
@@ -3016,55 +3016,85 @@ sections:
         window.HealimUniversalSync = HealimUniversalSync;
 
         // LocalStorage Helper with Multi-Tier Merge (Guarantees zero data loss)
-        function getItemTimeScore(item, index, totalLength) {
+        function getItemDateScore(item) {
           if (!item) return 0;
-          var idStr = String(item.id || '');
-          var idMatch = idStr.match(/(\d{10,14})/);
-          var idTimestamp = idMatch ? parseInt(idMatch[1], 10) : 0;
-          if (idTimestamp >= 1000000000 && idTimestamp < 10000000000) idTimestamp *= 1000;
-
-          if (idTimestamp >= 1577836800000) {
-            return idTimestamp;
-          }
-
-          var dateScore = 0;
           if (item.date) {
-            var cleanDate = String(item.date).replace(/\./g, '-').trim();
-            if (/^\d{4}-\d{2}-\d{2}$/.test(cleanDate)) cleanDate += 'T00:00:00+09:00';
-            var td = new Date(cleanDate).getTime();
-            if (!isNaN(td)) dateScore = td;
+            var rawDate = String(item.date).trim();
+            var cleanDate = rawDate.replace(/[.\/]/g, '-').trim();
+            var dMatch = cleanDate.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+            if (dMatch) {
+              var yr = parseInt(dMatch[1], 10);
+              var mo = parseInt(dMatch[2], 10) - 1;
+              var da = parseInt(dMatch[3], 10);
+              var hr = dMatch[4] ? parseInt(dMatch[4], 10) : 0;
+              var mi = dMatch[5] ? parseInt(dMatch[5], 10) : 0;
+              var sc = dMatch[6] ? parseInt(dMatch[6], 10) : 0;
+              var dObj = new Date(yr, mo, da, hr, mi, sc);
+              var td = dObj.getTime();
+              if (!isNaN(td) && td > 0) return td;
+            }
+            var td2 = new Date(cleanDate).getTime();
+            if (!isNaN(td2) && td2 > 0) return td2;
           }
-
-          var subDayOffset = 0;
-          var ytMatch = idStr.match(/^yt-(\d+)$/i);
-          if (ytMatch) {
-            subDayOffset = 100000 - parseInt(ytMatch[1], 10) * 1000;
-          } else {
-            var colIdx = item.colIndex || item.poolIndex || 0;
-            if (colIdx > 0) {
-              subDayOffset = colIdx * 1000;
-            } else {
-              subDayOffset = (totalLength - (index || 0));
+          if (item.createdAt) {
+            var catNum = Number(item.createdAt);
+            if (!isNaN(catNum) && catNum > 0) {
+              if (catNum >= 1000000000 && catNum < 10000000000) catNum *= 1000;
+              return catNum;
             }
           }
+          var idStr = String(item.id || '');
+          var idMatch = idStr.match(/(\d{10,14})/);
+          if (idMatch) {
+            var idTimestamp = parseInt(idMatch[1], 10);
+            if (idTimestamp >= 1000000000 && idTimestamp < 10000000000) idTimestamp *= 1000;
+            return idTimestamp;
+          }
+          return 0;
+        }
 
-          if (dateScore > 0) return dateScore + subDayOffset;
-          return subDayOffset;
+        function getItemSubScore(item, index, totalLength) {
+          if (!item) return 0;
+          if (item.createdAt && !isNaN(Number(item.createdAt))) {
+            return Number(item.createdAt) % 86400000;
+          }
+          var idStr = String(item.id || '');
+          var ytMatch = idStr.match(/^yt-(\d+)$/i);
+          if (ytMatch) {
+            return 100000 - parseInt(ytMatch[1], 10) * 1000;
+          }
+          var colIdx = item.colIndex || item.poolIndex || 0;
+          if (colIdx > 0) {
+            return colIdx * 1000;
+          }
+          return (totalLength - (index || 0));
+        }
+
+        function getItemTimeScore(item, index, totalLength) {
+          if (!item) return 0;
+          return getItemDateScore(item) + (getItemSubScore(item, index, totalLength) / 1000000);
         }
 
         function sortCommunityItemsByTime(items) {
           if (!Array.isArray(items)) return [];
           var total = items.length;
           var scored = items.map(function(item, idx) {
-            return { item: item, score: getItemTimeScore(item, idx, total), origIdx: idx };
+            return {
+              item: item,
+              dateScore: getItemDateScore(item),
+              subScore: getItemSubScore(item, idx, total),
+              origIdx: idx
+            };
           });
           scored.sort(function(a, b) {
-            if (b.score !== a.score) return b.score - a.score;
+            if (b.dateScore !== a.dateScore) return b.dateScore - a.dateScore;
+            if (b.subScore !== a.subScore) return b.subScore - a.subScore;
             return a.origIdx - b.origIdx;
           });
           return scored.map(function(s) { return s.item; });
         }
         window.sortCommunityItemsByTime = sortCommunityItemsByTime;
+        window.getItemDateScore = getItemDateScore;
         window.getItemTimeScore = getItemTimeScore;
 
         function getBoardData(key, fallback) {
