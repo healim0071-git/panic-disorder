@@ -121,12 +121,12 @@ sections:
               공황장애 전담 진료팀 (전문의/박사/석사)
             </h2>
             <p class="text-sm md:text-base leading-relaxed mb-6" style="color: #ffffff !important; word-break: keep-all;">
-              "대학병원수련 한방신경정신과 전문의 및 한의학 박사·석사 등으로 구성된 전국 15개 지점 원장단의 16년 임상 노하우. 죽을 것 같은 공포와 예기불안으로 일상이 무너진 공황장애의 근원을 깊이 살피며, 전국 15개 네트워크의 방대한 학술 연구와 임상 데이터를 바탕으로 무너진 뇌-자율신경의 균형을 바로잡는 최적의 근거 기반 1:1 맞춤 진료를 실현합니다."
+              "대학병원수련 한방신경정신과 전문의 및 한의학 박사·석사 등으로 구성된 전국 16개 지점 원장단의 16년 임상 노하우. 죽을 것 같은 공포와 예기불안으로 일상이 무너진 공황장애의 근원을 깊이 살피며, 전국 16개 네트워크의 방대한 학술 연구와 임상 데이터를 바탕으로 무너진 뇌-자율신경의 균형을 바로잡는 최적의 근거 기반 1:1 맞춤 진료를 실현합니다."
             </p>
             <div class="flex flex-wrap gap-4">
               <div class="bg-[#09292e] px-4 py-3 rounded-lg border border-[#1c6e78]/40">
-                <div class="text-white font-bold text-sm">전국 15개 네트워크 거점</div>
-                <div class="text-xs text-slate-300">서울, 경기, 인천, 대구, 대전, 부산, 제주</div>
+                <div class="text-white font-bold text-sm">전국 16개 네트워크 거점</div>
+                <div class="text-xs text-slate-300">서울, 경기, 인천, 대구, 대전, 울산, 부산, 제주</div>
               </div>
               <div class="bg-[#09292e] px-4 py-3 rounded-lg border border-[#1c6e78]/40">
                 <div class="text-white font-bold text-sm">정기 임상 연구 콘퍼런스</div>
@@ -139,6 +139,6 @@ sections:
         <!-- 5. 하단 액션 버튼 -->
         <div class="text-center my-10">
           <a href="/autonomic-diagnosis/" class="btn-healim mr-3">정밀 검사 시스템 알아보기 &gt;</a>
-          <a href="#branches" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">가까운 15개 지점 찾기 &gt;</a>
+          <a href="#branches" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">가까운 16개 지점 찾기 &gt;</a>
         </div>
 ---

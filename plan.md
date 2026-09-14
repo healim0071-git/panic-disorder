@@ -1971,3 +1971,25 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 4. **검증 및 빌드**:
    - Hugo 정적 빌드 정상 완료 (32개 페이지 에러 0건).
 
+## 📍 [2026-09-14] 마일스톤 9.67: 전국 지점 안내 울산점 신설 (대전점과 부산센텀점 사이 배치) 및 16개 지점 네트워크 반영
+
+### 1. 요구사항
+- 전국 지점 안내에서 **울산점**을 대전점과 부산센텀점 사이 위치에 추가.
+  - 지점명: `울산점`
+  - 지역: `울산`
+  - 주소: `울산시 남구 삼산로 266, 11층`
+  - 전화번호: `052) 700-1953` (`tel:052-700-1953`)
+
+### 2. 세부 작업 내역
+1. **푸터 전국 지점 안내 카드 추가 (`layouts/_partials/site_footer.html`)**:
+   - 대전점(12번째) 바로 다음, 부산센텀점(기존 13번째) 바로 앞(13번째 위치)에 울산점 카드 신설.
+   - 울산점 주소(`울산시 남구 삼산로 266, 11층`) 및 원클릭 전화걸기 버튼(`tel:052-700-1953`, `T. 052-700-1953`) 연동.
+   - 푸터 섹션 타이틀 및 헤더를 `전국 16개 네트워크 지점 안내`로 갱신.
+2. **사이트 전역 네트워크 카운트 동기화**:
+   - `layouts/_partials/components/common_bottom_sections.html`: 16개 네트워크 원장단 및 지점 안내로 갱신.
+   - `layouts/_partials/hooks/head-end/seo_schema.html`: Schema.org 메타데이터 `16개 네트워크` 갱신.
+   - `content/_index.md`, `content/community/_index.md`, `content/autonomic-treatment/_index.md`, `content/autonomic-clinic/_index.md`: `가까운 16개 지점 찾기 >` 및 네트워크 거점 리스트(서울, 경기, 인천, 대구, 대전, **울산**, 부산, 제주) 갱신.
+3. **빌드 검증**:
+   - `hugo --cleanDestinationDir --minify` 정상 컴파일 완료 (Pages: 32개, Error: 0건).
+
+
