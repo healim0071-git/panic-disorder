@@ -1620,8 +1620,9 @@ section#section-markdown:first-of-type {
 }
 
 /* ==============================================================================
-   COMMUNITY COLUMN TABLE MOBILE OPTIMIZATION
-   - Expands title width to >2x on mobile screens (< 768px)
+   COLUMN BOARD MOBILE RESPONSIVE OPTIMIZATION (Milestone 9.49)
+   - Eliminates awkward narrow columns and multi-line wrapping on mobile (<768px)
+   - Expands title column to 100% of remaining width (2.3x wider)
    - Neatly arranges author, registration date, and view count in a subtle sub-row
    ============================================================================== */
 .col-meta-mobile {
@@ -1656,10 +1657,10 @@ section#section-markdown:first-of-type {
 
   /* Title text with natural word wrapping */
   .healim-column-table .post-title-link {
-    font-size: 14.5px !important;
-    font-weight: 600 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
     line-height: 1.45 !important;
-    color: #1f2937 !important;
+    color: #0d3a42 !important;
     word-break: keep-all !important;
     overflow-wrap: break-word !important;
     display: inline !important;
