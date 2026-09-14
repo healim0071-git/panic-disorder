@@ -1,0 +1,7 @@
+# Caddyfile for automatic HTTPS via Let's Encrypt
+healim-panic.com {
+    root * ./public
+    file_server
+    encode gzip
+    # Caddy will automatically obtain and renew TLS certificates from Let's Encrypt
+}

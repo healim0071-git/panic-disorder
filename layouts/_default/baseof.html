@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- 페이지 타이틀 -->
+  <title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+
+  <!-- SEO 파셜 삽입 (네이버·구글 검증 및 OG 태그 포함) -->
+  {{ partial "hooks/head-end/seo_schema.html" . }}
+
+  <!-- 공통 CSS (예시) -->
+  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}" />
+</head>
+
+<body>
+  {{ partial "components/headers/navbar.html" . }}
+
+  {{ block "main" . }}{{ .Content }}{{ end }}
+
+  {{ partial "site_footer.html" . }}
+
+  <!-- 공통 JS (예시) -->
+  <script src="{{ "js/auto_column_engine.js" | relURL }}"></script>
+</body>
+</html>
