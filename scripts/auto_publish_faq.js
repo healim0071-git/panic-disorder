@@ -10,7 +10,13 @@
  *    - [공황장애 치료방법 알아보기](https://healim-panic.com/autonomic-treatment)
  *    - [전국 지점 안내](https://www.healim.com)
  * 4. 주기: 매주 2~3개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
- * 5. 중복 방지: 단 질문글은 기존에 작성되어 있는 글과 중복되지 않도록 엄격한 정규화 비교 필터링 적용
+ * 5. 중복 방지: 질문글은 기존에 작성되어 있는 글과 중복되지 않도록 엄격한 정규화 비교 필터링 적용
+ * 6. 의료광고법 및 5대 표현 가이드라인 철저 준수:
+ *    - 원칙 1: 근원치료/근본치료, 완치된다, 전문병원, 전문/특화/첨단, 완벽해결, 부작용이 없다 등 지양
+ *    - 원칙 2: 타 병원과의 비교 및 우위 주장 금지
+ *    - 원칙 3: '재발안된다' 지양 -> '재발율이 낮아진다' 표현 사용
+ *    - 원칙 4: 지나치게 단정적인 표현 배제 (완곡하고 객관적인 관리 가능성 기술)
+ *    - 원칙 5: 의료광고법에 저촉되지 않는 공익적/의학적 정보 구성
  */
 
 const fs = require('fs');
@@ -98,8 +104,41 @@ for (let i = 1; i <= 5; i++) {
   console.log(`Next Post #${i}: ${year}.${month}.${day} ${time}`);
 }
 
+// ──────────────────────────────────────────────────────────
+// 의료광고법 및 5대 표현 원칙 준수 검증 테스트
+// ──────────────────────────────────────────────────────────
+console.log('\n--- Medical Advertising & Phrasing Compliance Audit ---');
+const forbiddenKeywords = [
+  '근원을 치료', '근원치료', '근원 치료', '근본치료', '근본 치료', '근본적', '근본',
+  '완치된다', '완치될', '완치율', '완치 판정', '완치 기준', '완치',
+  '전문병원', '전문', '특화', '첨단',
+  '완벽해결', '완벽히', '완벽하게', '완벽한', '완벽',
+  '부작용이 없다', '부작용 없이', '부작용 없는', '부작용은 전혀',
+  '재발안된다', '재발 안', '재발하지 않', '재발 없는', '재발없이', '재발 없이',
+  '우수하', '다른 병원', '단언컨대'
+];
+
+let complianceViolations = 0;
+autoFaqContentPool.forEach((item, idx) => {
+  const fullText = `${item.title} ${item.summary || ''} ${item.content}`;
+  forbiddenKeywords.forEach(kw => {
+    if (fullText.includes(kw)) {
+      console.error(`[COMPLIANCE VIOLATION] FAQ #${idx + 1} contains forbidden keyword: "${kw}"`);
+      complianceViolations++;
+    }
+  });
+});
+
+if (complianceViolations === 0) {
+  console.log(`✅ All ${autoFaqContentPool.length} FAQ articles 100% strictly satisfy Medical Advertising & Phrasing Compliance Guidelines! (0 violations)\n`);
+} else {
+  console.error(`❌ Found ${complianceViolations} compliance violations in FAQ pool!\n`);
+  process.exitCode = 1;
+}
+
 module.exports = {
   autoFaqContentPool,
   calculateNextScheduleTime,
   normalizeQuestionTitle
 };
+

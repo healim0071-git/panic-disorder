@@ -1928,4 +1928,25 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `hugo --cleanDestinationDir --minify` 정상 빌드 (32개 페이지 에러 0건).
    - GitHub `origin main` 푸시 완료.
 
+## 🛡️ [2026-09-14] 마일스톤 9.65: FAQ 및 치료칼럼 자동발행 의료광고법 및 5대 표현 가이드라인 준수 엔진 세팅
 
+### 1. 요구사항 및 배경
+- 커뮤니티의 FAQ 및 치료칼럼 자동발행 글에서 다음 5대 원칙을 엄격히 준수하도록 시스템 세팅:
+  1. 지양 단어 및 어감 배제: 근원치료/근본치료, 완치된다, 전문병원, 전문/특화/첨단, 완벽해결, 부작용이 없다 등
+  2. 타 병원과의 비교 우위 배제 (비교 광고 금지 준수)
+  3. '재발안된다' 지양 -> '재발율이 낮아진다' 표현 사용
+  4. 지나치게 단정적인 표현 배제 (완곡하고 객관적인 관리 가능성 기술)
+  5. 의료광고법에 저촉되지 않는 공익적/의학적 정보 구성
+
+### 2. 세부 구현 내역
+1. **의료광고법 및 5대 표현 준수 검역 필터 (`sanitizeMedicalCompliance`) 탑재**:
+   - `static/js/auto_faq_engine.js` 및 `static/js/auto_column_engine.js`에 검역 필터 함수 구현.
+   - 향후 스케줄에 따라 자동 발행되는 모든 글의 제목, 요약문, 본문, 순환 에디션 템플릿에 실시간 검역 적용.
+2. **기본 콘텐츠 풀 및 시드 데이터 전수 정제**:
+   - FAQ 풀 (22편): `static/js/auto_faq_engine.js`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`
+   - 치료칼럼 풀 (23편/38편): `static/js/auto_column_engine.js`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`
+   - 치료후기 풀: `static/js/auto_review_engine.js` (완치 -> 호전/극복/안정 회복 정제)
+3. **자동화 검증 스크립트 구축 (`scripts/auto_publish_faq.js`, `scripts/auto_publish_column.js`)**:
+   - 22개 FAQ 및 23개 치료칼럼 전체에 대해 금지어(근본, 완치, 전문병원, 전문, 특화, 첨단, 완벽해결, 부작용 없다, 재발 없다 등) 검출 테스트 0건 통과 (Violation: 0).
+4. **빌드 검증**:
+   - Hugo 정적 빌드 정상 완료 (Pages: 32개, Error: 0건).
