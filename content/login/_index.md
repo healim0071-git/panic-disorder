@@ -206,10 +206,10 @@ sections:
             var raw = localStorage.getItem('healim_sns_config');
             var parsed = raw ? JSON.parse(raw) : {};
             return {
-              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5) ? parsed.naverClientId.trim() : 'h2nuQi_Y9Z0DOB0j6kby'
+              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5) ? parsed.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo'
             };
           } catch(e) {
-            return { naverClientId: 'h2nuQi_Y9Z0DOB0j6kby' };
+            return { naverClientId: 'RN5bqbZyHkRwM6xCnbuo' };
           }
         }
 
@@ -230,7 +230,7 @@ sections:
 
             if (accessToken) {
               var config = getSnsConfig();
-              var clientId = config.naverClientId || 'h2nuQi_Y9Z0DOB0j6kby';
+              var clientId = config.naverClientId || 'RN5bqbZyHkRwM6xCnbuo';
 
               var hasCompleted = false;
               var fallbackTimer = setTimeout(function() {
@@ -304,7 +304,8 @@ sections:
         // Social Login Handler (Naver Official OAuth with Fixed Callback URL)
         function handleSocialLogin(provider) {
           if (provider === 'naver') {
-            const clientId = 'h2nuQi_Y9Z0DOB0j6kby';
+            const config = getSnsConfig();
+            const clientId = config.naverClientId || 'RN5bqbZyHkRwM6xCnbuo';
 
             // 원래 돌아가고자 했던 페이지를 로컬스토리지에 안전하게 보관 (URL 파라미터 오염 방지)
             const targetBackUrl = getBackUrl();

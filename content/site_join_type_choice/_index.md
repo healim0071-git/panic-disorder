@@ -206,10 +206,10 @@ sections:
             var raw = localStorage.getItem('healim_sns_config');
             var parsed = raw ? JSON.parse(raw) : {};
             return {
-              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5) ? parsed.naverClientId.trim() : 'h2nuQi_Y9Z0DOB0j6kby'
+              naverClientId: (parsed.naverClientId && parsed.naverClientId.trim().length > 5) ? parsed.naverClientId.trim() : 'RN5bqbZyHkRwM6xCnbuo'
             };
           } catch(e) {
-            return { naverClientId: 'h2nuQi_Y9Z0DOB0j6kby' };
+            return { naverClientId: 'RN5bqbZyHkRwM6xCnbuo' };
           }
         }
 
@@ -258,7 +258,8 @@ sections:
 
         function handleSocialRegister(provider) {
           if (provider === 'naver') {
-            const clientId = 'h2nuQi_Y9Z0DOB0j6kby';
+            const config = getSnsConfig();
+            const clientId = config.naverClientId || 'RN5bqbZyHkRwM6xCnbuo';
 
             const targetBackUrl = getBackUrl();
             localStorage.setItem('healim_naver_back_url', (targetBackUrl && targetBackUrl !== '/' && !targetBackUrl.includes('/login') && !targetBackUrl.includes('/site_join_type_choice')) ? targetBackUrl : '/community/#reviews');
