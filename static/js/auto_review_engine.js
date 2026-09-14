@@ -435,6 +435,16 @@
         if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
           window.HealimPermanentDB.saveVault('reviews', vaultList);
         }
+
+        // Synchronize to Global Cloud DB & Universal Sync Engine
+        if (typeof window !== 'undefined') {
+          if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
+            window.HealimCloudDB.savePost('reviews', newPost);
+          }
+          if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
+            window.HealimUniversalSync.syncPostToRemote('reviews', newPost, 'create');
+          }
+        }
       } catch(e) {}
 
       // 상태 업데이트

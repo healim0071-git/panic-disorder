@@ -539,6 +539,9 @@
         image: poolItem.image,
         content: faqContent,
         isAutoPublished: true,
+        isCustom: true,
+        createdAt: pubTimestamp,
+        updatedAt: pubTimestamp,
         poolId: poolItem.id
       };
 
@@ -581,6 +584,16 @@
           legList = legList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normCandidate; });
           legList.unshift(newPost);
           localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+
+          // Synchronize to Global Cloud DB & Universal Sync Engine
+          if (typeof window !== 'undefined') {
+            if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
+              window.HealimCloudDB.savePost('faq', newPost);
+            }
+            if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
+              window.HealimUniversalSync.syncPostToRemote('faq', newPost, 'create');
+            }
+          }
         } catch(e) {}
 
       // 상태 전진 (선택된 인덱스 다음으로)

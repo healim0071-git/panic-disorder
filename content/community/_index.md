@@ -2634,14 +2634,17 @@ sections:
                   }
                 });
 
-                // Tier 2: Local posts that were edited or created locally
+                // Tier 2: Local posts that were edited or created locally or auto-published
                 localList.forEach(function(p) {
                   if (p && p.id && !isDeletedPostId(bKey, p.id, p)) {
                     var strId = String(p.id);
-                    if (p.isEdited || p.updatedAt) {
+                    var isSpecial = p.isEdited || p.updatedAt || p.isCustom || p.isAutoPublished ||
+                      strId.indexOf('custom') !== -1 || strId.indexOf('-auto-') !== -1;
+                    if (isSpecial) {
                       if (!seenIds[strId]) {
+                        var finalP = editedMap[strId] ? editedMap[strId] : p;
                         seenIds[strId] = true;
-                        merged.push(p);
+                        merged.push(finalP);
                       }
                     }
                   }
@@ -2680,7 +2683,11 @@ sections:
 
                 // Also update custom posts tier so getCustomUserPosts has it
                 var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
-                localStorage.setItem(cKey, JSON.stringify(merged.filter(function(p) { return p.isCustom || String(p.id).indexOf(bKey + '-') === 0; })));
+                localStorage.setItem(cKey, JSON.stringify(merged.filter(function(p) {
+                  if (!p || !p.id) return false;
+                  var sId = String(p.id);
+                  return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
+                })));
 
                 didChange = true;
               }
@@ -3021,17 +3028,18 @@ sections:
         // 2. User uploaded / custom posts (written by healim0071 admin in browser)
         customList.forEach(addPostItem);
 
-        // 3. Canonical system posts from official hub / seed data (Primary Baseline)
+        // 3. Vault & Local Storage dynamic posts (Auto-published articles & persistent local posts)
+        vaultList.forEach(function(item) {
+          if (item && item.id) addPostItem(item);
+        });
+        storedList.forEach(function(item) {
+          if (item && item.id) addPostItem(item);
+        });
+
+        // 4. Canonical system posts from official hub / seed data (Primary Baseline)
         if (Array.isArray(fallback)) {
           fallback.forEach(addPostItem);
         }
-
-        // 4. Dynamic auto-published posts from local engine (only if not already in canonical seed)
-        storedList.forEach(function(item) {
-          if (item && item.id && (String(item.id).indexOf('custom') !== -1 || String(item.id).indexOf('auto-dyn') !== -1)) {
-            addPostItem(item);
-          }
-        });
 
         if (key === 'faq') {
           merged = merged.filter(function(it) { return !isObsoleteMockFaq(it); });

@@ -318,12 +318,34 @@
     var editedMap = {};
     try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
 
+    var deletedIds = [];
+    try { deletedIds = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]'); } catch(e) {}
+
     var seenIds = {};
     var merged = [];
 
-    // 1. Locally created custom posts (written by admin in browser) have top precedence
+    function isDel(p) {
+      if (!p || !p.id) return true;
+      return deletedIds.indexOf(String(p.id)) !== -1;
+    }
+
+    // 1. Locally created custom posts, auto-published posts, or edited posts have top precedence
     localList.forEach(function(p) {
-      if (p && p.id && (p.isCustom || String(p.id).indexOf('custom') !== -1)) {
+      if (p && p.id && !isDel(p)) {
+        var strId = String(p.id);
+        var isLocalSpecial = p.isCustom || p.isAutoPublished || p.isEdited ||
+          strId.indexOf('custom') !== -1 || strId.indexOf('-auto-') !== -1;
+        if (isLocalSpecial) {
+          var finalP = editedMap[strId] ? editedMap[strId] : p;
+          seenIds[strId] = true;
+          merged.push(finalP);
+        }
+      }
+    });
+
+    // 2. Authoritative Canonical Hub Posts from server (Primary Baseline)
+    remoteList.forEach(function(p) {
+      if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
         var strId = String(p.id);
         var finalP = editedMap[strId] ? editedMap[strId] : p;
         seenIds[strId] = true;
@@ -331,9 +353,9 @@
       }
     });
 
-    // 2. Authoritative Canonical Hub Posts from server (Primary Baseline)
-    remoteList.forEach(function(p) {
-      if (p && p.id && !seenIds[String(p.id)]) {
+    // 3. Remaining local posts
+    localList.forEach(function(p) {
+      if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
         var strId = String(p.id);
         var finalP = editedMap[strId] ? editedMap[strId] : p;
         seenIds[strId] = true;
@@ -343,6 +365,15 @@
 
     localStorage.setItem(vKey, JSON.stringify(merged));
     localStorage.setItem('healim_board_' + bKey, JSON.stringify(merged));
+
+    // Also update custom posts tier so getCustomUserPosts has it
+    var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
+    var customList = merged.filter(function(p) {
+      if (!p || !p.id) return false;
+      var sId = String(p.id);
+      return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
+    });
+    localStorage.setItem(cKey, JSON.stringify(customList));
   }
 
   function savePostToLocal(bKey, post) {

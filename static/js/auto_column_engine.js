@@ -518,7 +518,10 @@
       title: postTitle,
       summary: article.summary,
       content: postContent,
-      isAutoPublished: true
+      isAutoPublished: true,
+      isCustom: true,
+      createdAt: now,
+      updatedAt: now
     };
 
     // Double check: prevent duplicate insertion into currentColumns
@@ -559,6 +562,16 @@
       legList = legList.filter(function(p) { return p.id !== newPost.id && normalizeColumnTitle(p.title) !== normalizeColumnTitle(newPost.title); });
       legList.unshift(newPost);
       localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+
+      // Synchronize to Global Cloud DB & Universal Sync Engine
+      if (typeof window !== 'undefined') {
+        if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
+          window.HealimCloudDB.savePost('columns', newPost);
+        }
+        if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
+          window.HealimUniversalSync.syncPostToRemote('columns', newPost, 'create');
+        }
+      }
     } catch(e) {}
 
     // Update state
