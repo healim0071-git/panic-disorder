@@ -687,6 +687,9 @@
           var vaultList = [];
           var rawV = localStorage.getItem('healim_vault_all_posts_faq');
           if (rawV) vaultList = JSON.parse(rawV) || [];
+          if ((!vaultList || vaultList.length === 0) && currentFaqList.length > 0) {
+            vaultList = currentFaqList.slice();
+          }
           vaultList = vaultList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normCandidate; });
           vaultList.unshift(newPost);
           localStorage.setItem('healim_vault_all_posts_faq', JSON.stringify(vaultList));

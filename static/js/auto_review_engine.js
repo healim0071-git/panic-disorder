@@ -419,28 +419,43 @@
         updatedAt: effectiveDate.getTime()
       };
 
-      // 스토리지 및 IndexedDB 영구 반영
+      // 스토리지 및 IndexedDB 영구 반영 (다계층 머지 & 무결성 보존)
       try {
+        var defaultRevSeed = (window.defaultReviewsData || window.defaultReviewsList || []);
+
         var revList = [];
         var rawB = localStorage.getItem('healim_board_reviews');
         if (rawB) revList = JSON.parse(rawB) || [];
-        if ((!revList || revList.length === 0) && (window.defaultReviewsData || window.defaultReviewsList)) {
-          revList = (window.defaultReviewsData || window.defaultReviewsList).slice();
+        if ((!revList || revList.length === 0) && defaultRevSeed.length > 0) {
+          revList = defaultRevSeed.slice();
         }
+        revList = revList.filter(function(p) { return p.id !== newPost.id; });
         revList.unshift(newPost);
         localStorage.setItem('healim_board_reviews', JSON.stringify(revList));
 
         var vaultList = [];
         var rawV = localStorage.getItem('healim_vault_all_posts_reviews');
         if (rawV) vaultList = JSON.parse(rawV) || [];
+        if ((!vaultList || vaultList.length === 0) && revList.length > 0) {
+          vaultList = revList.slice();
+        }
+        vaultList = vaultList.filter(function(p) { return p.id !== newPost.id; });
         vaultList.unshift(newPost);
         localStorage.setItem('healim_vault_all_posts_reviews', JSON.stringify(vaultList));
 
         var customList = [];
         var rawC = localStorage.getItem('healim_custom_reviews_posts');
         if (rawC) customList = JSON.parse(rawC) || [];
+        customList = customList.filter(function(p) { return p.id !== newPost.id; });
         customList.unshift(newPost);
         localStorage.setItem('healim_custom_reviews_posts', JSON.stringify(customList));
+
+        // Synchronize to healim_community_posts_v2 (Unified Cross-Board Vault)
+        var rawLeg = localStorage.getItem('healim_community_posts_v2');
+        var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
+        legList = legList.filter(function(p) { return p.id !== newPost.id; });
+        legList.unshift(newPost);
+        localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
 
         if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
           window.HealimPermanentDB.saveVault('reviews', vaultList);

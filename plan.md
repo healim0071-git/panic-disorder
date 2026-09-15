@@ -1992,4 +1992,27 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 3. **빌드 검증**:
    - `hugo --cleanDestinationDir --minify` 정상 컴파일 완료 (Pages: 32개, Error: 0건).
 
+---
+
+## 🛡️ [2026-09-15/16] 마일스톤 9.68: 9월 15일 치료칼럼 영구 보존·원격 구형 롤백 원천 차단 (Epoch v13) 및 GitHub 동기화
+
+### 1. 현상 및 근본 원인 분석
+- **현상 1**: 다른 컴퓨터나 핸드폰에서 9월 15일자 치료칼럼이 노출되지 않음.
+  - **원인**: 로컬 작업트리에는 9월 15일 치료칼럼(`col-auto-39-1789476000000`)이 작성되었으나, GitHub 원격 저장소(`origin/main`)에 커밋 및 푸시되지 않아 배포 서버(Cloudflare/GitHub Pages)가 9월 14일 이전 버전(38편)을 지속 서빙함.
+- **현상 2**: 현재 컴퓨터에서도 이전 데이터로 롤백되거나 글이 소실되는 현상 발생.
+  - **원인**: 배포 서버의 원격 정적 허브(`healim_community_hub.json`)가 여전히 구형 v12(`20260914_panic_v12`) 상태였는데, 클라이언트 동기화 엔진(`pullFromHub`, `pullFromStaticHub`)의 가드가 v12를 최신으로 인식하여 로컬 볼트(`healim_vault_all_posts_columns`, `healim_board_columns`)를 구형 38편 데이터로 덮어써버리는 역유입 롤백 발생.
+
+### 2. 세부 조치 및 시스템 강화
+1. **에포크 v13 공식 승격 (`20260915_panic_v13`, Version 13)**:
+   - `data/healim_community_hub.json`, `static/data/healim_community_hub.json`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`, `static/js/healim_cloud_db.js` 일괄 갱신.
+   - 모든 기기(다른 PC, 모바일, 현재 PC)의 브라우저에서 접속 즉시 구형 캐시를 안전하게 비우고 9월 15일 최신 칼럼 39편 데이터셋을 완벽 로드.
+2. **원격 수신 롤백 가드 강화 (Version < 13 거부)**:
+   - `pullFromHub`, `pullFromStaticHub`, `common_bottom_sections.html`에 `epoch !== CURRENT_COMMUNITY_EPOCH || version < 13` 엄격 차단벽 탑재.
+3. **9월 15일 칼럼 영구 보존 플래그 부여**:
+   - `col-auto-39-1789476000000` 객체에 `isCustom: true`, `isPermanent: true` 부여하여 어떠한 동기화나 병합에서도 최우선 보존.
+4. **빌드 및 GitHub 원격 푸시 완료**:
+   - `hugo --cleanDestinationDir --minify` 정상 빌드 (32개 페이지 에러 0건).
+   - GitHub `origin/main`으로 전체 변경사항 푸시 완료.
+
+
 

@@ -602,8 +602,80 @@ sections:
                   if (cloudData) {
                     ['faq', 'reviews', 'columns', 'youtube'].forEach(function(bKey) {
                       if (Array.isArray(cloudData[bKey]) && cloudData[bKey].length > 0) {
-                        localStorage.setItem('healim_board_' + bKey, JSON.stringify(cloudData[bKey]));
-                        localStorage.setItem('healim_vault_all_posts_' + bKey, JSON.stringify(cloudData[bKey]));
+                        var vKey = 'healim_vault_all_posts_' + bKey;
+                        var rawV = localStorage.getItem(vKey);
+                        var localList = rawV ? (JSON.parse(rawV) || []) : [];
+                        var editedMap = {};
+                        try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
+                        var deletedIds = [];
+                        try {
+                          deletedIds = JSON.parse(localStorage.getItem('healim_deleted_posts_' + bKey) || '[]');
+                          var allDel = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]');
+                          deletedIds = deletedIds.concat(allDel);
+                        } catch(e) {}
+
+                        function isDel(id) {
+                          return id && deletedIds.indexOf(String(id)) !== -1;
+                        }
+
+                        var merged = [];
+                        var seenIds = {};
+
+                        // Tier 1: User edited posts
+                        Object.keys(editedMap).forEach(function(eid) {
+                          var ep = editedMap[eid];
+                          if (ep && ep.id && !isDel(ep.id)) {
+                            seenIds[String(ep.id)] = true;
+                            merged.push(ep);
+                          }
+                        });
+
+                        // Tier 2: Local custom / auto-published posts (immune to server rollbacks)
+                        localList.forEach(function(p) {
+                          if (p && p.id && !isDel(p.id)) {
+                            var sId = String(p.id);
+                            var isSpecial = p.isCustom || p.isAutoPublished || p.isEdited ||
+                              sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1;
+                            if (isSpecial && !seenIds[sId]) {
+                              seenIds[sId] = true;
+                              merged.push(editedMap[sId] ? editedMap[sId] : p);
+                            }
+                          }
+                        });
+
+                        // Tier 3: Cloud hub canonical posts
+                        cloudData[bKey].forEach(function(p) {
+                          if (p && p.id && !isDel(p.id)) {
+                            var sId = String(p.id);
+                            if (!seenIds[sId]) {
+                              seenIds[sId] = true;
+                              merged.push(editedMap[sId] ? editedMap[sId] : p);
+                            }
+                          }
+                        });
+
+                        // Tier 4: Remaining local posts
+                        localList.forEach(function(p) {
+                          if (p && p.id && !isDel(p.id)) {
+                            var sId = String(p.id);
+                            if (!seenIds[sId]) {
+                              seenIds[sId] = true;
+                              merged.push(editedMap[sId] ? editedMap[sId] : p);
+                            }
+                          }
+                        });
+
+                        if (typeof window !== 'undefined' && typeof window.sortCommunityItemsByTime === 'function') {
+                          merged = window.sortCommunityItemsByTime(merged);
+                        } else if (typeof window !== 'undefined' && typeof window.sortItemsByTime === 'function') {
+                          merged = window.sortItemsByTime(merged);
+                        }
+
+                        localStorage.setItem('healim_board_' + bKey, JSON.stringify(merged));
+                        localStorage.setItem('healim_vault_all_posts_' + bKey, JSON.stringify(merged));
+                        if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
+                          window.HealimPermanentDB.saveVault(bKey, merged);
+                        }
                       }
                     });
                     loadAdminDashboard();
