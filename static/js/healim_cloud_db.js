@@ -363,6 +363,12 @@
       }
     });
 
+    if (typeof window !== 'undefined' && typeof window.sortCommunityItemsByTime === 'function') {
+      merged = window.sortCommunityItemsByTime(merged);
+    } else if (typeof window !== 'undefined' && typeof window.sortItemsByTime === 'function') {
+      merged = window.sortItemsByTime(merged);
+    }
+
     localStorage.setItem(vKey, JSON.stringify(merged));
     localStorage.setItem('healim_board_' + bKey, JSON.stringify(merged));
 
@@ -394,6 +400,12 @@
       list[existingIdx] = post;
     } else {
       list.unshift(post);
+    }
+
+    if (typeof window !== 'undefined' && typeof window.sortCommunityItemsByTime === 'function') {
+      list = window.sortCommunityItemsByTime(list);
+    } else if (typeof window !== 'undefined' && typeof window.sortItemsByTime === 'function') {
+      list = window.sortItemsByTime(list);
     }
 
     localStorage.setItem(vKey, JSON.stringify(list));

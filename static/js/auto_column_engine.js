@@ -586,14 +586,18 @@
       }
     }
 
-    // Load current columns board to determine total existing count
+    // Load current columns board to determine total existing count (with multi-source fallback)
     var currentColumns = [];
     try {
       var raw = localStorage.getItem(STORAGE_BOARD_KEY);
       if (raw) currentColumns = JSON.parse(raw) || [];
     } catch(e) {}
-    if (currentColumns.length === 0 && window.defaultColumnsData) {
-      currentColumns = window.defaultColumnsData.slice();
+    if (currentColumns.length === 0) {
+      if (typeof window !== 'undefined' && Array.isArray(window.defaultColumnsData)) {
+        currentColumns = window.defaultColumnsData.slice();
+      } else if (typeof window !== 'undefined' && Array.isArray(window.defaultColumnsList)) {
+        currentColumns = window.defaultColumnsList.slice();
+      }
     }
 
     var isCycleEdition = false;
@@ -605,7 +609,12 @@
     }
 
     var article = columnsPool[selectedIdx];
-    var dateStr = formatDateOnly(new Date());
+    
+    // Ensure published date is strictly newer than any existing seed post (seed max is 2026.09.10)
+    var nowDate = new Date();
+    var seedMaxTs = new Date('2026-09-10T23:59:59').getTime();
+    var effectiveDate = (nowDate.getTime() > seedMaxTs) ? nowDate : new Date(seedMaxTs + 24 * 60 * 60 * 1000);
+    var dateStr = formatDateOnly(effectiveDate);
     var postId = 'col-auto-' + now;
 
     var postTitle = sanitizeMedicalCompliance(article.title);

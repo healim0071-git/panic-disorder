@@ -627,8 +627,15 @@
 
       var poolItem = candidatePoolItem;
       var pubTimestamp = forceImmediate ? now : state.nextScheduledTime;
-      var pDate = new Date(pubTimestamp);
-      var dateStr = pDate.getFullYear() + '.' + String(pDate.getMonth() + 1).padStart(2, '0') + '.' + String(pDate.getDate()).padStart(2, '0');
+      var seedDateObj = new Date('2026-09-10T12:00:00');
+      var effectiveDate = new Date(pubTimestamp);
+      if (effectiveDate < seedDateObj) {
+        effectiveDate = new Date();
+      }
+      if (effectiveDate < seedDateObj) {
+        effectiveDate = new Date('2026-09-11T09:30:00');
+      }
+      var dateStr = effectiveDate.getFullYear() + '.' + String(effectiveDate.getMonth() + 1).padStart(2, '0') + '.' + String(effectiveDate.getDate()).padStart(2, '0');
 
       var faqTitle = sanitizeMedicalCompliance(poolItem.title);
       var faqContent = sanitizeMedicalCompliance(poolItem.content);
@@ -657,8 +664,8 @@
         content: sanitizeMedicalCompliance(faqContent),
         isAutoPublished: true,
         isCustom: true,
-        createdAt: pubTimestamp,
-        updatedAt: pubTimestamp,
+        createdAt: effectiveDate.getTime(),
+        updatedAt: effectiveDate.getTime(),
         poolId: poolItem.id
       };
 

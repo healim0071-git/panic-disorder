@@ -2125,6 +2125,9 @@
 
       function getItemSubScore(item, index, totalLength) {
         if (!item) return 0;
+        if (item.isAutoPublished) {
+          return 100000000 + (item.createdAt ? (Number(item.createdAt) % 86400000) : 0);
+        }
         if (item.createdAt && !isNaN(Number(item.createdAt))) {
           return Number(item.createdAt) % 86400000;
         }
@@ -2769,7 +2772,7 @@
 
               rHtml += '<div class="bg-white rounded-xl border border-[#e0eaec] overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col cursor-pointer" onclick="openCommonBottomDetail(\'reviews\', \'' + safeRevId + '\')">' +
                 '<div class="relative overflow-hidden h-44 bg-slate-100">' +
-                '<img src="' + img + '" alt="치료후기 사진" class="bottom-review-blurred-img w-full h-full object-cover">' +
+                '<img src="' + img + '" alt="치료후기 사진" class="bottom-review-blurred-img w-full h-full object-cover" onerror="this.onerror=null; this.src=\'/images/reviews/review_1.jpg\';">' +
                 '<div class="absolute top-3 left-3 bg-[#0d3a42]/80 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">🔒 의료법 보호 흐림처리</div>' +
                 '</div>' +
                 '<div class="p-5 flex flex-col flex-grow">' +
@@ -2808,7 +2811,7 @@
 
               cHtml += '<div onclick="openCommonBottomDetail(\'columns\', \'' + safeColId + '\')" class="bg-white rounded-xl border border-[#e0eaec] overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group text-left cursor-pointer">' +
                 '<div class="overflow-hidden h-44 bg-slate-100">' +
-                '<img src="' + img + '" alt="의학 칼럼" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
+                '<img src="' + img + '" alt="의학 칼럼" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src=\'/images/columns/column_1_palpitation.svg\';">' +
                 '</div>' +
                 '<div class="p-5 flex flex-col flex-grow">' +
                 '<span class="text-xs font-bold text-[#1c6e78] mb-1.5">' + cat + '</span>' +

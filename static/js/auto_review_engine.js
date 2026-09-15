@@ -391,8 +391,15 @@
 
       var poolItem = pool[chosenIndex];
       var pubTimestamp = isManual ? now : (state.nextScheduledTime || now);
-      var pubDateObj = new Date(pubTimestamp);
-      var dateStr = pubDateObj.getFullYear() + '.' + String(pubDateObj.getMonth() + 1).padStart(2, '0') + '.' + String(pubDateObj.getDate()).padStart(2, '0');
+      var seedDateObj = new Date('2026-09-10T12:00:00');
+      var effectiveDate = new Date(pubTimestamp);
+      if (effectiveDate < seedDateObj) {
+        effectiveDate = new Date();
+      }
+      if (effectiveDate < seedDateObj) {
+        effectiveDate = new Date('2026-09-11T09:30:00');
+      }
+      var dateStr = effectiveDate.getFullYear() + '.' + String(effectiveDate.getMonth() + 1).padStart(2, '0') + '.' + String(effectiveDate.getDate()).padStart(2, '0');
 
       var imgIdx = (chosenIndex % 6) + 1;
       var newPost = {
@@ -408,8 +415,8 @@
         treatmentType: poolItem.treatmentType || null,
         isCustom: true,
         isAutoPublished: true,
-        createdAt: pubTimestamp,
-        updatedAt: pubTimestamp
+        createdAt: effectiveDate.getTime(),
+        updatedAt: effectiveDate.getTime()
       };
 
       // 스토리지 및 IndexedDB 영구 반영
@@ -417,6 +424,9 @@
         var revList = [];
         var rawB = localStorage.getItem('healim_board_reviews');
         if (rawB) revList = JSON.parse(rawB) || [];
+        if ((!revList || revList.length === 0) && (window.defaultReviewsData || window.defaultReviewsList)) {
+          revList = (window.defaultReviewsData || window.defaultReviewsList).slice();
+        }
         revList.unshift(newPost);
         localStorage.setItem('healim_board_reviews', JSON.stringify(revList));
 

@@ -3060,6 +3060,9 @@ sections:
 
         function getItemSubScore(item, index, totalLength) {
           if (!item) return 0;
+          if (item.isAutoPublished) {
+            return 100000000 + (item.createdAt ? (Number(item.createdAt) % 86400000) : 0);
+          }
           if (item.createdAt && !isNaN(Number(item.createdAt))) {
             return Number(item.createdAt) % 86400000;
           }
@@ -3309,6 +3312,7 @@ sections:
           }
         }
 
+        merged = sortCommunityItemsByTime(merged);
         try {
           localStorage.setItem('healim_board_' + key, JSON.stringify(merged));
           localStorage.setItem('healim_vault_all_posts_' + key, JSON.stringify(merged));
@@ -3317,8 +3321,7 @@ sections:
           }
         } catch(e) {}
 
-        merged = sortCommunityItemsByTime(merged);
-          return merged;
+        return merged;
         }
 
         function saveBoardData(key, data) {
@@ -3766,6 +3769,9 @@ sections:
 
         function renderReviewsList() {
           if (typeof purgeObsoleteMockPosts === 'function') purgeObsoleteMockPosts();
+          if (typeof window.checkAndRunAutoReviewPublish === 'function') {
+            window.checkAndRunAutoReviewPublish(false);
+          }
           var lockWrapper = document.getElementById('reviewLockWrapper');
           var overlay = document.getElementById('reviewGateOverlay');
           var container = document.getElementById('reviewListContainer');
