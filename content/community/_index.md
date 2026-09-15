@@ -444,7 +444,7 @@ sections:
         <script src="/js/healim_cloud_db.js"></script>
         <script>        (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20260916_panic_v14';
+        var CURRENT_COMMUNITY_EPOCH = '20260916_panic_v15';
         try {
           var userEpoch = localStorage.getItem('healim_community_epoch');
           if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
@@ -2542,7 +2542,7 @@ sections:
         // ─────────────────────────────────────────────────────────────
         // Permanent Persistence & Multi-Tier Deletion Tracker
         // ─────────────────────────────────────────────────────────────
-        var PERMANENT_DELETED_REVIEW_IDS = ['reviews-1788884300000', 'reviews-1788878779980', 'reviews-1788884500000'];
+        var PERMANENT_DELETED_REVIEW_IDS = ['reviews-1788884300000', 'reviews-1788878779980', 'reviews-1788884500000', 'reviews-1788878854783'];
 
         function getDeletedPostIds(key) {
           try {
@@ -2739,7 +2739,7 @@ sections:
                 if (json) {
                   var data = json.data || json;
                   // CRITICAL GUARD: Only accept hub data if epoch strictly matches CURRENT_COMMUNITY_EPOCH!
-                  if (!data || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 14)) {
+                  if (!data || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 15)) {
                     console.warn('[HealimUniversalSync] Remote hub is obsolete (epoch: ' + (data ? data.epoch : 'none') + '). Rejecting remote overwrite to preserve canonical seed.');
                     if (onDone) onDone(false);
                     return;
@@ -2811,6 +2811,8 @@ sections:
                   remoteList = remoteList.filter(function(it) { return !isObsoleteMockFaq(it); });
                 } else if (bKey === 'columns') {
                   remoteList = remoteList.filter(function(it) { return !isObsoleteMockColumn(it); });
+                } else if (bKey === 'reviews') {
+                  remoteList = remoteList.filter(function(it) { return !isObsoleteMockReview(it) && !isDeletedPostId('reviews', it.id, it); });
                 }
                 var vKey = 'healim_vault_all_posts_' + bKey;
                 var rawV = localStorage.getItem(vKey);

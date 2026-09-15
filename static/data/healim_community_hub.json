@@ -1,7 +1,7 @@
 {
-  "version": 14,
-  "epoch": "20260916_panic_v14",
-  "updated_at": 1789496769754,
+  "version": 15,
+  "epoch": "20260916_panic_v15",
+  "updated_at": 1789498000000,
   "faq": [
     {
       "id": "faq-auto-1789444890215",
@@ -731,7 +731,9 @@
       "author": "30대 직장인 김OO 님",
       "date": "2026.09.10",
       "views": 1900,
-      "image": "/images/reviews/review_1.jpg"
+      "image": "/images/reviews/review_1.jpg",
+      "isCustom": true,
+      "isPermanent": true
     },
     {
       "id": "rev-2-1788850000000",
@@ -1542,6 +1544,10 @@
     }
   ],
   "deleted_ids": [
-    "faq-auto-21-1788884890000"
+    "faq-auto-21-1788884890000",
+    "reviews-1788884300000",
+    "reviews-1788878779980",
+    "reviews-1788884500000",
+    "reviews-1788878854783"
   ]
 }

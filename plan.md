@@ -2042,6 +2042,36 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `hugo --cleanDestinationDir --minify` 정상 컴파일 완료 (32개 페이지 에러 0건).
    - GitHub `origin/main` 원격 저장소 푸시 완료로 Cloudflare/GitHub Pages 즉시 배포 반영.
 
+---
+
+## 🛡️ [2026-09-16] 마일스톤 9.70: 커뮤니티 치료후기(Reviews) 영구 보존 및 삭제 글 부활 롤백 차단 (Epoch v15) 전역 완결 및 GitHub 동기화
+
+### 1. 점검 및 취약점 분석
+- **현황 진단**:
+  - 치료후기(Reviews) 영역은 총 65편의 정규 임상 후기가 4대 저장소(`data/healim_community_hub.json`, `static/data/healim_community_hub.json`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`)에 100% 동일하게 일치되어 있음을 확인.
+  - 최상단 1위 후기: `rev-1-1788860000000` (등록일: `2026.09.10`, "응급실만 세 번 갔는데, 맞춤 한약과 이완 훈련으로 완전히 회복되었습니다").
+- **잠재적 롤백 및 부활 취약점 발견**:
+  1. 원격 배포 허브(`healim_community_hub.json`)의 `deleted_ids` 목록에 과거 삭제된 후기 ID들이 누락되어 있어, 타 기기에서 구형 캐시를 읽을 때 삭제된 후기가 역유입될 가능성 존재.
+  2. 브라우저 스토리지(LevelDB) 역분석 결과, 과거 삭제된 후기 ID(`reviews-1788878854783`)가 클라이언트의 영구 삭제 목록(`PERMANENT_DELETED_REVIEW_IDS`)에 미포함되어 있었음.
+  3. `applyHubData`에서 FAQ와 칼럼은 목업/삭제 필터링을 수행했으나, 리뷰 영역은 원격 수신 시 `isDeletedPostId('reviews', ...)` 필터링이 누락되어 있었음.
+
+### 2. 세부 조치 및 시스템 강화
+1. **삭제된 치료후기 전역 영구 차단 목록 일괄 등록**:
+   - `data/healim_community_hub.json` 및 `static/data/healim_community_hub.json`의 `deleted_ids`에 과거 삭제된 모든 후기 ID 등록:
+     - `reviews-1788884300000`, `reviews-1788878779980`, `reviews-1788884500000`, `reviews-1788878854783`
+   - `content/community/_index.md` 및 `layouts/_partials/components/common_bottom_sections.html`의 `PERMANENT_DELETED_REVIEW_IDS` 배열에 `reviews-1788878854783` 추가.
+2. **원격 수신 시 치료후기 무결성 필터 강화**:
+   - `applyHubData`의 리뷰 파이프라인에 `!isObsoleteMockReview(it) && !isDeletedPostId('reviews', it.id, it)` 적용.
+3. **최상단 1위 치료후기 영구 보존 플래그 부여**:
+   - `rev-1-1788860000000` 객체에 `isCustom: true`, `isPermanent: true` 부여하여 덮어쓰기 원천 차단.
+4. **에포크 v15 공식 승격 (`20260916_panic_v15`, Version 15)**:
+   - 4대 저장소 및 `healim_cloud_db.js` 일괄 갱신.
+   - 원격 수신 거부 가드를 `version < 15`로 격상하여 전 세계 모든 접속 기기에서 최신 15 버전 데이터셋 강제 갱신.
+5. **Hugo 빌드 및 GitHub 원격 푸시**:
+   - `hugo --cleanDestinationDir --minify` 무오류 컴파일 검증 (32개 페이지 에러 0건).
+   - GitHub `origin/main` 실시간 푸시 완료.
+
+
 
 
 

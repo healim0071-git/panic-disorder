@@ -542,7 +542,7 @@
     <script>
     (function() {
       // Community Epoch v9 System: isolate & purge obsolete vaults
-      var CURRENT_COMMUNITY_EPOCH = '20260916_panic_v14';
+      var CURRENT_COMMUNITY_EPOCH = '20260916_panic_v15';
       try {
         if (localStorage.getItem('healim_community_epoch') !== CURRENT_COMMUNITY_EPOCH) {
           ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
@@ -2311,7 +2311,7 @@
 
       // 8. Main Dynamic Community Synchronization Function
       // 8. Robust Deletion Checker across all 4 community areas
-      var PERMANENT_DELETED_REVIEW_IDS = ['reviews-1788884300000', 'reviews-1788878779980', 'reviews-1788884500000'];
+      var PERMANENT_DELETED_REVIEW_IDS = ['reviews-1788884300000', 'reviews-1788878779980', 'reviews-1788884500000', 'reviews-1788878854783'];
 
       function isItemDeleted(boardKey, item) {
         if (!item) return true;
@@ -2906,7 +2906,7 @@
           .then(function(json) {
             var data = json.data || json;
             if (data) {
-              if (!data.epoch || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 14)) {
+              if (!data.epoch || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 15)) {
                 console.warn('[CommonBottomSections] Remote hub is outdated (' + (data ? data.epoch : 'none') + '). Preserving local canonical seeds.');
                 return;
               }
