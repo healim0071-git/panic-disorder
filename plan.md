@@ -2014,5 +2014,34 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `hugo --cleanDestinationDir --minify` 정상 빌드 (32개 페이지 에러 0건).
    - GitHub `origin/main`으로 전체 변경사항 푸시 완료.
 
+---
+
+## 🛡️ [2026-09-16] 마일스톤 9.69: FAQ 9월 15일 글 영구 보존, 삭제 글 부활 롤백 차단 (Epoch v14) 및 GitHub 원격 동기화
+
+### 1. 현상 및 근본 원인 분석
+- **현상 1**: 다른 컴퓨터나 핸드폰에서 9월 15일에 작성한 최신 FAQ 글이 보이지 않음.
+  - **원인**: 9월 15일에 작성된 최신 FAQ 글(`faq-auto-1789444890215`)이 원장님 PC의 로컬 스토리지(네이버 웨일 Profile 1)에만 존재하고, 정적 허브 파일(`healim_community_hub.json`) 및 소스 코드 시드 데이터에 반영되지 않은 채 GitHub 원격 저장소에 푸시되지 않았음.
+- **현상 2**: 이전에 삭제했던 과거 FAQ 글이 다른 기기나 새로고침 시 다시 부활하여 노출됨.
+  - **원인**: 삭제된 FAQ 글(`faq-auto-21-1788884890000`)이 원격 허브 및 정적 HTML 기본 시드에 잔존해 있어, 타 기기(모바일/다른 PC)에서 접속 시 원격 허브를 읽어와 삭제된 글을 다시 렌더링하고 로컬에 재적립하는 역유입 현상 발생.
+
+### 2. 세부 조치 및 시스템 강화
+1. **원장님 PC 로컬 스토리지 원본 정밀 복원 및 추출**:
+   - 네이버 웨일 브라우저(`Profile 1`) LevelDB의 Snappy 압축 블록을 역분석하여 실제 최신 22개 FAQ 데이터셋 완벽 복원.
+   - **9월 15일 최신 FAQ 1위 글 확보**:
+     - ID: `faq-auto-1789444890215` (등록일: `2026.09.15`, 조회수: 156)
+     - 제목: `"공황발작이 시작되었을 때 3분 안에 가라앉히는 실전 응급대처법은 무엇인가요? (4-6 복식호흡 & 5-4-3-2-1 그라운딩) - 치료 중 주의할 점과 일상 수칙은?"`
+     - 영구 보존 속성(`isCustom: true`, `isPermanent: true`) 부여.
+   - **삭제 대상 글 영구 차단 등록**:
+     - ID: `faq-auto-21-1788884890000`를 `deleted_ids` 및 `healim_deleted_faq`에 영구 등록하여 전 기기에서 부활 원천 차단.
+2. **에포크 v14 공식 승격 (`20260916_panic_v14`, Version 14)**:
+   - `data/healim_community_hub.json`, `static/data/healim_community_hub.json`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`, `static/js/healim_cloud_db.js` 일괄 갱신.
+   - 모든 기기(다른 PC, 모바일, 현재 PC)에서 접속 즉시 구형 캐시를 안전하게 비우고 9월 15일 최신 FAQ(22편)와 9월 15일 최신 칼럼(39편)이 완벽하게 렌더링되도록 보장.
+3. **원격 수신 롤백 가드 강화 (Version < 14 거부)**:
+   - `pullFromHub`, `pullFromStaticHub`, `common_bottom_sections.html`에서 `version < 14` 구형 데이터 수신을 전면 거부하도록 가드 강화.
+4. **Hugo 정적 빌드 및 GitHub 원격 푸시**:
+   - `hugo --cleanDestinationDir --minify` 정상 컴파일 완료 (32개 페이지 에러 0건).
+   - GitHub `origin/main` 원격 저장소 푸시 완료로 Cloudflare/GitHub Pages 즉시 배포 반영.
+
+
 
 
