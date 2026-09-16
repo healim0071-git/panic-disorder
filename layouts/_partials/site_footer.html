@@ -4,22 +4,19 @@
 {{ end }}
 {{ if not (in (slice "/login/" "/site_join_type_choice/" "/register/") $rel) }}
   {{ partial "components/common_bottom_sections.html" . }}
-{{ end }}
 
-<footer id="branches" class="clinic-footer w-full bg-[#0d3a42] text-slate-200 mt-0 pt-3 sm:pt-4 pb-12">
-  <div class="container mx-auto px-4 max-w-7xl">
-    
-    {{/* 1. HEALIM NETWORK OFFICIAL 공식 홈페이지 바로가기 배너 */}}
-    <div class="mb-5 sm:mb-6">
-      <div class="bg-gradient-to-r from-[#09292e] via-[#165a63] to-[#09292e] rounded-2xl p-5 sm:p-7 md:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 border border-[#2b8894]">
+  {{/* HEALIM NETWORK OFFICIAL 배너 섹션 (테두리 밖 흰색 배경 유지 & A영역 간격 적용) */}}
+  <div id="branches" class="w-full bg-[#fafcfc] pt-2 pb-6 sm:pb-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div class="bg-gradient-to-r from-[#0d3a42] via-[#1c6e78] to-[#0d3a42] rounded-2xl p-6 sm:p-8 md:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#2b8894]">
         <div class="text-center md:text-left">
-          <span class="inline-block px-3 py-1 bg-white/15 text-white font-bold text-xs rounded-full uppercase tracking-wider mb-2.5">
+          <span class="inline-block px-3 py-1 bg-white/15 text-white font-bold text-xs rounded-full uppercase tracking-wider mb-3">
             HEALIM NETWORK OFFICIAL
           </span>
-          <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">
             해아림한의원 네트워크 홈페이지 바로가기
           </h2>
-          <p class="text-xs sm:text-sm md:text-base text-slate-200 font-normal leading-relaxed">
+          <p class="text-sm md:text-base text-slate-200 font-normal leading-relaxed">
             전국 16개 네트워크 지점 상세 진료 정보 및 온라인 예약, 학술 연구를 확인하실 수 있습니다.
           </p>
         </div>
@@ -30,8 +27,13 @@
         </div>
       </div>
     </div>
+  </div>
+{{ end }}
 
-    {{/* 2. 전국 16개 네트워크 거점 타이틀 */}}
+<footer class="clinic-footer w-full bg-[#0d3a42] text-slate-200 pt-8 sm:pt-10 pb-12">
+  <div class="container mx-auto px-4 max-w-7xl">
+    
+    {{/* 전국 16개 네트워크 거점 타이틀 */}}
     <div class="border-b border-[#1c6e78]/35 pb-6 mb-8 text-center md:text-left">
       <span class="inline-block px-3 py-1 bg-[#c16e1f] text-white font-bold text-xs rounded-full uppercase tracking-wider mb-2">Network Clinic</span>
       <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">해아림한의원 전국 16개 네트워크 지점 안내</h2>

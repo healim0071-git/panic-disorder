@@ -2171,20 +2171,23 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - **B 여백 (청록색 공간)**: 푸터의 상단 패딩(`pt-16` = 64px)으로 인해 푸터 시작선부터 `Network Clinic` 타이틀 사이에 휑한 청록색 빈 공간 형성.
 
 ### 2. 세부 조치 및 구조 최적화
-1. **HEALIM NETWORK OFFICIAL 배너의 푸터 최상단 일체형 통합 (`layouts/_partials/site_footer.html`)**:
-   - 기존 `common_bottom_sections.html`에서 배너를 분리하여 푸터(`<footer id="branches">`) 최상단 첫 번째 요소로 전진 배치.
-   - 푸터 시작 마진(`mt-8` → `mt-0`) 및 상단 패딩(`pt-16` → `pt-3 sm:pt-4`) 축소 조정으로 A 여백(흰색 공간)과 B 여백(청록색 공간)을 **완전 제거**.
-   - 배너 카드와 `Network Clinic` 타이틀 사이의 간격을 안정적인 `mb-5 sm:mb-6`로 밀착 연결하여 하나의 세련된 '네트워크 안내' 다크 섹션 완성.
+1. **HEALIM NETWORK OFFICIAL 배너의 푸터 상단 독립 배치 및 라이트 배경 복원 (`layouts/_partials/site_footer.html`)**:
+   - `HEALIM NETWORK OFFICIAL` 배너 카드(B영역) 테두리 밖의 짙은 청록색을 배제하고 이전처럼 깨끗한 라이트(흰색 `#fafcfc`) 배경 위에 위치하도록 푸터 상단 독립 섹션으로 분리.
+   - B영역 배너 카드와 아래의 전국 16개 지점 안내 푸터 사이에 이전처럼 색이 없는 자연스러운 여백(A영역: `pb-6 sm:pb-8`)을 두어 시각적으로 답답하지 않게 기분 좋게 띄움.
+   - 푸터(`<footer class="clinic-footer w-full bg-[#0d3a42] ...">`)는 원래대로 16개 지점 안내만을 위한 독립 다크 섹션으로 분리.
 2. **스크롤 앵커 및 정밀 오프셋 보정 (`layouts/_partials/hooks/body-end/floating_cta.html`, `assets/css/custom.css`)**:
-   - `id="branches"`가 푸터 최상단 배너 바로 위에 위치하게 됨으로써 클릭 시 `HEALIM NETWORK OFFICIAL` 배너 카드가 화면 최상단으로 직행.
+   - `id="branches"`가 B 배너 카드 섹션 최상단에 위치하여, 클릭 시 `HEALIM NETWORK OFFICIAL` 배너 카드가 고정 헤더 바로 아래에 정확히 걸려서 최상단으로 노출.
    - CSS 반응형 `scroll-margin-top`: 모바일 `65px`, 데스크톱 `115px`로 네비게이션 헤더 높이에 맞춤 정렬.
    - JS 정밀 동적 스크롤(`scrollToBranchesElement`): 헤더(`site-header`) 높이를 실시간 측정하여 고정 헤더 바로 아래에 1px 오차 없이 배너 카드 상단이 딱 걸려서 보이도록 자동 스크롤 연동.
    - 모바일 플로팅 CTA뿐만 아니라 본문 내 모든 `<a href="#branches">` 클릭 및 해시 직접 진입 시에도 동일하게 정밀 위치 제어.
 3. **공통 하단 섹션 깔끔한 마무리 (`layouts/_partials/components/common_bottom_sections.html`)**:
-   - 5번 유튜브 섹션을 끝으로 흰색 배경 영역 컨테이너를 정상 패딩(`pb-12 md:pb-16`)으로 닫고, 바로 아래 다크 푸터와 매끄럽게 연결.
+   - 5번 유튜브 섹션을 끝으로 흰색 배경 영역 컨테이너를 정상 패딩(`pb-6 md:pb-8`)으로 닫고, 바로 아래 배너 섹션과 매끄럽게 연결.
 
 ### 3. 검증 결과
 - **Hugo 빌드 검증**: 32개 페이지 에러 0건 정상 컴파일.
-- **모바일/데스크톱 뷰 검증**: 배너 카드 하단 흰색 여백 A 및 푸터 상단 청록 여백 B 100% 제거 확인, 클릭 시 `HEALIM NETWORK OFFICIAL` 배너가 헤더 바로 아래 최상단에 정확히 걸려 노출됨을 확인.
+- **모바일/데스크톱 뷰 검증**: 
+  - B 배너 카드 테두리 밖은 이전처럼 깨끗한 흰색 배경 유지 확인.
+  - B 배너 카드와 아래 해아림한의원 전국 지점 안내 푸터 사이에 A영역만큼의 색 없는 흰색 여백으로 자연스럽게 띄워짐 확인.
+  - "전국 지점 안내 Click" / "가까운 16개 지점 찾기" 클릭 시 B 배너 카드가 상단 헤더 바로 아래 최상단에 정확하게 걸려 노출됨을 확인.
 
 
