@@ -1,6 +1,9 @@
 ---
 title: "회원가입"
+seo:
+  title: "회원가입 | 해아림한의원"
 description: "해아림한의원 회원가입 페이지입니다."
+keywords: ""
 private: true
 type: landing
 sections:

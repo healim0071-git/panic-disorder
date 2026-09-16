@@ -1,25 +1,30 @@
 {{/* ══════════════════════════════════════════════════════════════ */}}
-{{/*  해아림한의원 SEO 최적화 메타태그 및 스키마 구조화 데이터      */}}
+{{/*  해아림한의원 SEO 최적화 메타태그 및 페이지별 스키마 구조화 데이터  */}}
 {{/* ══════════════════════════════════════════════════════════════ */}}
 
-{{/* 1. 검색 키워드 (페이지별 keywords 우선, 없으면 사이트 기본값) */}}
-{{ $keywords := .Params.keywords | default site.Params.hugoblox.seo.keywords }}
-{{ if reflect.IsSlice $keywords }}
-  {{ $cleaned := slice }}
-  {{ range $keywords }}
-    {{ $item := strings.TrimRight ", " (string .) }}
-    {{ if $item }}
-      {{ $cleaned = $cleaned | append $item }}
+{{/* 1. 검색 키워드 (비공개 페이지는 제외, 공개 페이지는 페이지별 keywords 우선) */}}
+{{ $isPrivate := or .Params.private (in .RelPermalink "/admin/") (in .RelPermalink "/login/") (in .RelPermalink "/register/") (in .RelPermalink "/site_join_type_choice/") }}
+{{ if not $isPrivate }}
+  {{ $keywords := .Params.keywords | default site.Params.hugoblox.seo.keywords }}
+  {{ if reflect.IsSlice $keywords }}
+    {{ $cleaned := slice }}
+    {{ range $keywords }}
+      {{ $item := strings.TrimRight ", " (string .) }}
+      {{ if $item }}
+        {{ $cleaned = $cleaned | append $item }}
+      {{ end }}
+    {{ end }}
+    {{ $keywords = delimit $cleaned ", " }}
+  {{ end }}
+  {{ with $keywords }}
+    {{ if ne (trim . " ") "" }}
+<meta name="keywords" content="{{ . }}">
     {{ end }}
   {{ end }}
-  {{ $keywords = delimit $cleaned ", " }}
-{{ end }}
-{{ with $keywords }}
-<meta name="keywords" content="{{ . }}">
 {{ end }}
 
 {{/* 2. 로봇 수집 제어 (관리자 및 인증 관련 페이지는 noindex 자동 적용) */}}
-{{ if or .Params.private (in .RelPermalink "/admin/") (in .RelPermalink "/login/") (in .RelPermalink "/register/") (in .RelPermalink "/site_join_type_choice/") }}
+{{ if $isPrivate }}
 <meta name="robots" content="noindex, nofollow">
 {{ else }}
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -30,31 +35,49 @@
 <meta name="google-site-verification" content="_N0B2WUEnqrfLepyAViYz0LWNDXNfyDgWENcUl__ZfY" />
 <meta name="google-site-verification" content="Gws95OtuZVLv56ltYTNSLCxav3NX5G8CtDedQ1D61CQ" />
 
-{{/* 4. OpenGraph 보완 (og:type) */}}
-<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+{{/* 4. 제작자 및 위치 메타태그 */}}
+<meta name="author" content="해아림한의원">
+<meta name="publisher" content="해아림한의원">
+<meta name="geo.region" content="KR">
+<meta name="geo.placename" content="대한민국">
 
-{{/* 5. Google Fonts (Pretendard & Outfit) & Favicons */}}
+{{/* 5. OpenGraph 추가 보완 (og:type, og:locale, og:image 규격) */}}
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="해아림한의원">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="해아림한의원 공황장애 클리닉">
+
+{{/* 6. Google Fonts (Pretendard) & Favicons */}}
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
 
-{{/* 6. JSON-LD Structured Data: MedicalClinic, MedicalCondition, FAQPage, Physician */}}
+{{/* 7. 페이지별 맞춤 JSON-LD Structured Data (공개 페이지만 생성) */}}
+{{ if not $isPrivate }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {{/* ── A. 전역 공통 의료기관 스키마 (MedicalClinic) ── */}}
     {
       "@type": "MedicalClinic",
       "@id": "https://healim-panic.com/#clinic",
       "name": "해아림한의원",
+      "alternateName": "해아림한의원 공황장애 클리닉",
       "url": "https://healim-panic.com/",
       "logo": "https://healim-panic.com/media/logo.png",
+      "image": "https://healim-panic.com/media/sharing.jpg",
       "description": "공황장애 치료 16여년 임상 노하우의 전국 16개 네트워크 한의원",
       "medicalSpecialty": "Psychiatric",
       "telephone": "053-751-0071",
-      "areaServed": "KR",
+      "areaServed": {
+        "@type": "Country",
+        "name": "KR"
+      },
       "availableService": [
         {
           "@type": "MedicalTherapy",
@@ -66,23 +89,61 @@
         },
         {
           "@type": "MedicalTest",
-          "name": "뇌기능 뇌파검사 및 스트레스 저항도 검사"
+          "name": "정량화 뇌파(QEEG) 뇌기능 및 스트레스 저항도 검사"
         },
         {
           "@type": "MedicalTherapy",
-          "name": "뇌기능 활성화 및 생기능 자기조절 바이오피드백 훈련"
+          "name": "생기능 자기조절(바이오피드백) 훈련 및 두개천골요법(CST)"
         }
       ]
     },
+    {{/* ── B. 의료진 스키마 (Physician) ── */}}
+    {
+      "@type": "Physician",
+      "@id": "https://healim-panic.com/#physician",
+      "name": "해아림한의원 전문 의료진",
+      "medicalSpecialty": "Psychiatric",
+      "description": "한방신경정신과 전문의, 한의학 박사 및 석사로 구성된 16여 년 임상 노하우의 의료진 네트워크"
+    }
+
+    {{/* ── C. 페이지별 고유 스키마 ── */}}
+    {{ if .IsHome }}
+    ,
+    {
+      "@type": "WebSite",
+      "@id": "https://healim-panic.com/#website",
+      "name": "해아림한의원 공황장애 클리닉",
+      "url": "https://healim-panic.com/",
+      "description": "16여 년 임상 노하우와 정밀 진단 시스템의 공황장애 전문 한의원"
+    },
+    {
+      "@type": "MedicalCondition",
+      "@id": "https://healim-panic.com/#condition",
+      "name": "공황장애 (Panic Disorder)",
+      "alternateName": ["공황발작", "불안장애", "과호흡증후군", "광장공포증"],
+      "signOrSymptom": [
+        {"@type": "MedicalSymptom", "name": "가슴 두근거림 및 빈맥 (심계항진)"},
+        {"@type": "MedicalSymptom", "name": "갑작스러운 호흡곤란 및 질식감"},
+        {"@type": "MedicalSymptom", "name": "죽을 것 같은 극심한 공포감 및 예기불안"}
+      ]
+    }
+    {{ else if in .RelPermalink "/autonomic-dysfunction/" }}
+    ,
     {
       "@type": "MedicalCondition",
       "@id": "https://healim-panic.com/autonomic-dysfunction/#condition",
       "name": "공황장애 (Panic Disorder)",
-      "alternateName": ["공황발작", "불안장애", "과호흡증후군"],
+      "code": {
+        "@type": "MedicalCode",
+        "code": "F41.0",
+        "codingSystem": "ICD-10"
+      },
+      "alternateName": ["공황발작", "급성 불안발작", "광장공포증", "과호흡증후군"],
+      "pathophysiology": "뇌 편도체와 해마의 공포 경보 회로 오작동 및 급성 교감신경계 폭주로 인한 전신 신체화 증상",
       "possibleTreatment": [
         {
           "@type": "MedicalTherapy",
-          "name": "체질 맞춤 한약 처방 (교감신경 과흥분 완화 및 편도체 안정, 뇌 자가조절력 강화)"
+          "name": "편도체 과흥분 완화 및 교감신경 안정 체질 맞춤 한약 치료"
         },
         {
           "@type": "MedicalTherapy",
@@ -90,7 +151,7 @@
         },
         {
           "@type": "MedicalTherapy",
-          "name": "침구 및 경락 치료, 두개천골요법(CST)"
+          "name": "두개천골요법(CST) 및 경락 침구 치료"
         }
       ],
       "signOrSymptom": [
@@ -102,7 +163,95 @@
         {"@type": "MedicalSymptom", "name": "비현실감(이인증) 및 통제력 상실 두려움"},
         {"@type": "MedicalSymptom", "name": "예기불안 및 광장공포증 (회피 행동)"}
       ]
+    }
+    {{ else if in .RelPermalink "/autonomic-symptoms/" }}
+    ,
+    {
+      "@type": "MedicalCondition",
+      "@id": "https://healim-panic.com/autonomic-symptoms/#condition",
+      "name": "공황장애 핵심 증상 및 자가진단 (Panic Disorder Symptoms)",
+      "alternateName": ["공황발작 증상", "광장공포증", "과호흡증후군", "야간공황발작"],
+      "signOrSymptom": [
+        {"@type": "MedicalSymptom", "name": "심계항진 (가슴 두근거림, 빠른 맥박)"},
+        {"@type": "MedicalSymptom", "name": "호흡곤란 (숨이 턱 막힘, 가슴 답답함)"},
+        {"@type": "MedicalSymptom", "name": "흉통 및 흉부 압박감"},
+        {"@type": "MedicalSymptom", "name": "현기증 및 어지럼증, 비틀거림"},
+        {"@type": "MedicalSymptom", "name": "질식감 (목 이물감, 연하 곤란)"},
+        {"@type": "MedicalSymptom", "name": "죽을 것 같은 극심한 공포감"},
+        {"@type": "MedicalSymptom", "name": "미쳐버릴 것 같은 통제력 상실 두려움"},
+        {"@type": "MedicalSymptom", "name": "발한 (식은땀, 손발 땀)"},
+        {"@type": "MedicalSymptom", "name": "진전 (손발 떨림, 신체 전율)"},
+        {"@type": "MedicalSymptom", "name": "감각 이상 (손발 저림, 찌릿함, 마비감)"},
+        {"@type": "MedicalSymptom", "name": "오한 및 얼굴 화끈거림 (상충열)"},
+        {"@type": "MedicalSymptom", "name": "메스꺼움 및 복부 불편감 (신경성 위장장애)"},
+        {"@type": "MedicalSymptom", "name": "비현실감 및 이인증 (주변이 생소하게 느껴짐)"}
+      ]
+    }
+    {{ else if in .RelPermalink "/autonomic-diagnosis/" }}
+    ,
+    {
+      "@type": "MedicalTest",
+      "@id": "https://healim-panic.com/autonomic-diagnosis/#hrv-test",
+      "name": "HRV(Heart Rate Variability) 자율신경계 정밀 검사",
+      "description": "심박변이도를 통해 교감신경과 부교감신경의 활성도, 균형도 및 자율신경 조절 역량을 수치로 정량 분석하는 검사"
     },
+    {
+      "@type": "MedicalTest",
+      "@id": "https://healim-panic.com/autonomic-diagnosis/#qeeg-test",
+      "name": "정량화 뇌파(QEEG) 뇌기능 및 스트레스 저항도 검사",
+      "description": "뇌 편도체와 대뇌피질의 과각성 상태, 두뇌 리듬의 균형도 및 스트레스 저항도를 객관적으로 파악하는 검사"
+    },
+    {
+      "@type": "MedicalTest",
+      "@id": "https://healim-panic.com/autonomic-diagnosis/#sasang-test",
+      "name": "한의학적 사상체질 및 기혈 순환 변증 검사",
+      "description": "심담허겁, 간기울결 등 공황 증상을 유발한 오장육부의 기능적 불균형과 개인별 체질 특성을 평가하는 진단"
+    }
+    {{ else if in .RelPermalink "/autonomic-treatment/" }}
+    ,
+    {
+      "@type": "MedicalTherapy",
+      "@id": "https://healim-panic.com/autonomic-treatment/#herbal-therapy",
+      "name": "공황장애 체질 맞춤 한약 치료",
+      "description": "뇌 편도체의 과민성을 완화하고 급성 교감신경 과흥분을 안정시키며 뇌 신경계의 자가조절력을 강화하는 처방"
+    },
+    {
+      "@type": "MedicalTherapy",
+      "@id": "https://healim-panic.com/autonomic-treatment/#biofeedback-therapy",
+      "name": "생기능 자기조절(바이오피드백) 훈련 & 인지행동치료",
+      "description": "공황발작 전조증상을 스스로 인지하고 호흡과 자율신경계를 안정화하는 실전 생체 자기조절 훈련"
+    },
+    {
+      "@type": "MedicalTherapy",
+      "@id": "https://healim-panic.com/autonomic-treatment/#cst-therapy",
+      "name": "두개천골요법(CST) 및 경락 침구 치료",
+      "description": "뇌척수액 순환을 개선하고 두경부 긴장을 완화하여 미주신경의 안정적 활성화를 유도하는 한방 수기 및 침구 치료"
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://healim-panic.com/autonomic-treatment/#emergency-guide",
+      "name": "공황발작 시 3분 긴급 대처법 (4-6 복식호흡 & 5-4-3-2-1 그라운딩 기법)",
+      "description": "공황발작이 시작되었을 때 뇌와 자율신경계를 급속 안정시키는 3단계 실전 행동 가이드",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "4-6 복식호흡",
+          "text": "코로 4초간 천천히 숨을 들이마시고, 입으로 6초간 길게 내쉬며 과호흡을 진정시킵니다."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "인지 재구조화",
+          "text": "공황발작은 죽거나 쓰러지는 위험이 없는 뇌 경보 회로의 일시적 오류임을 인지합니다."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "5-4-3-2-1 그라운딩 기법",
+          "text": "눈에 보이는 것 5개, 만져지는 것 4개, 들리는 소리 3개, 냄새 2개, 맛 1개에 집중하여 현재 감각을 회복합니다."
+        }
+      ]
+    }
+    {{ else if in .RelPermalink "/community/" }}
+    ,
     {
       "@type": "FAQPage",
       "@id": "https://healim-panic.com/community/#faq",
@@ -112,7 +261,7 @@
           "name": "응급실이나 심장내과 검사에서 정상이라는데, 왜 숨이 막히고 가슴이 터질 듯 뛸까요? 공황장애 검사로 알 수 있나요?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "공황장애는 심장이나 폐의 기질적 이상이 아닌, 뇌의 공포 경보 회로(편도체)와 교감신경의 급격한 과흥분으로 발생하는 질환입니다. 일반 응급실 검사에서는 정상으로 나타나지만, 해아림한의원의 HRV 자율신경 검사와 뇌파 뇌기능 검사를 통해 신경계 과각성 상태를 객관적으로 파악하고 1:1 맞춤 치료로 안정시킬 수 있습니다."
+            "text": "공황장애는 심장이나 폐의 기질적 질환이 아니라, 뇌의 공포 경보 회로(편도체)와 급성 교감신경의 과각성으로 발생하는 기능적 이상입니다. 일반 응급실 검사에서는 정상으로 나타나지만, 해아림한의원의 HRV 자율신경 정밀 검사와 뇌파 뇌기능 검사를 통해 신경계 조절력 상태를 객관적으로 파악하고 체계적인 맞춤 치료를 진행할 수 있습니다."
           }
         },
         {
@@ -120,26 +269,35 @@
           "name": "공황장애와 자율신경실조증은 어떤 점이 다른가요?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "공황장애는 10~30분 이내에 최고조에 달하는 급격한 공황발작과 '죽을 것 같다'는 극심한 공포, 예기불안이 주를 이루는 반면, 자율신경실조증은 만성적인 두근거림, 어지럼증, 소화장애, 피로감 등 신체 전반의 조절 이상이 24시간 잔잔하게 지속되는 특징이 있습니다."
+            "text": "공황장애는 10~30분 이내에 최고조에 달하는 급격한 공황발작과 '죽을 것 같다'는 극심한 공포, 예기불안이 주를 이루는 반면, 자율신경실조증은 만성적인 두근거림, 어지럼증, 소화장애, 피로감 등 신체 전반의 조절 이상이 24시간 잔잔하게 지속되는 차이가 있습니다."
           }
         },
         {
           "@type": "Question",
-          "name": "공황발작이 올 때 어떻게 대처해야 하나요? 약 없이도 한방으로 완치가 가능한가요?",
+          "name": "공황발작이 올 때 어떻게 대처해야 하나요? 한방 치료로 안정적인 일상 회복이 가능한가요?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "공황발작이 시작되면 호흡을 4초간 들이마시고 6초간 길게 내쉬는 복식호흡을 통해 과호흡을 진정시켜야 합니다. 발작으로는 신체적 위험이 발생하지 않는다는 점을 인지하는 것이 중요하며, 해아림한의원의 뇌기능 회복 한약과 생기능 자기조절훈련으로 신경계의 흥분 역치를 정상화하면 재발 없는 완치가 가능합니다."
+            "text": "공황발작이 시작되면 호흡을 4초간 들이마시고 6초간 길게 내쉬는 4-6 복식호흡과 5-4-3-2-1 그라운딩 기법으로 급성 과호흡을 진정시켜야 합니다. 발작으로는 신체적 위험이 발생하지 않는다는 점을 인지하는 것이 중요하며, 해아림한의원의 체질 맞춤 한약과 생기능 자기조절훈련으로 신경계의 흥분 역치를 안정화하면 재발율을 낮추고 온전한 일상으로 복귀할 수 있습니다."
           }
         }
       ]
     },
     {
-      "@type": "Physician",
-      "@id": "https://healim-panic.com/#physician",
-      "name": "해아림한의원 전문 의료진",
-      "medicalSpecialty": "Psychiatric",
-      "description": "한방신경정신과 전문의, 한의학 박사 및 석사로 구성된 16여 년 임상 노하우의 의료진 네트워크"
+      "@type": "CollectionPage",
+      "@id": "https://healim-panic.com/community/#collection",
+      "name": "해아림한의원 공황장애 커뮤니티 아카이브",
+      "description": "실제 임상 치료후기 72편, 자주 묻는 질문(FAQ) 22문답, 원장단 해아림TV 영상 15편, 신경정신과 전문 칼럼 39편을 공유합니다."
     }
+    {{ else if in .RelPermalink "/autonomic-clinic/" }}
+    ,
+    {
+      "@type": "AboutPage",
+      "@id": "https://healim-panic.com/autonomic-clinic/#about",
+      "name": "해아림한의원 공황장애 클리닉 소개",
+      "description": "한방신경정신과 전문의·박사 의료진의 16여 년 임상 노하우와 전국 16개 네트워크 클리닉 안내"
+    }
+    {{ end }}
   ]
 }
 </script>
+{{ end }}

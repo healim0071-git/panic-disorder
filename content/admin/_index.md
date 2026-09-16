@@ -1,6 +1,9 @@
 ---
 title: "최고관리자 센터"
+seo:
+  title: "최고관리자 센터 | 해아림한의원"
 description: "해아림한의원 최고관리자(healim0071) 전용 통합 운영 및 게시판 관리 시스템입니다."
+keywords: ""
 private: true
 type: landing
 sections:
