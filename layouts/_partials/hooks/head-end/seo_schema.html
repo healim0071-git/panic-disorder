@@ -1,27 +1,46 @@
-<!-- 기본 검색 최적화(SEO) 태그 -->
-<title>공황장애 초기증상 자가진단 및 공황발작 대처법 | 해아림한의원</title>
-<meta name="description" content="갑작스러운 호흡곤란, 가슴 두근거림, 죽을 것 같은 극심한 불안(공황발작)으로 힘드신가요? 공황장애 단계별 증상 자가진단과 응급 대처법, 근본적인 극복 치료 가이드를 안내해 드립니다.">
-<meta name="keywords" content="공황장애, 공황장애초기증상, 공황발작, 공황발작대처법, 공황장애자가진단, 공황장애치료, 공환장애병원, 불안장애, 과호흡, 광장공포증, 공황장애한의원, 공황장애치료잘하는병원">
-<meta name="robots" content="index, follow">
+{{/* ══════════════════════════════════════════════════════════════ */}}
+{{/*  해아림한의원 SEO 최적화 메타태그 및 스키마 구조화 데이터      */}}
+{{/* ══════════════════════════════════════════════════════════════ */}}
+
+{{/* 1. 검색 키워드 (페이지별 keywords 우선, 없으면 사이트 기본값) */}}
+{{ $keywords := .Params.keywords | default site.Params.hugoblox.seo.keywords }}
+{{ if reflect.IsSlice $keywords }}
+  {{ $cleaned := slice }}
+  {{ range $keywords }}
+    {{ $item := strings.TrimRight ", " (string .) }}
+    {{ if $item }}
+      {{ $cleaned = $cleaned | append $item }}
+    {{ end }}
+  {{ end }}
+  {{ $keywords = delimit $cleaned ", " }}
+{{ end }}
+{{ with $keywords }}
+<meta name="keywords" content="{{ . }}">
+{{ end }}
+
+{{/* 2. 로봇 수집 제어 (관리자 및 인증 관련 페이지는 noindex 자동 적용) */}}
+{{ if or .Params.private (in .RelPermalink "/admin/") (in .RelPermalink "/login/") (in .RelPermalink "/register/") (in .RelPermalink "/site_join_type_choice/") }}
+<meta name="robots" content="noindex, nofollow">
+{{ else }}
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+{{ end }}
+
+{{/* 3. 검색엔진 소유권 확인 태그 (네이버 서치어드바이저 & 구글 서치콘솔) */}}
 <meta name="naver-site-verification" content="588e43285b67aace04a3ec3a433446a28ac32840" />
 <meta name="google-site-verification" content="_N0B2WUEnqrfLepyAViYz0LWNDXNfyDgWENcUl__ZfY" />
 <meta name="google-site-verification" content="Gws95OtuZVLv56ltYTNSLCxav3NX5G8CtDedQ1D61CQ" />
-<meta property="og:type" content="website">
-<meta property="og:title" content="공황장애 초기증상 자가진단 및 공황발작 대처법 | 해아림한의원">
-<meta property="og:description" content="갑작스러운 공황발작 응급대처와 자가진단 체크리스트, 공황장애 극복을 돕는 전문 가이드입니다.">
-<meta property="og:image" content="https://healim-panic.com/representative.jpg">
-<meta property="og:url" content="https://healim-panic.com">
 
-{{/* Google Fonts (Pretendard & Outfit) */}}
+{{/* 4. OpenGraph 보완 (og:type) */}}
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+
+{{/* 5. Google Fonts (Pretendard & Outfit) & Favicons */}}
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-
-{{/* Favicon & Touch Icons */}}
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
 
-{{/* JSON-LD Structured Data: MedicalClinic, MedicalCondition, FAQPage, Physician */}}
+{{/* 6. JSON-LD Structured Data: MedicalClinic, MedicalCondition, FAQPage, Physician */}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

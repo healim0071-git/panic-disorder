@@ -1,6 +1,9 @@
 ---
 title: "공황장애란 무엇인가요? | 원인과 메커니즘"
+seo:
+  title: "공황장애란? 원인과 편도체 오작동 메커니즘 | 해아림한의원"
 description: "응급실 검사에서 정상 소견을 받았음에도 반복되는 극심한 가슴 두근거림, 질식감, 죽을 것 같은 공포의 원인인 공황장애의 뇌신경 및 자율신경 과흥분 메커니즘을 상세히 설명합니다."
+keywords: "공황장애, 공황장애원인, 공황발작이유, 편도체과흥분, 자율신경실조증, 공황장애뜻, 교감신경과각성, 심계항진원인"
 canonical: "https://healim-panic.com/autonomic-dysfunction/"
 type: landing
 sections:
