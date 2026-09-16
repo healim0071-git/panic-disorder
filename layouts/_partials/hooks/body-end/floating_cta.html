@@ -21,8 +21,9 @@
       e.preventDefault();
     }
     var header = document.getElementById('site-header');
-    var hOffset = header ? header.getBoundingClientRect().height : (window.innerWidth >= 1024 ? 110 : 60);
-    var targetTop = b.getBoundingClientRect().top + window.pageYOffset - hOffset - 6;
+    var hOffset = header ? header.getBoundingClientRect().height : (window.innerWidth >= 1024 ? 110 : 75);
+    var bRect = b.getBoundingClientRect();
+    var targetTop = window.pageYOffset + bRect.top - hOffset - 2;
     window.scrollTo({
       top: Math.max(0, targetTop),
       behavior: 'smooth'
@@ -36,16 +37,19 @@
   var floatBtn = document.getElementById('btn-floating-branches');
   if (floatBtn) {
     floatBtn.addEventListener('click', function(e) {
-      if (window.location.pathname === '/' || window.location.pathname === '') {
+      var b = document.getElementById('branches');
+      if (b) {
         scrollToBranchesElement(e);
+      } else {
+        window.location.href = '/#branches';
       }
     });
   }
 
   // Intercept all "가까운 16개 지점 찾기" anchors (#branches)
   document.addEventListener('click', function(e) {
-    var anchor = e.target.closest ? e.target.closest('a[href="#branches"], a[href="/#branches"]') : null;
-    if (anchor && (window.location.pathname === '/' || window.location.pathname === '' || anchor.getAttribute('href') === '#branches')) {
+    var anchor = e.target.closest ? e.target.closest('a[href="#branches"], a[href="/#branches"], a[href*="#branches"]') : null;
+    if (anchor) {
       var b = document.getElementById('branches');
       if (b) {
         scrollToBranchesElement(e);
@@ -57,7 +61,10 @@
   if (window.location.hash === '#branches') {
     setTimeout(function() {
       scrollToBranchesElement();
-    }, 150);
+    }, 100);
+    setTimeout(function() {
+      scrollToBranchesElement();
+    }, 350);
   }
 })();
 </script>
