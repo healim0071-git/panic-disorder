@@ -736,7 +736,23 @@ sections:
             "author": "30대 직장인 김OO 님",
             "date": "2026.09.10",
             "views": 1900,
-            "image": "/images/reviews/review_1.jpg"
+            "image": "/images/reviews/review_1.jpg",
+            "isCustom": true,
+            "isPermanent": true
+          },
+          {
+            "id": "rev-add-20260724-1784880600000",
+            "category": "대형 회의 & 프레젠테이션",
+            "title": "임원 회의 발표 순서만 다가오면 과호흡 오던 발표 공황, 한방 치료로 완벽하게 극복",
+            "author": "30대 차장 배OO 님",
+            "date": "2026.07.24",
+            "views": 2150,
+            "image": "/images/reviews/review_1.jpg",
+            "hasTreatment": false,
+            "treatmentType": "",
+            "content": "사내 주요 임원들이 참석하는 전략 회의에서 발표 순서가 다가오자 갑자기 심박수가 150회로 치솟고 목소리가 나오지 않으며 손이 마비되는 과호흡 발작을 겪었습니다. 승진을 앞두고 중요한 시기였기에 이 트라우마가 커리어의 끝이 될까 봐 며칠 밤을 눈물로 지새웠습니다. 해아림에서 심포의 화를 내리고 담력을 북돋아 주는 맞춤 한약 처방을 받았습니다. 가슴의 조여듦이 시원하게 풀렸고, 지난달 전사 임원 평가 프레젠테이션을 막힘없이 여유 있게 마쳐 최우수 프로젝트 팀으로 선정되는 기쁨을 누렸습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1784880600000,
+            "updatedAt": 1784880600000
           },
           {
             "id": "rev-2-1788850000000",
@@ -759,6 +775,20 @@ sections:
             "image": "/images/reviews/review_3.jpg"
           },
           {
+            "id": "rev-add-20260212-1770871500000",
+            "category": "신경안정제 감량 & 자생력 회복",
+            "title": "스틸녹스와 알프라졸람 없이 못 자던 만성 공황, 한약 병행 치료로 완전 단약 성공했습니다",
+            "author": "40대 전문직 한OO 님",
+            "date": "2026.02.12",
+            "views": 2580,
+            "image": "/images/reviews/review_6.jpg",
+            "hasTreatment": true,
+            "treatmentType": "수면 뇌신경 안정 한약 + 침구 요법",
+            "content": "공황발작 후 처방받은 수면제와 신경안정제를 1년 넘게 복용하면서도 늘 아침마다 머리가 멍하고 불안이 가시지 않았습니다. 약을 줄이려고 하면 반동성 불면과 공황이 더 세게 찾아와 약물 의존에서 영영 벗어날 수 없을까 봐 너무 두려웠습니다. 해아림 원장님 지도하에 뇌 자생력을 키워주는 한약을 복용하며 3개월에 걸쳐 신경안정제를 4분의 1씩 단계적으로 감량해 나갔습니다. 신체 부담이나 반동 불안 없이 자연스럽게 모든 양약을 끊었고, 지금은 밤마다 자연스러운 꿀잠을 자며 맑은 정신으로 출근하고 있습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1770871500000,
+            "updatedAt": 1770871500000
+          },
+          {
             "id": "rev-4-1788830000000",
             "category": "전신 신체화 증상 & 예기불안",
             "title": "머리 열감, 손발 떨림, 가슴 답답함.. 온몸이 아팠는데 체질 한약으로 안정을 찾았습니다",
@@ -769,6 +799,20 @@ sections:
             "image": "/images/reviews/review_4.jpg"
           },
           {
+            "id": "rev-add-20251120-1763619600000",
+            "category": "단풍철 고속도로 & 장거리 운전",
+            "title": "고속도로 터널과 긴 교량만 지나면 숨 막히던 광장공포증, 2개월 치료 후 장거리 주행 성공",
+            "author": "30대 연구원 정OO 님",
+            "date": "2025.11.20",
+            "views": 1980,
+            "image": "/images/reviews/review_5.jpg",
+            "hasTreatment": false,
+            "treatmentType": "",
+            "content": "주말에 가족들과 여행을 가다가 고속도로 2km 길이의 긴 터널 안에서 갑자기 시야가 좁아지고 가슴이 터질 듯 뛰는 극심한 공황발작을 겪었습니다. 이후로는 터널 입구 표지판만 보여도 식은땀이 나고 핸들을 쥔 손이 굳어 고속도로 운전을 전면 중단했었습니다. 해아림한의원에서 시각 감각 과민을 조절하고 편도체 흥분을 낮추는 체질 한약과 4-6 복식호흡 지도를 받았습니다. 점차 터널에 대한 공포가 옅어졌고, 두 달 만에 고속도로 장거리 운전을 가족들과 웃으며 성공적으로 완주하여 운전 공포를 완벽히 털어냈습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1763619600000,
+            "updatedAt": 1763619600000
+          },
+          {
             "id": "rev-5-1788820000000",
             "category": "야간 공황발작 & 수면장애",
             "title": "자다가 심장이 터질 듯 뛰며 깨던 야간 공황발작, 이제 푹 잘 수 있습니다",
@@ -777,6 +821,20 @@ sections:
             "date": "2025.10.07",
             "views": 1960,
             "image": "/images/reviews/review_5.jpg"
+          },
+          {
+            "id": "rev-add-20250828-1756345200000",
+            "category": "여름철 탈수 & 어지럼 공황",
+            "title": "더운 여름철 야외 활동 중 쓰러질 것 같던 미주신경성 어지럼과 공황 극복 수기",
+            "author": "50대 자영업 문OO 님",
+            "date": "2025.08.28",
+            "views": 2320,
+            "image": "/images/reviews/review_4.jpg",
+            "hasTreatment": true,
+            "treatmentType": "생맥산 가감 한약 + 경추 추나요법",
+            "content": "한여름 뙤약볕 아래를 조금만 걸어도 눈앞이 캄캄해지고 식은땀이 비 오듯 쏟아지며 다리에 힘이 풀려 길바닥에 주저앉았습니다. 병원에서는 미주신경성 실신 전조 증상이라고 하는데, 언제 길에서 쓰러질지 모른다는 공포에 한여름 외출 자체를 포기하고 집에만 갇혀 지냈었습니다. 해아림에서 기력을 북돋우고 혈액 순환을 개선하는 생맥산 가감 한약 처방과 경추 교정 추나 치료를 함께 받았습니다. 6주 치료 후 여름철 야외 활동을 해도 가슴 두근거림이나 어지럼증 없이 건강하고 활력 넘치는 일상을 되찾아 가족들과 즐겁게 휴가를 다녀왔습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1756345200000,
+            "updatedAt": 1756345200000
           },
           {
             "id": "rev-6-1788810000000",
@@ -799,6 +857,20 @@ sections:
             "image": "/images/reviews/review_1.jpg"
           },
           {
+            "id": "rev-add-20250310-1741590900000",
+            "category": "환절기 & 심장 두근거림",
+            "title": "환절기마다 심장이 불규칙하게 쿵쾅거리며 찾아오던 예기불안, 심신 안정 처방으로 회복",
+            "author": "20대 취준생 신OO 님",
+            "date": "2025.03.10",
+            "views": 1760,
+            "image": "/images/reviews/review_3.jpg",
+            "hasTreatment": false,
+            "treatmentType": "",
+            "content": "봄 환절기만 되면 일교차 때문인지 아침에 눈뜰 때부터 심장이 분당 120회 넘게 쿵쾅거리고, 길을 걷다가도 심장이 멎을 것 같은 발작이 반복되었습니다. 심전도 검사에서는 정상이라는데 수시로 찾아오는 예기불안 때문에 도서관에 앉아 공부를 지속할 수 없어 극심한 좌절감을 느꼈습니다. 해아림한의원에서 심담을 튼튼히 하고 자율신경 균형을 바로잡는 맞춤 한약과 약침 치료를 3개월간 성실히 복용했습니다. 심장 박동이 차분한 본래의 리듬을 되찾았고, 시험 당일에도 떨림 없이 차분하게 응시하여 원하던 자격증 시험에 당당히 합격하며 활력을 찾았습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1741590900000,
+            "updatedAt": 1741590900000
+          },
+          {
             "id": "rev-clinical-1-1776470400000",
             "category": "비행기 & 여행 공포",
             "title": "비행기 탈 엄두도 못 내던 광장공포증, 가족 해외여행 무사히 다녀왔습니다",
@@ -809,6 +881,20 @@ sections:
             "image": "/images/reviews/review_1.jpg"
           },
           {
+            "id": "rev-add-20241215-1734229200000",
+            "category": "겨울철 실내 난방 & 질식감",
+            "title": "겨울철 히터 튼 실내나 차 안에만 들어가면 답답하던 질식감 공황, 한방 치료로 완치",
+            "author": "40대 주부 윤OO 님",
+            "date": "2024.12.15",
+            "views": 2140,
+            "image": "/images/reviews/review_2.jpg",
+            "hasTreatment": false,
+            "treatmentType": "",
+            "content": "겨울만 되면 백화점이나 사무실의 뜨거운 히터 바람에 얼굴로 열이 쏠리며 숨을 쉴 수 없는 호흡곤란과 어지럼증이 찾아왔습니다. 밀폐된 차 안에서도 히터를 틀지 못해 추위에 덜덜 떨며 운전해야 했고, 이러다 뇌혈관에 이상이 생겨 쓰러지는 건 아닌가 늘 불안했습니다. 해아림한의원에서 상열하한(上熱下寒) 체질 불균형과 심포의 울열을 풀어주는 온담탕 가감 처방을 받았습니다. 복용 한 달 만에 가슴의 답답한 열감이 내려앉고 손발이 따뜻해지면서, 겨울철 따뜻한 실내에서도 아무런 호흡곤란 없이 편안하게 겨울을 날 수 있게 되었고 외출이 다시 즐거워졌습니다.",
+            "createdAt": 1734229200000,
+            "updatedAt": 1734229200000
+          },
+          {
             "id": "rev-add-1-1773446400000",
             "category": "신경안정제 단약",
             "title": "자낙스를 3년 복용하며 끊지 못했는데, 한약 병행 후 부작용 부담을 덜며 단약 성공했습니다",
@@ -817,6 +903,20 @@ sections:
             "date": "2024.11.03",
             "views": 2020,
             "image": "/images/reviews/review_1.jpg"
+          },
+          {
+            "id": "rev-add-20240922-1726983000000",
+            "category": "대중교통 & 지하철 급행",
+            "title": "지하철 9호선 급행 열차만 타면 숨이 차던 출근길 공황, 한약 치료 후 편안하게 통근합니다",
+            "author": "30대 직장인 조OO 님",
+            "date": "2024.09.22",
+            "views": 1890,
+            "image": "/images/reviews/review_1.jpg",
+            "hasTreatment": true,
+            "treatmentType": "체질 맞춤 한약 + CST 뇌척수 순환요법",
+            "content": "출근 시간대 지하철 9호선 급행열차에 몸을 싣는 순간 사람들 사이에 꽉 끼어 숨이 막히고 이러다 산소 부족으로 기절하겠다는 공포에 다음 역에서 비틀거리며 내렸습니다. 이후로는 일반 열차조차 타지 못해 택시를 타며 매달 수십만 원의 교통비가 들었고 사회생활 자체가 위기였습니다. 해아림한의원에서 뇌 자율신경계 과흥분을 진정시키는 맞춤 한약과 CST 뇌척수 순환치료를 2달간 받았습니다. 가슴 속에 뭉쳐 있던 긴장과 불안이 차츰 가라앉으면서 지금은 출퇴근 시간 9호선 급행 안에서도 스마트폰으로 기사를 읽으며 편안하게 목적지까지 이동하고 있습니다 또한 재발에 대한 불안 없이 일상생활을 편안하게 이어가고 있습니다.",
+            "createdAt": 1726983000000,
+            "updatedAt": 1726983000000
           },
           {
             "id": "rev-auto-hist-2-1771070460000",
@@ -3242,7 +3342,7 @@ sections:
           if (seenIds[strId]) return;
 
           // Normalized title duplicate prevention for FAQ, Columns, Reviews
-          if (finalItem.title && (key === 'faq' || key === 'columns' || key === 'reviews')) {
+          if (finalItem.title && (key === 'faq' || key === 'columns')) {
             var normT = String(finalItem.title)
               .replace(/^Q[\.:\s\-]+/i, '')
               .replace(/^칼럼[\.:\s\-]+/i, '')
@@ -3251,6 +3351,15 @@ sections:
               .toLowerCase();
             if (normT && seenTitles[normT]) return;
             seenTitles[normT] = true;
+          } else if (finalItem.title && key === 'reviews') {
+            // For reviews: NEVER discard official seed reviews (rev-*) from canonical hub!
+            var isSeedRev = /^rev-\d+|^rev-auto-hist|^rev-clinical|^rev-add/.test(strId);
+            var normT = String(finalItem.title)
+              .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
+              .trim()
+              .toLowerCase();
+            if (!isSeedRev && normT && seenTitles[normT]) return;
+            if (normT) seenTitles[normT] = true;
           }
 
           seenIds[strId] = true;
