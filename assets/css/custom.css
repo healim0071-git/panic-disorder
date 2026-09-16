@@ -46,7 +46,13 @@ html, body {
 }
 
 #branches {
-  scroll-margin-top: 110px;
+  scroll-margin-top: 65px;
+}
+
+@media (min-width: 1024px) {
+  #branches {
+    scroll-margin-top: 115px;
+  }
 }
 
 body {
