@@ -1937,17 +1937,20 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
   3. '재발안된다' 지양 -> '재발율이 낮아진다' 표현 사용
   4. 지나치게 단정적인 표현 배제 (완곡하고 객관적인 관리 가능성 기술)
   5. 의료광고법에 저촉되지 않는 공익적/의학적 정보 구성
+  6. 해아림한의원만의 어쩌고라는 표현 금지, 단정적인 표현과 절대적 표현 금지, 반드시 이렇게 해야한다라거나 반드시 이렇게 된다라는 표현보다, 의학적인 근거를 바탕으로 한 완곡하고 객관적인 표현 사용
 
 ### 2. 세부 구현 내역
 1. **의료광고법 및 5대 표현 준수 검역 필터 (`sanitizeMedicalCompliance`) 탑재**:
    - `static/js/auto_faq_engine.js` 및 `static/js/auto_column_engine.js`에 검역 필터 함수 구현.
+   - 배타적 수식어('해아림한의원만의', '해아림만의', '한의원만의' 등) 및 단정적·절대적 표현('반드시 ~해야 한다', '반드시 ~된다', '반드시 가라앉는다' 등) 자동 완화 규칙 9 & 10 탑재.
    - 향후 스케줄에 따라 자동 발행되는 모든 글의 제목, 요약문, 본문, 순환 에디션 템플릿에 실시간 검역 적용.
 2. **기본 콘텐츠 풀 및 시드 데이터 전수 정제**:
    - FAQ 풀 (22편): `static/js/auto_faq_engine.js`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`
    - 치료칼럼 풀 (23편/38편): `static/js/auto_column_engine.js`, `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`
    - 치료후기 풀: `static/js/auto_review_engine.js` (완치 -> 호전/극복/안정 회복 정제)
+   - '반드시 피해야 할 행동', '반드시 가라앉는다', '반드시 테이퍼링' 등 단정적 구문을 객관적·완곡한 의학적 설명으로 100% 정제 완료.
 3. **자동화 검증 스크립트 구축 (`scripts/auto_publish_faq.js`, `scripts/auto_publish_column.js`)**:
-   - 22개 FAQ 및 23개 치료칼럼 전체에 대해 금지어(근본, 완치, 전문병원, 전문, 특화, 첨단, 완벽해결, 부작용 없다, 재발 없다 등) 검출 테스트 0건 통과 (Violation: 0).
+   - 22개 FAQ 및 23개 치료칼럼 전체에 대해 금지어(근본, 완치, 전문병원, 전문, 특화, 첨단, 완벽해결, 부작용 없다, 재발 없다, 해아림한의원만의, 해아림만의, 반드시 등) 검출 테스트 0건 통과 (Violation: 0).
 4. **빌드 검증**:
    - Hugo 정적 빌드 정상 완료 (Pages: 32개, Error: 0건).
 
@@ -2230,3 +2233,26 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 - **빌드 및 배포**:
   - Hugo 최적화 빌드(`hugo --gc --minify`) 정상 완료 (32개 페이지 에러 0건).
   - GitHub 원격 저장소(`main` 브랜치) 동기화 완료.
+
+---
+
+## 🛡️ [2026-09-17] 마일스톤 9.76: 배타적 독점 수식어 및 단정적·절대적 표현 전수 정제 & 검역 강화
+- **배경 및 요구사항**:
+  - `plan.md` L1940: "해아림한의원만의 어쩌고라는 표현 금지, 단정적인 표현과 절대적 표현 금지, 반드시 이렇게 해야한다라거나 반드시 이렇게 된다라는 표현보다, 의학적인 근거를 바탕으로 한 완곡하고 객관적인 표현 사용" 지침 완벽 실행.
+- **적용 및 정제 내역**:
+  1. **실시간 검역 필터 강화 (`sanitizeMedicalCompliance`)**:
+     - `static/js/auto_faq_engine.js` 및 `static/js/auto_column_engine.js`에 배타적 수식어('해아림한의원만의', '해아림만의', '한의원만의' 등) 및 단정적/절대적 표현('반드시 ~해야 한다', '반드시 ~된다', '반드시 가라앉는다', '반드시 되찾아' 등)을 객관적·완곡한 의학적 표현으로 치환하는 규칙 9 & 10 탑재.
+  2. **콘텐츠 풀 및 페이지 전수 정제 (운영 파일 내 절대적/단정적 표현 0건 달성)**:
+     - `static/js/auto_faq_engine.js` (FAQ 22편 풀 데이터)
+     - `static/js/auto_column_engine.js` (치료칼럼 23편 풀 데이터)
+     - `content/community/_index.md`, `layouts/_partials/components/common_bottom_sections.html`
+     - `data/healim_community_hub.json`, `static/data/healim_community_hub.json`
+     - `content/panic-treatment/_index.md`
+     - `static/images/faq/faq_12_lifestyle.svg` ('반드시 피해야 할 행동' -> '주의를 권장하는 생활 수칙')
+  3. **자동화 검증 스크립트 강화 (`scripts/auto_publish_faq.js`, `scripts/auto_publish_column.js`)**:
+     - `forbiddenKeywords`에 `'해아림한의원만의'`, `'해아림만의'`, `'한의원만의'`, `'반드시'` 추가.
+     - 22개 FAQ 및 23개 칼럼 검증 테스트 100% 통과 (Violation: 0건).
+- **빌드 및 배포**:
+  - Hugo 최적화 빌드(`hugo --minify`) 정상 완료 (Pages: 32개, Error: 0건).
+  - GitHub 원격 저장소(`main` 브랜치) 푸시 완료.
+

@@ -39,7 +39,7 @@
   <rect x="40" y="150" width="345" height="44" rx="14" fill="#fef2f2"/>
   <rect x="40" y="184" width="345" height="10" fill="#fef2f2"/>
   <text x="212" y="178" text-anchor="middle" font-family="'Pretendard', sans-serif" font-size="16" font-weight="700" fill="#e05252">
-    반드시 피해야 할 행동
+    주의를 권장하는 생활 수칙
   </text>
   <g transform="translate(60, 222)">
     <text x="0" y="0" font-family="'Pretendard', sans-serif" font-size="13.5" fill="#333333" font-weight="500">• 오후 2시 이후 카페인(커피, 에너지음료)</text><text x="0" y="38" font-family="'Pretendard', sans-serif" font-size="13.5" fill="#333333" font-weight="500">• 늦은 밤 스마트폰 블루라이트 노출</text><text x="0" y="76" font-family="'Pretendard', sans-serif" font-size="13.5" fill="#333333" font-weight="500">• 탈진을 유발하는 고강도 과격 운동</text>

@@ -439,7 +439,7 @@ sections:
         <span>🧠</span> <span>2. "절대 죽지 않는다" 인지 재구성</span>
         </h4>
         <p class="text-xs md:text-[13px] text-[#555555] leading-relaxed">
-        공황발작은 편도체의 일시적인 오작동일 뿐 심장마비나 질식으로 죽지 않으며, 10~20분 내에 반드시 가라앉는다는 사실을 상기합니다.
+        공황발작은 편도체의 일시적인 오작동일 뿐 심장마비나 질식으로 죽지 않으며, 10~20분 내에 대개 서서히 가라앉는다는 의학적 사실을 상기합니다.
         </p>
         </div>
         <div class="p-4 md:p-5 rounded-xl bg-[#f2f6f7] border border-[#cde3e6]">
