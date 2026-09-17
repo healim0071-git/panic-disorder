@@ -36,7 +36,7 @@ sections:
             <a href="#branches" class="btn-healim w-full sm:w-auto">
               <span>가까운 16개 지점 찾기 &gt;</span>
             </a>
-            <a href="/autonomic-diagnosis/" class="btn-healim w-full sm:w-auto" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">
+            <a href="/panic-diagnosis/" class="btn-healim w-full sm:w-auto" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">
               <span>정밀 검사 시스템 &gt;</span>
             </a>
           </div>
@@ -106,7 +106,7 @@ sections:
           </div>
 
           <div class="text-center mt-4">
-            <a href="/autonomic-diagnosis/" class="btn-healim">
+            <a href="/panic-diagnosis/" class="btn-healim">
               자세히 보기 &gt;
             </a>
           </div>
@@ -145,7 +145,7 @@ sections:
           </div>
 
           <div class="text-center mt-4">
-            <a href="/autonomic-treatment/" class="btn-healim">
+            <a href="/panic-treatment/" class="btn-healim">
               자세히 보기 &gt;
             </a>
           </div>
@@ -256,19 +256,19 @@ sections:
           <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] mb-2">공황장애와 동반되는 주요 연관 질환</h2>
           <p class="text-xs text-[#666666] mb-5">공황장애는 급격한 공포 발작뿐 아니라 다양한 신경정신 및 신체 증상과 밀접하게 연결되어 나타납니다.</p>
           <div class="flex flex-wrap justify-center gap-2.5">
-            <a href="/autonomic-symptoms/#panic" class="mesh-badge">
+            <a href="/panic-symptoms/#panic" class="mesh-badge">
               <span>⚡ 급성 공황발작 (심계항진·과호흡·질식감)</span>
             </a>
-            <a href="/autonomic-symptoms/#agoraphobia" class="mesh-badge">
+            <a href="/panic-symptoms/#agoraphobia" class="mesh-badge">
               <span>🚇 예기불안 &amp; 광장공포증 (지하철·터널 회피)</span>
             </a>
-            <a href="/autonomic-symptoms/#insomnia" class="mesh-badge">
+            <a href="/panic-symptoms/#insomnia" class="mesh-badge">
               <span>🌙 야간 공황발작 &amp; 불면증 (수면 중 질식감)</span>
             </a>
-            <a href="/autonomic-symptoms/#anxiety" class="mesh-badge">
+            <a href="/panic-symptoms/#anxiety" class="mesh-badge">
               <span>💭 범불안장애 (만성 긴장·신체화 증상)</span>
             </a>
-            <a href="/autonomic-symptoms/#dizziness" class="mesh-badge">
+            <a href="/panic-symptoms/#dizziness" class="mesh-badge">
               <span>💫 과호흡증후군 &amp; 어지럼증 (손발 저림·마비감)</span>
             </a>
           </div>

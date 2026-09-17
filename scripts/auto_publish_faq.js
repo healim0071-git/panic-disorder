@@ -6,8 +6,8 @@
  * 1. 대상: 공황장애 및 공황발작 및 예기불안 환자 다빈도 질문 (22대 임상 풀)
  * 2. 분량: 질문에 대한 답변 1,000자 내외
  * 3. 구성: 상단 썸네일 사진 + 본문 1000자 내외 답변 + 하단 3대 링크 (줄바꿔서 1줄씩 띄움)
- *    - [공황장애 검사 알아보기](https://healim-panic.com/autonomic-diagnosis)
- *    - [공황장애 치료방법 알아보기](https://healim-panic.com/autonomic-treatment)
+ *    - [공황장애 검사 알아보기](https://healim-panic.com/panic-diagnosis)
+ *    - [공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)
  *    - [전국 지점 안내](https://www.healim.com)
  * 4. 주기: 매주 2~3개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
  * 5. 중복 방지: 질문글은 기존에 작성되어 있는 글과 중복되지 않도록 엄격한 정규화 비교 필터링 적용

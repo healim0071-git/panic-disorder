@@ -250,7 +250,7 @@ sections:
              하단 CTA 버튼
              ══════════════════════════════════════════════════════════════════ -->
         <div class="text-center my-10 flex flex-col sm:flex-row justify-center items-center gap-3">
-        <a href="/autonomic-treatment/" class="btn-healim">맞춤 치료법 보기 &gt;</a>
+        <a href="/panic-treatment/" class="btn-healim">맞춤 치료법 보기 &gt;</a>
         <a href="/community/#faq" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">자주 묻는 질문 FAQ &gt;</a>
         </div>
 ---

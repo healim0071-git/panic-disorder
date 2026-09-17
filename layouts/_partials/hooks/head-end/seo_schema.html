@@ -127,11 +127,11 @@
         {"@type": "MedicalSymptom", "name": "죽을 것 같은 극심한 공포감 및 예기불안"}
       ]
     }
-    {{ else if in .RelPermalink "/autonomic-dysfunction/" }}
+    {{ else if in .RelPermalink "/panic-disorder/" }}
     ,
     {
       "@type": "MedicalCondition",
-      "@id": "https://healim-panic.com/autonomic-dysfunction/#condition",
+      "@id": "https://healim-panic.com/panic-disorder/#condition",
       "name": "공황장애 (Panic Disorder)",
       "code": {
         "@type": "MedicalCode",
@@ -164,11 +164,11 @@
         {"@type": "MedicalSymptom", "name": "예기불안 및 광장공포증 (회피 행동)"}
       ]
     }
-    {{ else if in .RelPermalink "/autonomic-symptoms/" }}
+    {{ else if in .RelPermalink "/panic-symptoms/" }}
     ,
     {
       "@type": "MedicalCondition",
-      "@id": "https://healim-panic.com/autonomic-symptoms/#condition",
+      "@id": "https://healim-panic.com/panic-symptoms/#condition",
       "name": "공황장애 핵심 증상 및 자가진단 (Panic Disorder Symptoms)",
       "alternateName": ["공황발작 증상", "광장공포증", "과호흡증후군", "야간공황발작"],
       "signOrSymptom": [
@@ -187,49 +187,49 @@
         {"@type": "MedicalSymptom", "name": "비현실감 및 이인증 (주변이 생소하게 느껴짐)"}
       ]
     }
-    {{ else if in .RelPermalink "/autonomic-diagnosis/" }}
+    {{ else if in .RelPermalink "/panic-diagnosis/" }}
     ,
     {
       "@type": "MedicalTest",
-      "@id": "https://healim-panic.com/autonomic-diagnosis/#hrv-test",
+      "@id": "https://healim-panic.com/panic-diagnosis/#hrv-test",
       "name": "HRV(Heart Rate Variability) 자율신경계 정밀 검사",
       "description": "심박변이도를 통해 교감신경과 부교감신경의 활성도, 균형도 및 자율신경 조절 역량을 수치로 정량 분석하는 검사"
     },
     {
       "@type": "MedicalTest",
-      "@id": "https://healim-panic.com/autonomic-diagnosis/#qeeg-test",
+      "@id": "https://healim-panic.com/panic-diagnosis/#qeeg-test",
       "name": "정량화 뇌파(QEEG) 뇌기능 및 스트레스 저항도 검사",
       "description": "뇌 편도체와 대뇌피질의 과각성 상태, 두뇌 리듬의 균형도 및 스트레스 저항도를 객관적으로 파악하는 검사"
     },
     {
       "@type": "MedicalTest",
-      "@id": "https://healim-panic.com/autonomic-diagnosis/#sasang-test",
+      "@id": "https://healim-panic.com/panic-diagnosis/#sasang-test",
       "name": "한의학적 사상체질 및 기혈 순환 변증 검사",
       "description": "심담허겁, 간기울결 등 공황 증상을 유발한 오장육부의 기능적 불균형과 개인별 체질 특성을 평가하는 진단"
     }
-    {{ else if in .RelPermalink "/autonomic-treatment/" }}
+    {{ else if in .RelPermalink "/panic-treatment/" }}
     ,
     {
       "@type": "MedicalTherapy",
-      "@id": "https://healim-panic.com/autonomic-treatment/#herbal-therapy",
+      "@id": "https://healim-panic.com/panic-treatment/#herbal-therapy",
       "name": "공황장애 체질 맞춤 한약 치료",
       "description": "뇌 편도체의 과민성을 완화하고 급성 교감신경 과흥분을 안정시키며 뇌 신경계의 자가조절력을 강화하는 처방"
     },
     {
       "@type": "MedicalTherapy",
-      "@id": "https://healim-panic.com/autonomic-treatment/#biofeedback-therapy",
+      "@id": "https://healim-panic.com/panic-treatment/#biofeedback-therapy",
       "name": "생기능 자기조절(바이오피드백) 훈련 & 인지행동치료",
       "description": "공황발작 전조증상을 스스로 인지하고 호흡과 자율신경계를 안정화하는 실전 생체 자기조절 훈련"
     },
     {
       "@type": "MedicalTherapy",
-      "@id": "https://healim-panic.com/autonomic-treatment/#cst-therapy",
+      "@id": "https://healim-panic.com/panic-treatment/#cst-therapy",
       "name": "두개천골요법(CST) 및 경락 침구 치료",
       "description": "뇌척수액 순환을 개선하고 두경부 긴장을 완화하여 미주신경의 안정적 활성화를 유도하는 한방 수기 및 침구 치료"
     },
     {
       "@type": "HowTo",
-      "@id": "https://healim-panic.com/autonomic-treatment/#emergency-guide",
+      "@id": "https://healim-panic.com/panic-treatment/#emergency-guide",
       "name": "공황발작 시 3분 긴급 대처법 (4-6 복식호흡 & 5-4-3-2-1 그라운딩 기법)",
       "description": "공황발작이 시작되었을 때 뇌와 자율신경계를 급속 안정시키는 3단계 실전 행동 가이드",
       "step": [
@@ -288,11 +288,11 @@
       "name": "해아림한의원 공황장애 커뮤니티 아카이브",
       "description": "실제 임상 치료후기 72편, 자주 묻는 질문(FAQ) 22문답, 원장단 해아림TV 영상 15편, 신경정신과 전문 칼럼 39편을 공유합니다."
     }
-    {{ else if in .RelPermalink "/autonomic-clinic/" }}
+    {{ else if in .RelPermalink "/panic-clinic/" }}
     ,
     {
       "@type": "AboutPage",
-      "@id": "https://healim-panic.com/autonomic-clinic/#about",
+      "@id": "https://healim-panic.com/panic-clinic/#about",
       "name": "해아림한의원 공황장애 클리닉 소개",
       "description": "한방신경정신과 전문의·박사 의료진의 16여 년 임상 노하우와 전국 16개 네트워크 클리닉 안내"
     }

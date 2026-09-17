@@ -133,7 +133,7 @@ sections:
 
         <!-- 4. 하단 버튼 -->
         <div class="text-center my-10 flex flex-col sm:flex-row justify-center items-center gap-3">
-          <a href="/autonomic-diagnosis/" class="btn-healim">공황장애 심층검사 &gt;</a>
-          <a href="/autonomic-treatment/" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">1:1 맞춤 치료법 보기 &gt;</a>
+          <a href="/panic-diagnosis/" class="btn-healim">공황장애 심층검사 &gt;</a>
+          <a href="/panic-treatment/" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">1:1 맞춤 치료법 보기 &gt;</a>
         </div>
 ---

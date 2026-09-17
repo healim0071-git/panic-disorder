@@ -141,7 +141,7 @@ sections:
 
         <!-- 5. 하단 액션 버튼 -->
         <div class="text-center my-10">
-          <a href="/autonomic-diagnosis/" class="btn-healim mr-3">정밀 검사 시스템 알아보기 &gt;</a>
+          <a href="/panic-diagnosis/" class="btn-healim mr-3">정밀 검사 시스템 알아보기 &gt;</a>
           <a href="#branches" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">가까운 16개 지점 찾기 &gt;</a>
         </div>
 ---

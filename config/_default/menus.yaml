@@ -1,21 +1,22 @@
 # Navigation Menus for Healim Clinic (healim-tic GNB layout)
 main:
   - name: 해아림 공황장애 치료 클리닉 소개
-    url: /autonomic-clinic/
+    url: /panic-clinic/
     weight: 10
   - name: 공황장애란?
-    url: /autonomic-dysfunction/
+    url: /panic-disorder/
     weight: 20
   - name: 공황장애 증상 및 자가진단
-    url: /autonomic-symptoms/
+    url: /panic-symptoms/
     weight: 30
   - name: 공황장애 원인 검사/진단
-    url: /autonomic-diagnosis/
+    url: /panic-diagnosis/
     weight: 40
   - name: 공황장애 치료 방법/생활 관리
-    url: /autonomic-treatment/
+    url: /panic-treatment/
     weight: 50
   - name: 커뮤니티
     url: /community/
     weight: 60
+
 

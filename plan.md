@@ -32,11 +32,11 @@
 graph TD
     Home["P1. 메인 (/)<br>• Hero & Trust Indicators<br>• 공황장애 정밀 진단 프리뷰<br>• 15개 지점 빠른 안내"]
     
-    Home --> Clinic["P2. 공황장애 클리닉 소개 (/autonomic-clinic/)<br>• 16년 노하우 조절 시스템<br>• 3대 신뢰 기준<br>• 공황장애 전담 진료팀"]
-    Home --> Dysfunction["P3. 공황장애 구체적 설명 (/autonomic-dysfunction/)<br>• 편도체 오작동 정의 & 검사상 정상 이유<br>• 3040/5060 대표 사례<br>• 교감/부교감 불균형 메커니즘"]
-    Home --> Symptoms["P4. 공황장애 증상 특징 (/autonomic-symptoms/)<br>• 4대 다발성 증상군<br>• 메쉬 링크 (공황/불면/불안/어지럼/과호흡)"]
-    Home --> Diagnosis["P5. 원인 및 정밀 검사 (/autonomic-diagnosis/)<br>• 8대 유발 요인<br>• 3단계 정밀 검사 (HRV/뇌기능/한의진단)"]
-    Home --> Treatment["P6. 치료법 및 생활관리 (/autonomic-treatment/)<br>• 1:1 맞춤 한약 & 뇌기능 훈련<br>• 침구/경락 치료<br>• 3분 긴급 대처 및 생활관리 가이드"]
+    Home --> Clinic["P2. 공황장애 클리닉 소개 (/panic-clinic/)<br>• 16년 노하우 조절 시스템<br>• 3대 신뢰 기준<br>• 공황장애 전담 진료팀"]
+    Home --> Dysfunction["P3. 공황장애 구체적 설명 (/panic-disorder/)<br>• 편도체 오작동 정의 & 검사상 정상 이유<br>• 3040/5060 대표 사례<br>• 교감/부교감 불균형 메커니즘"]
+    Home --> Symptoms["P4. 공황장애 증상 특징 (/panic-symptoms/)<br>• 4대 다발성 증상군<br>• 메쉬 링크 (공황/불면/불안/어지럼/과호흡)"]
+    Home --> Diagnosis["P5. 원인 및 정밀 검사 (/panic-diagnosis/)<br>• 8대 유발 요인<br>• 3단계 정밀 검사 (HRV/뇌기능/한의진단)"]
+    Home --> Treatment["P6. 치료법 및 생활관리 (/panic-treatment/)<br>• 1:1 맞춤 한약 & 뇌기능 훈련<br>• 침구/경락 치료<br>• 3분 긴급 대처 및 생활관리 가이드"]
     Home --> Community["P7. 커뮤니티 (/community/)<br>• AEO 최적화 FAQ<br>• 치료후기 (CMS)<br>• 유튜브 영상 & 의료 칼럼"]
     
     Home --> BranchFooter["전국 15개 지점 Footer<br>• 100% HTML Text<br>• 전화예약 / 위치안내"]
@@ -47,7 +47,7 @@ graph TD
 ## 3. SEO / AEO / GEO 및 시맨틱 아키텍처 계획
 
 ### 3.1 메타데이터 및 캐노니컬 규격
-- **Canonical URL:** `https://healim-panic.com/autonomic-dysfunction/`
+- **Canonical URL:** `https://healim-panic.com/panic-disorder/`
 - **Main Title:** 공황장애 | 해아림한의원
 - **Meta Description:** 갑작스러운 가슴 두근거림, 호흡곤란, 질식감, 극심한 공포와 예기불안 등 공황장애 증상을 진료합니다. 검사상 이상 없는 신체화 증상 및 공황발작 치료 병원을 찾는다면, 한방신경정신과 전문의/박사 진료의 해아림한의원 공황장애클리닉이 있습니다. 공황장애와 불안장애 | 공황장애와 자율신경실조증 | 재발 방지 평생 안심 치료
 - **Keywords:** 공황장애, 공황발작, 공황장애한의원, 공황장애치료, 과호흡증후군, 심계항진, 광장공포증, 예기불안, 자율신경실조증, 공황장애완치, 공황장애자가진단, 해아림한의원
@@ -79,7 +79,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
     },
     {
       "@type": "MedicalCondition",
-      "@id": "https://healim-panic.com/autonomic-dysfunction/#condition",
+      "@id": "https://healim-panic.com/panic-disorder/#condition",
       "name": "공황장애 (Panic Disorder)",
       "alternateName": "공황발작, 급성 불안발작, 광장공포증",
       "possibleTreatment": [
@@ -165,11 +165,11 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 | 페이지 ID | URL Path | 대표 H1 / 메인 카피 | 핵심 구성 요소 및 기능 |
 |---|---|---|---|
 | **P1. 메인** | `/` | 자율신경실조증 치료 16여 년, 해아림한의원 전국 15개 네트워크 | • Hero 배너 ("검사상 이상 없는 신체화 증상과 불안, 근본 균형 치료")<br>• 4대 Trust Indicators 카운터<br>• Primary CTA (1:1 전화 상담 및 예약)<br>• 질환/검사/치료 3단계 요약 및 지점 퀵링크 |
-| **P2. 클리닉 소개** | `/autonomic-clinic/` | 16여 년의 축적된 노하우, 해아림 자율신경실조증 클리닉 | • 임상 연구 기반 자율신경 조절 시스템<br>• 환자가 추천하는 3대 신뢰 기준 (원인 치료, 맞춤 처방, 재발 방지)<br>• 자율신경 전담 진료팀 (전문의/박사/석사) 프로필 |
-| **P3. 질환 설명** | `/autonomic-dysfunction/` | 자율신경실조증이란 무엇인가요? | • 병원 검사상 정상인데 고통받는 원인 규명<br>• 실제 체감 사례 A(3040 직장인 급성 증상), 사례 B(5060 만성 복합 증상)<br>• 교감신경(가속페달) vs 부교감신경(브레이크) 병리 불균형 다이어그램 |
-| **P4. 증상 특징** | `/autonomic-symptoms/` | 자율신경실조증의 다발성 증상 특징 | • 4대 계통별 카드: 뇌신경계, 순환기·호흡기계, 소화기계, 정신·수면계<br>• **연관 질환 메쉬 링크(Mesh Linking):** [공황장애] \| [불면증] \| [불안장애] \| [어지럼증] \| [미주신경성실신] |
-| **P5. 원인 및 검사** | `/autonomic-diagnosis/` | 자율신경실조증의 원인과 정밀 진단 체계 | • 3대 주요 요인(만성 스트레스, 뇌기능 과부하, 체질적 약조)<br>• **해아림 3단계 정밀 검사:** ① HRV 검사 ② 뇌기능 뇌파검사 ③ 한의학적 종합 진단(맥진·설진·문진) |
-| **P6. 치료 & 생활** | `/autonomic-treatment/` | 자율신경실조증 한방 통합 치료 및 생활관리 | • 해아림 1:1 맞춤 치료 솔루션 (맞춤 한약, 뇌기능 활성화&뇌수용체 훈련, 침구·경락 치료)<br>• 의학적 생활관리 가이드 (수면 위생 5원칙, 음식 조절, 복식호흡법) |
+| **P2. 클리닉 소개** | `/panic-clinic/` | 16여 년의 축적된 노하우, 해아림 자율신경실조증 클리닉 | • 임상 연구 기반 자율신경 조절 시스템<br>• 환자가 추천하는 3대 신뢰 기준 (원인 치료, 맞춤 처방, 재발 방지)<br>• 자율신경 전담 진료팀 (전문의/박사/석사) 프로필 |
+| **P3. 질환 설명** | `/panic-disorder/` | 자율신경실조증이란 무엇인가요? | • 병원 검사상 정상인데 고통받는 원인 규명<br>• 실제 체감 사례 A(3040 직장인 급성 증상), 사례 B(5060 만성 복합 증상)<br>• 교감신경(가속페달) vs 부교감신경(브레이크) 병리 불균형 다이어그램 |
+| **P4. 증상 특징** | `/panic-symptoms/` | 자율신경실조증의 다발성 증상 특징 | • 4대 계통별 카드: 뇌신경계, 순환기·호흡기계, 소화기계, 정신·수면계<br>• **연관 질환 메쉬 링크(Mesh Linking):** [공황장애] \| [불면증] \| [불안장애] \| [어지럼증] \| [미주신경성실신] |
+| **P5. 원인 및 검사** | `/panic-diagnosis/` | 자율신경실조증의 원인과 정밀 진단 체계 | • 3대 주요 요인(만성 스트레스, 뇌기능 과부하, 체질적 약조)<br>• **해아림 3단계 정밀 검사:** ① HRV 검사 ② 뇌기능 뇌파검사 ③ 한의학적 종합 진단(맥진·설진·문진) |
+| **P6. 치료 & 생활** | `/panic-treatment/` | 자율신경실조증 한방 통합 치료 및 생활관리 | • 해아림 1:1 맞춤 치료 솔루션 (맞춤 한약, 뇌기능 활성화&뇌수용체 훈련, 침구·경락 치료)<br>• 의학적 생활관리 가이드 (수면 위생 5원칙, 음식 조절, 복식호흡법) |
 | **P7. 커뮤니티** | `/community/` | 해아림 커뮤니티 (의학 FAQ, 치료후기, 칼럼) | • AEO FAQ 아코디언 (Q1~Q3 및 확장 질문)<br>• 실제 치료후기 (CMS 연동, 작성일자 임의 지정 기능)<br>• 원장단 직접 출연 유튜브 의학 영상 플레이어<br>• 전문 의료진 치료 칼럼 아카이브 |
 
 ---
@@ -241,7 +241,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 ## 8. 품질 검증 및 릴리즈 체크리스트 (QA Checklist)
 
 - [x] **SEO & AEO:**
-  - [x] Canonical URL이 `https://healim-panic.com/autonomic-dysfunction/`로 정확히 지정되었는가?
+  - [x] Canonical URL이 `https://healim-panic.com/panic-disorder/`로 정확히 지정되었는가?
   - [x] H1 태그가 각 페이지별로 유일하게 1개만 존재하는가?
   - [x] JSON-LD 스키마 검증 도구에서 에러 없이 100% 패스하는가?
 - [x] **콘텐츠 무결성:**
@@ -449,7 +449,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `localStorage`의 `healim_community_posts_v2` 데이터를 모니터링하여, 사용자가 커뮤니티 페이지에서 새로운 FAQ, 후기, 칼럼, 유튜브를 등록하면 전 페이지 하단의 공통 섹션에도 자동으로 최신 글이 반영되도록 동적 렌더링 스크립트 추가
 4. **빌드 및 검증**:
    - `hugo` 정적 컴파일 100% 정상 (32개 페이지 무오류 생성)
-   - 로컬 개발 서버(`http://localhost:1313/`) 및 서브페이지(`/autonomic-dysfunction/` 등) 전체에서 교체된 콘텐츠 정상 렌더링 확인 완료
+   - 로컬 개발 서버(`http://localhost:1313/`) 및 서브페이지(`/panic-disorder/` 등) 전체에서 교체된 콘텐츠 정상 렌더링 확인 완료
 
 ### 제9.15조 전 페이지 하단 공통 섹션 신규 업로드 글 시간순(최신순) 자동 배치 엔진 구축
 1. **요구사항**:
@@ -533,8 +533,8 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - 기계적 AI 느낌(상투적인 요약, 목록 나열 등)을 완전히 배제하고, 각 질문에 대해 1,000자 내외의 깊이 있고 전문적인 한방신경정신과 임상 해설 작성
    - 본문 최상단에 해당 주제와 완벽히 매칭되는 고화질 시각 썸네일 이미지 삽입
    - 본문 최하단에 지정된 3대 CTA 바로가기 링크를 줄바꿈 및 1줄 공백을 두어 배치
-     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/autonomic-diagnosis`
-     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/autonomic-treatment`
+     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/panic-diagnosis`
+     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/panic-treatment`
      - `[전국 지점 안내]` → `https://www.healim.com`
    - 매주 2~3개 글이 오전 8시에서 11시 사이에 랜덤으로 자동 발행되도록 스케줄링
    - **기존 작성글과의 중복 방지 원칙**: 기존 시드 글, 관리자 수동 작성글, 기발행글과 동일하거나 유사한 제목의 질문글은 발행 후보에서 원천 배제하여 고유성 100% 보장
@@ -566,8 +566,8 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - 각 칼럼별 **1,600자 내외**(순수 본문 1,350~1,500자, 서식 포함 1,550~1,750자)의 충실한 분량 준수
    - 본문 최상단에 16:9 메디컬 벡터 일러스트 썸네일 이미지(`![](/images/columns/...)`) 삽입
    - 본문 최하단에 지정된 3대 CTA 바로가기 링크를 1줄 공백을 두어 배치
-     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/autonomic-diagnosis`
-     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/autonomic-treatment`
+     - `[자율신경실조증 검사 알아보기]` → `https://healim-panic.com/panic-diagnosis`
+     - `[자율신경실조증 치료방법 알아보기]` → `https://healim-panic.com/panic-treatment`
      - `[전국 지점 안내]` → `https://www.healim.com`
    - 매주 4~5개 글이 오전 8시에서 11시 사이에 랜덤으로 자동 발행되도록 스케줄링
    - **기존 작성글과의 중복 방지 원칙**: 질문과 핵심주제는 기존에 작성되어 있는 글들의 제목과 중복되지 않도록 엄격한 정규화 비교 필터링 및 중복 방지 알고리즘 적용
@@ -656,7 +656,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 3. **검증 결과**:
    - `hugo` 빌드: 32개 페이지 0 errors 정상 컴파일 완료
    - 전체 코드베이스 및 빌드 산출물 전수 조사: 지정된 부작용 문구 0건 (완전 삭제 확인)
-   - 로컬 개발 서버 메인 및 서브페이지(`/`, `/community/`, `/autonomic-diagnosis/`, `/autonomic-treatment/`) 전수 검증 통과 (A: mb-12, B: mb-8/mt-8, C: 삭제 확인)
+   - 로컬 개발 서버 메인 및 서브페이지(`/`, `/community/`, `/panic-diagnosis/`, `/panic-treatment/`) 전수 검증 통과 (A: mb-12, B: mb-8/mt-8, C: 삭제 확인)
 
 ### 제9.24조 전 페이지 PC 뷰 가로폭 통일(A영역 폭 = B영역 max-w-7xl) 및 가독성·반응형 최적화
 1. **요구사항 및 배경 분석**:
@@ -685,11 +685,11 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
      - `.trust-grid` / `.trust-card`: PC `gap: 1.25rem; padding: 1.75rem 1.25rem;`, 수치 `2.05rem`
    - **메인 및 서브 페이지 본문 이미지·카드 그리드 시각 균형 조정**:
      - `content/_index.md`: 2개 학술 논문 그리드를 `<div class="max-w-4xl mx-auto grid grid-cols-2 gap-4 md:gap-8 mb-8">`로 감싸 섹션 B의 2권 도서 그리드(`max-w-4xl`)와 정확한 시각적 대칭 및 통일성 부여
-     - `autonomic-diagnosis/_index.md`: 3대 원인 요인 카드 패딩 `p-5 md:p-6`, 타이틀 `text-base md:text-lg`, 본문 `text-xs md:text-sm`
-     - `autonomic-treatment/_index.md`: 3대 생활관리 카드 패딩 `p-4 md:p-5`, 타이틀 `text-sm md:text-base`, 본문 `text-xs md:text-sm`
-     - `autonomic-symptoms/_index.md`: 4대 계통 카드 패딩 `p-6 md:p-7`, 목록 `text-xs md:text-sm`, 5대 연관질환 `text-xs md:text-sm`
-     - `autonomic-dysfunction/_index.md`: 2대 대표 사례 카드 `p-6 md:p-7`, 타이틀 `text-lg md:text-xl`, 본문 `text-xs md:text-sm`
-     - `autonomic-clinic/_index.md`: 3대 신뢰 기준 카드 `p-6 md:p-7`, 타이틀 `text-lg md:text-xl`, 본문 `text-xs md:text-sm`
+     - `panic-diagnosis/_index.md`: 3대 원인 요인 카드 패딩 `p-5 md:p-6`, 타이틀 `text-base md:text-lg`, 본문 `text-xs md:text-sm`
+     - `panic-treatment/_index.md`: 3대 생활관리 카드 패딩 `p-4 md:p-5`, 타이틀 `text-sm md:text-base`, 본문 `text-xs md:text-sm`
+     - `panic-symptoms/_index.md`: 4대 계통 카드 패딩 `p-6 md:p-7`, 목록 `text-xs md:text-sm`, 5대 연관질환 `text-xs md:text-sm`
+     - `panic-disorder/_index.md`: 2대 대표 사례 카드 `p-6 md:p-7`, 타이틀 `text-lg md:text-xl`, 본문 `text-xs md:text-sm`
+     - `panic-clinic/_index.md`: 3대 신뢰 기준 카드 `p-6 md:p-7`, 타이틀 `text-lg md:text-xl`, 본문 `text-xs md:text-sm`
 4. **검증 결과**:
    - `hugo --gc --minify` 빌드 32개 페이지 0 errors 정상 컴파일 완료 (1376ms)
    - 7개 전체 주요 페이지(메인, 클리닉소개, 실조증, 증상특징, 원인검사/진단, 치료방법, 커뮤니티) 검증 스크립트 실행 결과:
@@ -711,7 +711,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
      - 좌측 `< 뇌파 뇌기능검사 >`(`brainwave_chart.png`, 448×502)의 규격과 수학적으로 100% 일치하는 2배수 초고해상도 캔버스(`896×1004`, 종횡비 0.892430) 생성
      - 프레임 형태 통일: 좌측과 동일한 소프트 그레이 배경(`#eeeeee`), 16px(2x 기준 32px) 모서리 라운딩, 1px(2x 기준 2px) 미세 테두리(`1px solid #b5b5b5`), 4개 코너 알파 투명 채널 및 슈퍼샘플링 안티앨리어싱 적용
      - 내부 검사지를 좌측 뇌파 차트와 동일한 시각적 여백 비율(pad_x=36, pad_y=30)로 중앙 배치하여 의료 측정 디스플레이 기기 형태의 통일감 확립
-   - **HTML 2열 그리드 및 캐시 버스터 갱신 (`_index.md`, `autonomic-diagnosis/_index.md`)**:
+   - **HTML 2열 그리드 및 캐시 버스터 갱신 (`_index.md`, `panic-diagnosis/_index.md`)**:
      - `src="/images/hrv_autonomic_test.png?v=20260907_v2"`로 갱신하여 브라우저 즉시 렌더링 보장
    - **모바일 최적화 및 정렬 상태 점검**:
      - 양측 이미지 종횡비 오차 0.00000000 달성으로, 모바일 및 데스크톱 어떤 화면 해상도에서도 좌우 카드의 렌더링 높이가 완벽히 1:1로 일치
@@ -719,7 +719,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 3. **검증 결과**:
    - `hugo --gc --minify` 빌드 32개 페이지 정상 컴파일 (1419ms)
    - 종횡비 일치 검증 스크립트 실행: 뇌파(448×502) vs HRV(896×1004) 종횡비 차이 0.00000000 PASS
-   - 로컬 서버 HTTP GET 검증: 메인(`/`) 및 진단(`/autonomic-diagnosis/`) 200 OK, v2 이미지 정상 로딩 확인
+   - 로컬 서버 HTTP GET 검증: 메인(`/`) 및 진단(`/panic-diagnosis/`) 200 OK, v2 이미지 정상 로딩 확인
 
 ### 제9.26조 메인 히어로 A·B 영역 문구 및 계층 구조 고도화 & C영역 전 페이지 상단 여백 30% 축소 최적화
 1. **요구사항 및 배경 분석**:
@@ -1724,11 +1724,11 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - `layouts/_partials/hooks/head-end/seo_schema.html`: MedicalCondition(공황장애, F41.0), MedicalClinic, FAQPage 스키마 등록
 2. **핵심 6대 페이지 전면 개편**:
    - `content/_index.md` (메인 홈): 공황장애 특화 헤드라인, 6대 평가 검사, 6대 치료 솔루션, 원장단 저서(『걱정과 공황장애』) 쇼케이스, 학술 논문 갤러리
-   - `content/autonomic-dysfunction/_index.md`: 공황장애란 무엇인가, 편도체 오작동 메커니즘, 병원 검사 정상 이유 해설, 6계통 신체화 증상 카드, 공황장애 vs 자율신경실조증 감별표, 8대 원인, 7문항 자가진단 체크리스트, 3040 직장인 & 5060 중장년 임상 페르소나
-   - `content/autonomic-symptoms/_index.md`: 4대 계통별 증상 체크리스트(뇌신경·정신, 순환·호흡, 소화·말초, 정서·수면) 및 4대 동반 질환(급성 공황발작, 야간 공황, 광장공포증/예기불안, 과호흡증후군)
-   - `content/autonomic-diagnosis/_index.md`: 8대 원인 분석, 공황 악순환 사슬 구조, 3단계 정밀 진단 시스템
-   - `content/autonomic-treatment/_index.md`: 7대 핵심 치료법, 3단계 회복 로드맵, 공황발작 시 3분 긴급 대처 3원칙(4-6 복식호흡, 인지 재구조화, 5-4-3-2-1 그라운딩 기법)
-   - `content/autonomic-clinic/_index.md`: 한방신경정신과 전문의/박사 원장단의 16년 임상 노하우와 3대 진료 원칙
+   - `content/panic-disorder/_index.md`: 공황장애란 무엇인가, 편도체 오작동 메커니즘, 병원 검사 정상 이유 해설, 6계통 신체화 증상 카드, 공황장애 vs 자율신경실조증 감별표, 8대 원인, 7문항 자가진단 체크리스트, 3040 직장인 & 5060 중장년 임상 페르소나
+   - `content/panic-symptoms/_index.md`: 4대 계통별 증상 체크리스트(뇌신경·정신, 순환·호흡, 소화·말초, 정서·수면) 및 4대 동반 질환(급성 공황발작, 야간 공황, 광장공포증/예기불안, 과호흡증후군)
+   - `content/panic-diagnosis/_index.md`: 8대 원인 분석, 공황 악순환 사슬 구조, 3단계 정밀 진단 시스템
+   - `content/panic-treatment/_index.md`: 7대 핵심 치료법, 3단계 회복 로드맵, 공황발작 시 3분 긴급 대처 3원칙(4-6 복식호흡, 인지 재구조화, 5-4-3-2-1 그라운딩 기법)
+   - `content/panic-clinic/_index.md`: 한방신경정신과 전문의/박사 원장단의 16년 임상 노하우와 3대 진료 원칙
 3. **공통 하단 컴포넌트 & 데이터 허브 완벽 동기화**:
    - 공황장애 FAQ: 22개 전 문항 개편 (응급실 정상 원인, 약물 병행 및 테이퍼링 단약, 광장공포, 야간 공황 등)
    - 공황장애 치료후기: 65건 전 데이터 개편 (지하철/운전 공황 극복, 응급실 방문 후 완치 수기 등)
@@ -1835,7 +1835,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - **FAQ**: 기존 자율신경 글과 동일한 **총 22편** 완성 (새로 2편 추가 작성: #21 담적/위장 뇌-장관 신경축 소화기 증상, #22 CST/미주신경 뇌척수액 순환 기전). 1,057~1,411자의 풍부한 전문 임상 답변.
    - **칼럼**: 기존 자율신경 글과 동일한 **총 23편** 완성 (2026.09.10부터 2011.11.15까지 중복 없는 고유 날짜 순차 배정). 1,027~1,345자의 학술 심층 칼럼.
    - **치료후기**: 공황장애 실제 임상 호전사례 **총 65편** (2026.09.10~2011.11.15 고유 날짜 배정).
-   - 모든 글 본문 하단 링크: `https://healim-panic.com/autonomic-diagnosis`, `https://healim-panic.com/autonomic-treatment` 정상 작동.
+   - 모든 글 본문 하단 링크: `https://healim-panic.com/panic-diagnosis`, `https://healim-panic.com/panic-treatment` 정상 작동.
 2. **카테고리별 자동발행 조건 공황장애 전면 교체 (기존 운영 규칙 100% 보존)**:
    - `auto_faq_engine.js`: 공황장애 22개 임상 질문 풀, 주 2~3회 아침 스케줄, 중복 방지 필터 유지.
    - `auto_column_engine.js`: 공황장애 23개 심층 칼럼 풀, 주 4~5회 아침 스케줄 유지.
@@ -1988,7 +1988,7 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 2. **사이트 전역 네트워크 카운트 동기화**:
    - `layouts/_partials/components/common_bottom_sections.html`: 16개 네트워크 원장단 및 지점 안내로 갱신.
    - `layouts/_partials/hooks/head-end/seo_schema.html`: Schema.org 메타데이터 `16개 네트워크` 갱신.
-   - `content/_index.md`, `content/community/_index.md`, `content/autonomic-treatment/_index.md`, `content/autonomic-clinic/_index.md`: `가까운 16개 지점 찾기 >` 및 네트워크 거점 리스트(서울, 경기, 인천, 대구, 대전, **울산**, 부산, 제주) 갱신.
+   - `content/_index.md`, `content/community/_index.md`, `content/panic-treatment/_index.md`, `content/panic-clinic/_index.md`: `가까운 16개 지점 찾기 >` 및 네트워크 거점 리스트(서울, 경기, 인천, 대구, 대전, **울산**, 부산, 제주) 갱신.
 3. **빌드 검증**:
    - `hugo --cleanDestinationDir --minify` 정상 컴파일 완료 (Pages: 32개, Error: 0건).
 
@@ -2111,31 +2111,31 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
    - **Keywords**: `공황장애, 공황장애초기증상, 공황발작, 공황발작대처법, 공황장애자가진단, 공황장애치료, 공황장애병원, 불안장애, 과호흡, 광장공포증, 공황장애한의원, 해아림한의원`
    - **Schemas**: `MedicalClinic`, `Physician`, `WebSite`, `MedicalCondition`
 
-2. **클리닉 소개 (`/autonomic-clinic/`)**:
+2. **클리닉 소개 (`/panic-clinic/`)**:
    - **Title**: `공황장애 치료 클리닉 소개 | 16년 임상 노하우 해아림한의원`
    - **Description**: `한방신경정신과 전문의·박사 의료진의 16여 년 임상 연구 노하우. 뇌 편도체 안정과 자율신경 조절력 강화를 통해 공황발작 제어력을 기르는 해아림한의원 전국 16개 네트워크 클리닉을 소개합니다.`
    - **Keywords**: `공황장애한의원, 해아림한의원, 공황장애클리닉, 한방신경정신과, 공황장애전문의, 공황장애치료병원, 16년임상노하우, 전국16개네트워크`
    - **Schemas**: `MedicalClinic`, `Physician`, `AboutPage`
 
-3. **공황장애란? (`/autonomic-dysfunction/`)**:
+3. **공황장애란? (`/panic-disorder/`)**:
    - **Title**: `공황장애란? 원인과 편도체 오작동 메커니즘 | 해아림한의원`
    - **Description**: `응급실 검사상 이상이 없는데도 반복되는 가슴 두근거림, 질식감, 죽을 것 같은 공포감. 뇌 편도체 오작동과 급성 교감신경 폭주 메커니즘을 규명하고 단계별 대처법을 상세히 설명합니다.`
    - **Keywords**: `공황장애, 공황장애원인, 공황발작이유, 편도체오작동, 교감신경항진, 응급실검사정상, 공황장애뜻, 광장공포증원인, 공황장애메커니즘`
    - **Schemas**: `MedicalClinic`, `Physician`, `MedicalCondition` (ICD-10 F41.0, 병리기전, 8대 원인, 7대 증상)
 
-4. **증상 및 자가진단 (`/autonomic-symptoms/`)**:
+4. **증상 및 자가진단 (`/panic-symptoms/`)**:
    - **Title**: `공황장애 핵심 증상 및 자가진단 테스트 | 4대 계통별 증상 | 해아림한의원`
    - **Description**: `가슴 두근거림, 호흡곤란, 어지럼증 등 전신 4대 계통별 공황발작 핵심 증상 13가지 체크리스트와 광장공포증, 과호흡증후군, 야간공황발작 자가진단 테스트를 제공합니다.`
    - **Keywords**: `공황장애증상, 공황발작증상, 공황장애자가진단, 공황장애초기증상, 과호흡증후군, 야간공황발작, 광장공포증증상, 공황장애체크리스트, 심계항진`
    - **Schemas**: `MedicalClinic`, `Physician`, `MedicalCondition` (13대 공황발작 핵심 증상군 개별 MedicalSymptom 매핑)
 
-5. **원인 및 정밀검사 (`/autonomic-diagnosis/`)**:
+5. **원인 및 정밀검사 (`/panic-diagnosis/`)**:
    - **Title**: `공황장애 정밀 검사 및 3단계 진단 시스템 | 해아림한의원`
    - **Description**: `눈에 보이지 않는 신경계 불균형과 편도체 과민성을 객관적 수치로 확인하는 HRV 자율신경 검사, 뇌파(QEEG) 뇌기능 검사, 스트레스 저항도 등 해아림 3단계 정밀 검사 시스템을 안내합니다.`
    - **Keywords**: `공황장애검사, 공황장애진단, HRV자율신경검사, 뇌파검사, QEEG, 뇌기능검사, 스트레스검사, 공황장애병원검사, 자율신경계검사`
    - **Schemas**: `MedicalClinic`, `Physician`, `MedicalTest` (HRV 정밀검사, QEEG 뇌파검사, 사상체질 변증검사)
 
-6. **치료법 및 생활관리 (`/autonomic-treatment/`)**:
+6. **치료법 및 생활관리 (`/panic-treatment/`)**:
    - **Title**: `공황장애 한방 치료법과 응급대처 생활관리 가이드 | 해아림한의원`
    - **Description**: `과항진된 교감신경과 편도체를 안정시키는 체질 맞춤 한약, 뇌 자가 조절력을 높이는 바이오피드백, 두개천골요법(CST) 및 4-6 복식호흡 등 공황발작 대처 생활관리 가이드를 안내합니다.`
    - **Keywords**: `공황장애치료, 공황장애한약, 공황발작응급대처법, 4-6복식호흡, 생기능자기조절, 두개천골요법, CST, 인지행동치료, 공황장애극복`

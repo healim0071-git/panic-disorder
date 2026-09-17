@@ -14,7 +14,7 @@
 
 | 이슈 ID | 문제 구분 | 발생 위치 / 모듈 | 심각도 | 상태 | 핵심 해결 방안 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **ISSUE-01** | 마크다운 파싱 오류 | `autonomic-treatment`, `autonomic-diagnosis` | High | 해결 완료 | YAML `text: \|` 내 모든 줄 8칸 인덴트(`        `) 일괄 정규화 |
+| **ISSUE-01** | 마크다운 파싱 오류 | `panic-treatment`, `panic-diagnosis` | High | 해결 완료 | YAML `text: \|` 내 모든 줄 8칸 인덴트(`        `) 일괄 정규화 |
 | **ISSUE-02** | 가독성/폰트 크기 불균형 | 01~07 카드, 동반질환(A), 로드맵(B) | High | 해결 완료 | `text-[11px]` 전수 제거, 모바일 12px / PC 13px 하한선 확립 |
 | **ISSUE-03** | PC 불필요한 줄바꿈 발생 | 커뮤니티 상단 안내 문구 | Medium | 해결 완료 | `max-w-3xl` 해제, `lg:whitespace-nowrap break-keep` 적용 |
 | **ISSUE-04** | 모바일 가로 스크롤/오버플로우 | 로드맵 카드, 8대 수칙 그리드 | High | 해결 완료 | 반응형 그리드 브레이크포인트 재설계, 360/390px overflow 0px 보장 |

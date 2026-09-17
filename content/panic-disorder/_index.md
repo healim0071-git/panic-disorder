@@ -4,7 +4,7 @@ seo:
   title: "공황장애란? 원인과 편도체 오작동 메커니즘 | 해아림한의원"
 description: "응급실 검사상 이상이 없는데도 반복되는 가슴 두근거림, 질식감, 죽을 것 같은 공포감. 뇌 편도체 오작동과 급성 교감신경 폭주 메커니즘을 규명하고 단계별 대처법을 상세히 설명합니다."
 keywords: "공황장애, 공황장애원인, 공황발작이유, 편도체오작동, 교감신경항진, 응급실검사정상, 공황장애뜻, 광장공포증원인, 공황장애메커니즘"
-canonical: "https://healim-panic.com/autonomic-dysfunction/"
+canonical: "https://healim-panic.com/panic-disorder/"
 type: landing
 sections:
   - block: markdown
@@ -349,7 +349,7 @@ sections:
 
         <!-- [버튼 A] 공황장애 원인 검사/진단 (원인 파트) 이동 링크 -->
         <div class="text-center mt-3" style="margin-bottom: 68px;">
-        <a href="/autonomic-diagnosis/#causes-section" class="btn-healim shadow-sm hover:shadow-md">
+        <a href="/panic-diagnosis/#causes-section" class="btn-healim shadow-sm hover:shadow-md">
         공황장애 발생 원인 &amp; 3대 핵심 기전 자세히 보기 &gt;
         </a>
         </div>
@@ -425,7 +425,7 @@ sections:
 
         <!-- [버튼 B] 공황장애 6대 심층 검사 체계 이동 링크 -->
         <div class="text-center mt-3" style="margin-bottom: 68px;">
-        <a href="/autonomic-diagnosis/#precision-tests" class="btn-healim shadow-sm hover:shadow-md">
+        <a href="/panic-diagnosis/#precision-tests" class="btn-healim shadow-sm hover:shadow-md">
         공황장애 6대 심층 검사 체계 자세히 보기 &gt;
         </a>
         </div>
@@ -464,7 +464,7 @@ sections:
 
         <!-- [버튼 C] 공황장애 치료방법/생활관리 이동 링크 -->
         <div class="text-center mt-3" style="margin-bottom: 68px;">
-        <a href="/autonomic-treatment/" class="btn-healim shadow-sm hover:shadow-md">
+        <a href="/panic-treatment/" class="btn-healim shadow-sm hover:shadow-md">
         공황장애 맞춤 치료법 &amp; 생활관리 안내 보기 &gt;
         </a>
         </div>
@@ -600,7 +600,7 @@ sections:
         기존: 하단 CTA
         ══════════════════════════════════════════════════════════════════ -->
         <div class="text-center my-10 flex flex-col sm:flex-row justify-center items-center gap-3">
-        <a href="/autonomic-diagnosis/" class="btn-healim">공황장애 심층검사 시스템 보기 &gt;</a>
-        <a href="/autonomic-treatment/" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">1:1 맞춤 치료법 안내 &gt;</a>
+        <a href="/panic-diagnosis/" class="btn-healim">공황장애 심층검사 시스템 보기 &gt;</a>
+        <a href="/panic-treatment/" class="btn-healim" style="background-color: #ffffff; color: #1c6e78 !important; border: 2px solid #1c6e78;">1:1 맞춤 치료법 안내 &gt;</a>
         </div>
 ---
