@@ -237,16 +237,236 @@
   }
 ];
 
+
+  // ──────────────────────────────────────────────────────────
+  // 1.5. 공황장애 지속적 신규 임상 칼럼 생성기 (Continuous Clinical Generator)
+  // 기본 23개 풀 소진 후, 기준에 맞춘 신규 칼럼을 지속적으로 생성하여 공급
+  // ──────────────────────────────────────────────────────────
+  var extendedColumnTopics = [
+    {
+      idPrefix: "col-ext-1",
+      topic: "식사 후 명치가 꽉 막히고 심장이 요동치는 '식후 공황'과 위-미주신경 소화 반사의 원리",
+      image: "/images/columns/column_18_gut_brain_axis.svg",
+      summary: "소화불량 및 역류성 식도염과 겹쳐 나타나는 식후 급성 패닉 증상과 소화기-뇌신경 축의 연결 고리 분석.",
+      subHeading: "■ 소화기 팽만감과 심장 압박이 부르는 교감신경 오작동",
+      clinicalPoint: "과식이나 급체로 위장이 팽창하면 횡격막을 위로 밀어 올려 흉강을 압박하고, 위장관에 분포한 미주신경 감각 수용체가 자극을 받아 심박수를 요동치게 만듭니다. 공황 환자는 이 소화기 팽만감을 '심장마비의 전조'로 오판하여 급성 발작으로 이어집니다.",
+      remedy: "위장 평활근의 긴장을 풀고 심장의 허열을 식히는 반하사심탕과 평위산 가감방을 처방하여 소화기-자율신경 연쇄 과민을 차단합니다.",
+      rule: "식사는 소식(小食) 위주로 천천히 꼭꼭 씹어 드시고, 식후 30분간 눕지 않으며 가벼운 평지 산책으로 복강 내 압력을 분산시키는 것이 바람직합니다."
+    },
+    {
+      idPrefix: "col-ext-2",
+      topic: "비행기 이착륙 기압 변화와 좁은 기내 좌석에서 덮치는 고공 비행 공황장애 안전 탑승 매뉴얼",
+      image: "/images/columns/column_21_olfactory_gustatory.svg",
+      summary: "밀폐된 1만 미터 상공에서의 탈출 불가능성 인지와 기압 변화가 유발하는 비행 공황의 극복 프로토콜.",
+      subHeading: "■ 기압 강하로 인한 이관 팽창과 폐소공포의 신경학적 결합",
+      clinicalPoint: "비행기 순항 고도에서는 기내 기압이 해수면보다 약 20% 낮아져 중이강(귀 안쪽)과 부비동이 팽창하며 이통 및 멍함이 발생합니다. 뇌 편도체는 '공중에서 고립되었다'는 공포와 함께 이 생리적 멍함을 심각한 뇌경색 위험으로 착각하게 됩니다.",
+      remedy: "승기청뇌(升氣淸腦) 한약과 CST 두개골 이완 치료를 통해 이관 개폐 기능과 전정신경계의 기압 적응력을 높여줍니다.",
+      rule: "탑승 전 통로 좌석을 사전 지정하고, 탑승 중에는 이어플러그 착용과 함께 4-6 구순 복식호흡을 유지하며 냉수를 조금씩 축이는 것이 권장됩니다."
+    },
+    {
+      idPrefix: "col-ext-3",
+      topic: "중요한 시험장, 면접장, 프레젠테이션 무대에서 머리가 하얘지는(블랙아웃) 수행 불안과 긴장성 공황",
+      image: "/images/columns/column_16_hormone.svg",
+      summary: "급격한 코르티솔 분비가 해마의 기억 인출 회로를 일시 차단하는 생체 메커니즘과 현장 멘탈 리셋법.",
+      subHeading: "■ 급성 스트레스 호르몬 스파이크와 전두엽 인지 마비",
+      clinicalPoint: "극도의 긴장 상황에서 교감신경이 폭발하면 노르에피네프린이 전두엽과 해마의 시냅스 연결을 일시적으로 차단합니다. 이로 인해 잘 외우고 있던 내용이 순식간에 머릿속에서 증발하는 '일시적 인지 블랙아웃' 현상이 나타납니다.",
+      remedy: "심담(心膽)의 담력을 강화하고 뇌 신경 전달 속도를 안정화하는 온담탕 및 보심안신 처방으로 급성 무대 공포를 다스립니다.",
+      rule: "발표 시작 전 손바닥 지압점(노궁혈)을 지그시 누르고, 청중의 시선을 피하지 않고 눈높이 3미터 뒤 벽면을 응시하며 첫 3문장을 천천히 발성하십시오."
+    },
+    {
+      idPrefix: "col-ext-4",
+      topic: "여성 공황장애: 배란기, 생리 전 증후군(PMS), 갱년기 호르몬 변동이 부르는 급성 불안의 한방 안신 치법",
+      image: "/images/columns/column_20_metabolism.svg",
+      summary: "에스트로겐과 프로게스테론의 급격한 변동이 뇌 세로토닌 및 GABA 수용체 민감도를 교란하는 신경내분비적 병리 분석.",
+      subHeading: "■ 성호르몬 롤러코스터와 자율신경계 항상성 붕괴",
+      clinicalPoint: "생리 시작 7일 전이나 갱년기에는 프로게스테론 대사체가 급감하면서 뇌 신경망의 천연 진정제 역할을 하던 GABA 활성이 곤두박질칩니다. 이때 평소에는 대수롭지 않던 사소한 스트레스에도 심장이 세차게 뛰고 가슴이 답답해집니다.",
+      remedy: "간기울결(肝氣鬱結)을 풀고 음혈(陰血)을 보충하는 소요산, 가미소요산 처방으로 호르몬 축과 신경계를 동시에 조화롭게 다스립니다.",
+      rule: "생리 주기 1주일 전부터 카페인과 단 음식을 엄격히 제한하고, 저녁 온수 족욕을 통해 하초의 혈액 순환을 돕는 것이 좋습니다."
+    },
+    {
+      idPrefix: "col-ext-5",
+      topic: "공황장애와 동반되는 건강염려증(질병불안장애): 사소한 신체 감각을 중병으로 파국화하는 뇌 회로 리셋",
+      image: "/images/columns/column_13_somatization.svg",
+      summary: "맥박 한 번, 어지럼 한 번에 스마트폰 검색과 응급실 방문을 반복하는 인지 왜곡 사슬을 끊는 법.",
+      subHeading: "■ 신체 내부 감각에 대한 현미경적 과초점(Hyper-vigilance)",
+      clinicalPoint: "공황 환자의 뇌는 정상인이 전혀 의식하지 못하는 심장의 미세한 불규칙 박동이나 장운동 소리까지 '위험 신호'로 증폭하여 포착합니다. 포털 사이트에서 질병을 검색할수록 편도체는 최악의 질환(심장마비, 뇌종양)만을 편향 확증합니다.",
+      remedy: "담력을 튼튼히 하고 뇌 신경망의 전기적 과열을 진정시키는 시호가용골모려탕 처방으로 과도한 신체 경계심을 낮춥니다.",
+      rule: "스마트폰으로 질병 증상을 검색하는 행위(사이버콘드리아)를 즉시 중단하고, 불안이 올라올 때는 즉시 눈앞의 사물 5가지를 소리 내어 관찰하십시오."
+    },
+    {
+      idPrefix: "col-ext-6",
+      topic: "목에 이물감이 걸려 뱉어지지도 삼켜지지도 않는 매핵기(梅核氣)와 공황장애 질식 공포의 상관관계",
+      image: "/images/columns/column_10_hyperventilation.svg",
+      summary: "후두 인두 근육의 불수의적 연축이 부르는 목 조임과 질식감의 한의학적 병리 및 치료.",
+      subHeading: "■ 칠정(七情) 울결로 인한 인후부 기체(氣滯) 현상",
+      clinicalPoint: "지속적인 정신적 스트레스를 받으면 자율신경 지배를 받는 인두 수축근이 강하게 수축하여 목구멍에 마치 매화 씨앗이나 가래가 걸려 있는 듯한 이물감이 발생합니다. 환자는 기도가 막혀 숨이 끊어질 것 같다는 극심한 공포를 느낍니다.",
+      remedy: "기운을 소통시키고 담음을 삭이는 반하후박탕(半夏厚朴湯) 처방과 경추 견인 및 흉쇄유돌근 침구 치료를 통해 목구멍의 조임을 신속히 풉니다.",
+      rule: "목을 억지로 가다듬는 '음음-' 헛기침을 삼가고, 따뜻한 둥굴레차나 모과차를 한 모금씩 천천히 삼키며 목의 근육을 이완하십시오."
+    },
+    {
+      idPrefix: "col-ext-7",
+      topic: "혈압이 180까지 치솟고 뒷목이 뻣뻣한 '공황성 고혈압': 뇌졸중이 아닌 교감신경 스파이크인 의학적 이유",
+      image: "/images/columns/column_12_rebound_hypotension.svg",
+      summary: "본태성 고혈압과 급성 스트레스성 혈압 급상승의 심혈관 생리학적 차이와 혈압계 집착 증후군 탈출법.",
+      subHeading: "■ 카테콜아민 폭풍이 만든 가역적 혈압 스파이크",
+      clinicalPoint: "발작 순간 분비된 아드레날린은 말초 혈관을 순간적으로 쥐어짜 혈압을 170~190mmHg까지 밀어 올립니다. 그러나 이는 혈관 벽 자체가 경화된 만성 고혈압과 달리, 발작이 진정되고 부교감신경이 켜지면 20~30분 내에 120대로 원상 복구되는 일시적 반응입니다.",
+      remedy: "과열된 심장의 화를 식히고 혈압을 안정화하는 황련해독탕, 청심연자음 가감방으로 급성 혈압 상승 불안을 조절합니다.",
+      rule: "발작 중 혈압을 수시로 재는 행위는 측정 수치 자체에 놀라 혈압을 더 올리는 결과를 낳으므로, 발작 중 혈압 측정을 절대 금하고 심호흡에만 집중하십시오."
+    },
+    {
+      idPrefix: "col-ext-8",
+      topic: "공황장애 치료 중 찾아오는 회복기 슬럼프: 일시적 증상 반동을 극복하는 신경망 리모델링의 이해",
+      summary: "\"다 나은 줄 알았는데 왜 또 발작이 올까?\" 치료 2~3개월 차 환자를 좌절시키는 롤러코스터 회복 곡선의 진실.",
+      subHeading: "■ 뇌 신경 가소성(Neuroplasticity)의 지그재그 회복 법칙",
+      clinicalPoint: "뇌의 공포 기억 회로가 소거되고 새로운 안정 회로가 구축되는 과정은 일직선 상승선이 아니라 파도치는 곡선을 그립니다. 과로나 계절 변화, 사소한 스트레스로 인해 증상이 일시적으로 반동하는 것은 자연스러운 치유 과정의 일부입니다.",
+      remedy: "지친 뇌세포의 활력을 보강하는 보중익기탕과 보혈안신 처방을 통해 회복기 신경 피로도를 낮추고 항상성을 다집니다.",
+      rule: "증상이 하루 나타났다고 해서 '처음으로 돌아갔다'고 자책하지 마시고, '뇌가 완벽한 회복을 위해 마지막 잔여 긴장을 털어내는 중'이라고 긍정적으로 수용하십시오."
+    },
+    {
+      idPrefix: "col-ext-9",
+      topic: "만성 목·어깨 결림과 일자목/거북목이 부르는 경추성 자율신경실조증과 공황발작의 치료",
+      image: "/images/columns/column_7_cervical_cst.svg",
+      summary: "상부 경추 아탈구가 후두신경과 미주신경을 압박하여 뇌간을 자극하는 근골격-신경학적 원인 분석.",
+      subHeading: "■ C1-C2 경추 변위와 뇌간 뇌척수액 순환 장애",
+      clinicalPoint: "목뼈 1~2번이 틀어지면 그 바로 앞을 지나가는 미주신경 주행 경로가 물리적으로 압박을 받고, 뇌로 올라가는 추골동맥의 혈류가 최대 30% 저하됩니다. 이로 인해 뇌간이 산소 결핍을 느끼며 원인 모를 어지럼증과 호흡 곤란 경보를 울리게 됩니다.",
+      remedy: "한방 경추 정밀 추나요법과 두개천골요법(CST)을 통해 목뼈의 정렬을 바로잡고 경막 긴장을 해소하여 신경 통로를 열어줍니다.",
+      rule: "스마트폰을 고개 숙여 보지 마시고 눈높이로 들어 올리며, 1시간마다 턱을 가슴 쪽으로 당기는 친턱(Chin-tuck) 스트레칭을 생활화하십시오."
+    },
+    {
+      idPrefix: "col-ext-10",
+      topic: "수면 부족과 밤샘 후 찾아오는 뇌 피로 공황: 신경세포 글림프 시스템(Glymphatic System) 복원",
+      image: "/images/columns/column_19_burnout_vagus.svg",
+      summary: "밤사이 뇌척수액이 뇌 속 노폐물을 청소하지 못해 생기는 편도체 과열과 수면 리듬 재동기화 솔루션.",
+      subHeading: "■ 수면 박탈이 부르는 전두엽 제어력 붕괴",
+      clinicalPoint: "잠을 4시간 이하로 자면 뇌 노폐물을 씻어내는 글림프 시스템이 가동되지 않아 아데노신과 타우 단백질이 축적됩니다. 피로에 지친 전두엽은 편도체의 공포 반응을 억제하지 못해 다음 날 작은 소리나 신체 변화에도 공황발작이 터집니다.",
+      remedy: "수면 뇌파를 유도하고 심포의 열을 식히는 산조인초, 복신, 원지 처방으로 깊은 서파 수면의 비율을 높여줍니다.",
+      rule: "밤샘은 공황 환자에게 독약과 같습니다. 부득이 잠을 설친 날에는 낮잠 20분을 취하고, 저녁에는 스마트폰 블루라이트를 끄고 11시 이전에 취침하십시오."
+    }
+  ];
+
+  function buildExtendedColumnPost(item) {
+    var body = item.summary + "\n\n" +
+      item.subHeading + "\n" +
+      item.clinicalPoint + "\n\n" +
+      "■ 한방신경정신과 맞춤 처방 및 통합 치법\n" +
+      item.remedy + " 개인별 체질과 자율신경 균형 검사(HRV), 뇌기능 검사 결과를 바탕으로 1:1 맞춤 가감하여 신경계의 회복 탄력성을 극대화합니다.\n\n" +
+      "■ 환자가 일상에서 실천해야 할 핵심 수칙\n" +
+      item.rule + " 신체 증상이 나타났을 때 공포에 질려 과호흡을 하거나 몸부림치지 마시고, '이것은 일시적인 자율신경의 가짜 경보이며 내 몸은 결코 무너지지 않는다'는 확고한 인지적 팩트를 상기하십시오.\n\n" +
+      "해아림한의원에서는 두려움과 고통 속에 갇힌 환자분들이 본래의 평온하고 건강한 삶으로 되돌아가실 수 있도록 체계적인 단계별 치료 프로토콜을 성심껏 제공합니다.\n\n" +
+      "[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n" +
+      "[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n" +
+      "[전국 지점 안내](https://www.healim.com)";
+
+    return {
+      idPrefix: item.idPrefix,
+      title: item.topic,
+      image: item.image,
+      author: "해아림한의원",
+      summary: item.summary,
+      content: body
+    };
+  }
+
+  function generateContinuousNewColumn(existingTitles, deletedPoolIds, state) {
+    // 1단계: 확장 풀에서 미발행 주제 검색
+    for (var i = 0; i < extendedColumnTopics.length; i++) {
+      var ext = extendedColumnTopics[i];
+      var norm = normalizeColumnTitle(ext.topic);
+      var pid = ext.idPrefix;
+      if (!existingTitles.has(norm) && !deletedPoolIds.has(pid)) {
+        return buildExtendedColumnPost(ext);
+      }
+    }
+
+    // 2단계: 확장 풀마저 모두 소진된 경우 -> 다이나믹 임상 매트릭스 조합 생성기 가동
+    var symptoms = [
+      { t: "가슴 두근거림과 심장 부정맥 불안", focus: "심장내과 검사상 정상인 심계항진의 자율신경 기전", herb: "자감초탕 및 청심온담탕" },
+      { t: "숨이 턱 막히는 기도 폐쇄 공포와 질식감", focus: "호흡근 과긴장과 뇌간 이산화탄소 센서 오류", herb: "소간해울 및 청폐안신 한약" },
+      { t: "머리가 붕 뜨고 세상이 낯선 비현실감·이인증", focus: "급성 스트레스성 대뇌 혈류 저하와 감각 해리", herb: "귀비탕 및 두개천골요법(CST)" },
+      { t: "밀폐된 공간에서 덮쳐오는 폐소공포", focus: "편도체의 즉각 탈출 불가능성 인지 오류 교정", herb: "시호가용골모려탕 맞춤 처방" },
+      { t: "체온 조절 실패로 인한 급성 한기와 식은땀", focus: "자율신경 시상하부 체온 조절 중추의 일시 교란", herb: "계지복령환 및 보신안신 처방" }
+    ];
+
+    var perspectives = [
+      "뇌 신경 가소성 회복과 재발율을 낮추는 체계적 치료",
+      "자율신경 균형과 미주신경 브레이크 강화 솔루션",
+      "임상 검사상 정상 환자를 위한 1:1 맞춤 치료 가이드",
+      "약물 의존 부담을 덜며 자생력을 키우는 단계별 치료",
+      "스트레스 저항도를 극대화하는 한방신경정신과 치법"
+    ];
+
+    var idx1 = (state.dynamicIndex || 0) % symptoms.length;
+    var idx2 = (state.dynamicIndex || 0) % perspectives.length;
+    state.dynamicIndex = (state.dynamicIndex || 0) + 1;
+
+    var sItem = symptoms[idx1];
+    var pItem = perspectives[idx2];
+    var dynamicTitle = sItem.t + " - " + pItem;
+    var dynNorm = normalizeColumnTitle(dynamicTitle);
+
+    if (existingTitles.has(dynNorm)) {
+      dynamicTitle = sItem.t + " 정복을 위한 " + pItem;
+    }
+
+    var dynamicBody = "많은 공황장애 환자분들이 일상생활 중 예고 없이 찾아오는 " + sItem.t + "으로 인해 극심한 공포와 일상 붕괴를 경험합니다. 병원 정밀 검사에서는 구조적 이상이 발견되지 않지만, 환자가 느끼는 고통은 실제 생명을 위협받는 것처럼 절박합니다.\n\n" +
+      "■ " + sItem.focus + "\n" +
+      "이러한 현상은 심장이나 호흡기 장기 자체의 기질적 질환이 아니라, 뇌 편도체와 시상하부를 연결하는 자율신경 신경망이 과열되어 비상 사이렌을 잘못 울리는 기능적 오작동입니다. " + sItem.focus + "을 면밀히 분석하여 교감신경의 급격한 항진을 진정시키는 것이 핵심입니다.\n\n" +
+      "■ 해아림한의원의 " + sItem.herb + " 기반 맞춤 치료\n" +
+      "해아림한의원에서는 과열된 신경계를 식히고 자율신경 균형을 바로잡는 " + sItem.herb + " 처방을 바탕으로 환자의 체질과 증상 단계에 맞춘 1:1 진료를 시행합니다. 아울러 상부 경추와 두개골의 긴장을 풀어 뇌척수액 순환을 촉진하는 두개천골요법(CST)을 병행하여 뇌 신경망의 복원력을 높입니다.\n\n" +
+      "■ 안정적인 회복을 위한 생활 관리 원칙\n" +
+      "1. 카페인, 알코올, 고당류 음료 등 교감신경을 자극하는 식습관을 철저히 배제합니다.\n" +
+      "2. 증상이 올라올 때 숨을 참거나 헐떡이지 마시고, 4초간 코로 들이마시고 6초간 입술을 모아 천천히 내쉬는 구순 복식호흡을 3분간 실천하십시오.\n" +
+      "3. '이것은 지나가는 가짜 경보이며 내 몸은 안전하다'는 객관적 의학 사실을 마음에 새기십시오.\n\n" +
+      "해아림한의원은 공황장애의 긴 터널을 지나 환자분들이 온전한 일상의 평온을 되찾으실 때까지 든든한 동반자가 되어 드릴 것입니다.\n\n" +
+      "[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n" +
+      "[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n" +
+      "[전국 지점 안내](https://www.healim.com)";
+
+    return {
+      idPrefix: "col-dyn-" + Date.now(),
+      title: dynamicTitle,
+      image: "/images/columns/column_30_cure_homeostasis.svg",
+      author: "해아림한의원",
+      summary: sItem.t + "에 대한 원인 분석과 " + pItem + " 안내.",
+      content: dynamicBody
+    };
+  }
+
+
   // ──────────────────────────────────────────────────────────
   // 2. 제목 정규화 헬퍼 및 기존 칼럼 목록 수집 함수
   // ──────────────────────────────────────────────────────────
+  function cleanColumnBaseTitle(t) {
+    if (!t) return '';
+    var s = String(t).trim();
+    // 접두사 제거 (칼럼:, [칼럼], [해아림...] 등)
+    s = s.replace(/^칼럼[\.:\s\-]+/i, '');
+    s = s.replace(/^\[.*?\]\s*/, '');
+    // 접미사/수식어 제거
+    s = s.replace(/\s*-\s*(한방\s*임상\s*분석.*|치료\s*중\s*주의할.*|신경\s*가소성.*|검사상\s*정상.*|뇌-신경계.*|미주신경.*|심층\s*치료.*|자가\s*회복.*|원인\s*분석.*|처방\s*원리.*|임상\s*증례.*|핵심\s*관리법.*|재발율을\s*낮추는.*|솔루션.*)/i, '');
+    s = s.replace(/\s*\((심층\s*연재|심층\s*분석|심층\s*안내|임상\s*증례|치료\s*수기)\)\s*$/i, '');
+    return s.trim();
+  }
+
   function normalizeColumnTitle(t) {
     if (!t) return '';
-    return String(t)
-      .replace(/^칼럼[\.:\s\-]+/i, '')
+    var base = cleanColumnBaseTitle(t);
+    return base
       .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
       .trim()
       .toLowerCase();
+  }
+
+  function getDeletedColumnPoolIds() {
+    var ids = new Set();
+    try {
+      var raw = localStorage.getItem('healim_deleted_pool_ids_columns');
+      if (raw) {
+        var arr = JSON.parse(raw) || [];
+        arr.forEach(function(id) { if (id) ids.add(String(id)); });
+      }
+    } catch(e) {}
+    return ids;
   }
 
   var OBSOLETE_COLUMN_TITLES = [
@@ -324,6 +544,17 @@
     if (typeof window !== 'undefined' && Array.isArray(window.defaultColumnsData)) {
       window.defaultColumnsData.forEach(addTitle);
     }
+
+    // 6) Deleted titles blacklist (Permanent exclusion)
+    try {
+      var rawDelTitles = localStorage.getItem('healim_deleted_titles_columns');
+      if (rawDelTitles) {
+        var delTitles = JSON.parse(rawDelTitles) || [];
+        delTitles.forEach(function(dt) {
+          if (dt) titles.add(normalizeColumnTitle(dt));
+        });
+      }
+    } catch(e) {}
 
     return titles;
   }
@@ -599,8 +830,9 @@
     }
 
     var existingTitles = getExistingColumnTitles();
+    var deletedPoolIds = getDeletedColumnPoolIds();
 
-    // Determine article to publish from pool (Skip already published titles)
+    // Determine article to publish from pool (Skip already published titles and deleted items)
     var poolIdx = (typeof state.poolIndex === 'number') ? state.poolIndex : 0;
     var selectedIdx = -1;
 
@@ -608,7 +840,8 @@
       var candidateIdx = (poolIdx + i) % columnsPool.length;
       var candidate = columnsPool[candidateIdx];
       var norm = normalizeColumnTitle(candidate.title);
-      if (!existingTitles.has(norm)) {
+      var pId = candidate.idPrefix || candidate.id;
+      if (!existingTitles.has(norm) && !deletedPoolIds.has(String(pId))) {
         selectedIdx = candidateIdx;
         break;
       }
@@ -628,16 +861,20 @@
       }
     }
 
-    var isCycleEdition = false;
-    if (selectedIdx === -1) {
-      // All base pool columns have been published at least once:
-      // Continue without stopping! Generate continuous serial editions with zero upper limits.
-      isCycleEdition = true;
-      selectedIdx = poolIdx % columnsPool.length;
+    var article = null;
+    if (selectedIdx !== -1) {
+      article = columnsPool[selectedIdx];
+    } else {
+      // 🌟 핵심 요구사항: 기본 풀 23편 소진 시 기존 글을 재탕(심층 연재)하지 않고,
+      // 확장 임상 풀 및 동적 생성기(Continuous Clinical Generator)를 통해 새로운 고품질 글 생성!
+      article = generateContinuousNewColumn(existingTitles, deletedPoolIds, state);
     }
 
-    var article = columnsPool[selectedIdx];
-    
+    if (!article) {
+      console.warn('[Healim Auto-Column Engine] 발행 가능한 미중복 칼럼을 찾을 수 없어 안전하게 중단합니다.');
+      return false;
+    }
+
     // Ensure published date is strictly newer than any existing seed post (seed max is 2026.09.10)
     var nowDate = new Date();
     var seedMaxTs = new Date('2026-09-10T23:59:59').getTime();
@@ -647,19 +884,6 @@
 
     var postTitle = sanitizeMedicalCompliance(article.title);
     var postContent = sanitizeMedicalCompliance(article.content);
-    if (isCycleEdition) {
-      // Natural clinical editorial variations without mechanical bracket prefixes:
-      var colVariations = [
-        function(t) { return t.replace(/[\?\.]*$/, '') + ' - 한방 임상 분석과 심층 치료 전략'; },
-        function(t) { return t.replace(/[\?\.]*$/, '') + ' - 치료 중 주의할 생활 수칙과 자가 회복 가이드'; },
-        function(t) { return t.replace(/[\?\.]*$/, '') + ' - 신경 가소성 회복과 재발율을 낮추는 처방 원리'; },
-        function(t) { return t.replace(/[\?\.]*$/, '') + ' - 검사상 정상 환자의 미주신경 회복 임상 증례'; },
-        function(t) { return t.replace(/[\?\.]*$/, '') + ' - 뇌-신경계 생체 항상성 재동기화 솔루션'; }
-      ];
-      var vFn = colVariations[(state.poolIndex || 0) % colVariations.length];
-      postTitle = vFn(article.title);
-      postContent = '> 💡 **[해아림 공황장애 심층 임상 의학 연재]**\n> 본 칼럼은 환자분들의 이해와 빠른 일상 복귀를돕기 위해 해아림한의원 원장단이 지속적으로 집필하는 심층 임상 칼럼 시리즈입니다.\n\n' + article.content;
-    }
 
     var newPost = {
       id: postId,
@@ -668,9 +892,9 @@
       author: '해아림한의원',
       date: dateStr,
       views: Math.floor(Math.random() * 150) + 180,
-      image: article.image,
+      image: article.image || '/images/columns/column_30_cure_homeostasis.svg',
       title: sanitizeMedicalCompliance(postTitle),
-      summary: sanitizeMedicalCompliance(article.summary),
+      summary: sanitizeMedicalCompliance(article.summary || ''),
       content: sanitizeMedicalCompliance(postContent),
       isAutoPublished: true,
       isCustom: true,
@@ -678,12 +902,16 @@
       updatedAt: now
     };
 
-    // Double check: prevent duplicate insertion into currentColumns
+    // 🌟 핵심 요구사항 1: 엄격한 중복 감지 시 강제 발행 즉시 중단!
+    var normNew = normalizeColumnTitle(newPost.title);
     var dupFound = currentColumns.some(function(item) {
-      return normalizeColumnTitle(item.title) === normalizeColumnTitle(newPost.title);
+      return normalizeColumnTitle(item.title) === normNew;
     });
-    if (dupFound) {
-      newPost.title = postTitle.replace(/[\?\.]*$/, '') + ' (심층 연재)';
+    if (dupFound || existingTitles.has(normNew)) {
+      console.warn('[Healim Auto-Column Engine] 🚫 중복 칼럼 감지되어 발행을 즉각 중단합니다: "' + newPost.title + '"');
+      state.poolIndex = (poolIdx + 1) % columnsPool.length;
+      saveAutoColumnState(state);
+      return false; // 강제 발행 취소!
     }
 
     // Insert at top of list
@@ -732,7 +960,7 @@
     var nextSchedule = calculateNextColumnSchedule(new Date());
     state.lastPublishedTime = now;
     state.nextScheduledTime = nextSchedule.getTime();
-    state.poolIndex = (selectedIdx + 1) % columnsPool.length;
+    state.poolIndex = ((selectedIdx !== -1 ? selectedIdx : poolIdx) + 1) % columnsPool.length;
     saveAutoColumnState(state);
 
     updateStatusBadgeUI(state);

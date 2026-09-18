@@ -2681,6 +2681,49 @@ sections:
         }
         window.addDeletedPostId = addDeletedPostId;
 
+        function addDeletedPostTitle(key, title, poolId) {
+          if (!key) return;
+          try {
+            if (title) {
+              var sTitle = String(title).trim();
+              var k = 'healim_deleted_titles_' + key;
+              var list = JSON.parse(localStorage.getItem(k) || '[]');
+              if (list.indexOf(sTitle) === -1) {
+                list.push(sTitle);
+                localStorage.setItem(k, JSON.stringify(list));
+              }
+            }
+            if (poolId) {
+              var sPool = String(poolId).trim();
+              var pk = 'healim_deleted_pool_ids_' + key;
+              var plist = JSON.parse(localStorage.getItem(pk) || '[]');
+              if (plist.indexOf(sPool) === -1) {
+                plist.push(sPool);
+                localStorage.setItem(pk, JSON.stringify(plist));
+              }
+            }
+          } catch(e) {}
+        }
+        window.addDeletedPostTitle = addDeletedPostTitle;
+
+        function getDeletedPostTitles(key) {
+          try {
+            return JSON.parse(localStorage.getItem('healim_deleted_titles_' + key) || '[]');
+          } catch(e) {
+            return [];
+          }
+        }
+        window.getDeletedPostTitles = getDeletedPostTitles;
+
+        function getDeletedPoolIds(key) {
+          try {
+            return JSON.parse(localStorage.getItem('healim_deleted_pool_ids_' + key) || '[]');
+          } catch(e) {
+            return [];
+          }
+        }
+        window.getDeletedPoolIds = getDeletedPoolIds;
+
         function isDeletedPostId(key, id, item) {
           if (!id && !item) return false;
           var strId = String(id || (item ? item.id : '')).trim();
@@ -2699,6 +2742,26 @@ sections:
             var allDel = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]');
             if (strId && allDel.indexOf(strId) !== -1) return true;
           } catch(e) {}
+
+          if (item) {
+            var itemTitle = String(item.title || '').trim();
+            if (itemTitle) {
+              var delTitles = getDeletedPostTitles(key);
+              if (delTitles.length > 0) {
+                var cleanT = itemTitle.replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '').toLowerCase();
+                var matchTitle = delTitles.some(function(dt) {
+                  return cleanT === String(dt).replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '').toLowerCase();
+                });
+                if (matchTitle) return true;
+              }
+            }
+            var itemPoolId = item.poolId || item.idPrefix;
+            if (itemPoolId) {
+              var delPools = getDeletedPoolIds(key);
+              if (delPools.indexOf(String(itemPoolId)) !== -1) return true;
+            }
+          }
+
           return false;
         }
         window.isDeletedPostId = isDeletedPostId;
@@ -2766,6 +2829,47 @@ sections:
         }
         purgeClientDeletedReviews();
         window.purgeClientDeletedReviews = purgeClientDeletedReviews;
+
+        // Auto purge of duplicate '(심층 연재)' and duplicate normalized columns
+        function purgeDuplicateColumnsMigration() {
+          try {
+            var colKeys = ['healim_board_columns', 'healim_vault_all_posts_columns', 'healim_custom_columns_posts', 'healim_community_posts_v2'];
+            colKeys.forEach(function(sKey) {
+              var raw = localStorage.getItem(sKey);
+              if (raw) {
+                var list = JSON.parse(raw) || [];
+                if (Array.isArray(list) && list.length > 0) {
+                  var seenNorms = {};
+                  var seenIds = {};
+                  var filtered = [];
+                  list.forEach(function(item) {
+                    if (!item) return;
+                    var sId = String(item.id || '');
+                    if (sId && seenIds[sId]) return;
+                    var t = String(item.title || '');
+                    // '(심층 연재)'가 붙은 중복 글 제거
+                    if (t.indexOf('(심층 연재)') !== -1) return;
+                    var normT = t.replace(/\s*-\s*(한방\s*임상\s*분석.*|치료\s*중\s*주의할.*|신경\s*가소성.*|검사상\s*정상.*|뇌-신경계.*|미주신경.*|심층\s*치료.*|자가\s*회복.*)/i, '')
+                      .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
+                      .toLowerCase();
+                    if (normT && seenNorms[normT]) return;
+                    if (normT) seenNorms[normT] = true;
+                    if (sId) seenIds[sId] = true;
+                    filtered.push(item);
+                  });
+                  if (filtered.length !== list.length) {
+                    localStorage.setItem(sKey, JSON.stringify(filtered));
+                    if (sKey === 'healim_vault_all_posts_columns' && typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
+                      window.HealimPermanentDB.saveVault('columns', filtered);
+                    }
+                  }
+                }
+              }
+            });
+          } catch(e) {}
+        }
+        purgeDuplicateColumnsMigration();
+        window.purgeDuplicateColumnsMigration = purgeDuplicateColumnsMigration;
 
         function getCustomUserPosts(key) {
           try {
@@ -5234,6 +5338,21 @@ sections:
           }
 
           // 2. Permanent Blacklist & Remote Sync Hub Delete
+          var targetItemForMeta = null;
+          try {
+            var fb = (boardType === 'faq' ? defaultFaqData : (boardType === 'reviews' ? defaultReviewsData : (boardType === 'youtube' ? defaultYoutubeData : defaultColumnsData)));
+            var currList = getBoardData(boardType, fb);
+            targetItemForMeta = currList.find(function(it) { return String(it.id) === strId; });
+            if (!targetItemForMeta) {
+              var vList = JSON.parse(localStorage.getItem('healim_vault_all_posts_' + boardType) || '[]');
+              targetItemForMeta = vList.find(function(it) { return String(it.id) === strId; });
+            }
+          } catch(e) {}
+
+          if (targetItemForMeta && typeof addDeletedPostTitle === 'function') {
+            addDeletedPostTitle(boardType, targetItemForMeta.title, targetItemForMeta.poolId || targetItemForMeta.idPrefix);
+          }
+
           if (typeof addDeletedPostId === 'function') {
             addDeletedPostId(boardType, strId);
           }

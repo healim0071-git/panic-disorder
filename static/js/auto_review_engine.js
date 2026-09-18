@@ -357,15 +357,125 @@
     return yyyy + '.' + mm + '.' + dd + ' ' + hh + ':' + min;
   }
 
+
+  // ──────────────────────────────────────────────────────────
+  // 2.5. 지속적 신규 치료후기 생성기 (Continuous Review Generator)
+  // ──────────────────────────────────────────────────────────
+  var extendedReviewTopics = [
+    {
+      id: "rev-ext-1",
+      category: "터널/운전 공황",
+      author: "40대 영업직 박OO 님",
+      title: "터널 진입 공포로 고속도로 운전을 포기했던 영업직, 4개월 치료 후 전국 출장길을 당당히 복귀했습니다",
+      content: "지방 출장이 잦은 영업직인데 터널만 들어가면 핸들을 쥔 손이 덜덜 떨리고 숨이 턱 막혀 차를 갓길에 세우기 일쑤였습니다. 직장을 그만둬야 하나 절망스러웠는데 해아림한의원에서 경추 추나요법과 맞춤 한약을 병행하며 2개월 차부터 터널 통과 시 가슴 두근거림이 사라졌습니다. 4개월 차인 지금은 부산, 대구 장거리 운전도 편안하게 해내고 있습니다.",
+      hasTreatment: true,
+      treatmentType: "맞춤 한약 + 경추 추나요법 + 인지이완요법"
+    },
+    {
+      id: "rev-ext-2",
+      category: "치과/폐소공포",
+      author: "30대 직장인 이OO 님",
+      title: "치과 진료대 눕지 못해 충치 치료도 미루던 극심한 폐소공포, 두개천골요법과 한약으로 편안히 진료받았습니다",
+      content: "치과 의자가 뒤로 넘어가기만 하면 목이 졸리는 듯한 질식감에 벌떡 일어나 뛰쳐나왔습니다. 해아림한의원에서 상부 경추의 아탈구와 턱관절 긴장을 풀어주는 CST 치료를 받고 심포의 열을 내리는 한약을 복용했습니다. 3주 만에 치과 의자에 누워 1시간 동안 충치 치료를 아무런 공포 없이 무사히 마쳤을 때 눈물이 났습니다.",
+      hasTreatment: true,
+      treatmentType: "청심안신 한약 + 두개천골요법(CST)"
+    },
+    {
+      id: "rev-ext-3",
+      category: "야간 공황/수면",
+      author: "50대 주부 정OO 님",
+      title: "자다가 숨 막혀 깨어나는 야간 공황으로 1년 넘게 시달렸는데, 10주 만에 아침까지 푹 자는 기적을 맛봤습니다",
+      content: "밤마다 잠든지 1~2시간 만에 심장이 터질 듯 방망이질 치며 벌떡 깨어 창문을 열고 울부짖었습니다. 수면제를 먹어도 새벽 발작은 멈추지 않았는데, 뇌간의 이산화탄소 과민성을 낮추는 한약 처방과 족욕, 복식호흡 지도를 받으며 4주 차부터 수면 중 발작이 완전히 멈췄습니다. 지금은 수면제 없이도 매일 7시간씩 꿀잠을 잡니다.",
+      hasTreatment: true,
+      treatmentType: "천왕보심단 가감 처방 + 미주신경 약침 요법"
+    },
+    {
+      id: "rev-ext-4",
+      category: "단약/테이퍼링",
+      author: "20대 대학생 최OO 님",
+      title: "신경안정제 없이는 외출도 못 하던 약물 의존 환자, 반동 불안 없이 10%씩 안전하게 줄여 완치 판정 받았습니다",
+      content: "자낙스를 하루 3알씩 먹으며 평생 약의 노예로 살아야 하나 깊은 우울증에 빠져 있었습니다. 원장님께서 체계적인 4단계 테이퍼링 로드맵을 설계해 주시고 신경계를 보강하는 청열안신 한약을 복용하며 2주 간격으로 약을 쪼개어 줄여나갔습니다. 놀랍게도 금단 증상 없이 3개월 만에 양약을 완전히 끊고 홀가분하게 학교로 복귀했습니다.",
+      hasTreatment: true,
+      treatmentType: "한양방 감약 테이퍼링 + 귀비탕 맞춤 처방"
+    },
+    {
+      id: "rev-ext-5",
+      category: "회의/발표 불안",
+      author: "30대 연구원 김OO 님",
+      title: "팀 주간 회의 발표 순서만 되면 목소리가 떨리고 숨이 막혔는데, 담력 보강 치료 후 자신감을 되찾았습니다",
+      content: "많은 사람들 앞에서 말할 때 심장이 밖으로 튀어나올 것 같고 머리가 하얘지는 증상 때문에 회사를 그만둘 생각까지 했습니다. 심담허겁(心膽虛怯)을 치료하는 온담탕과 침 치료를 꾸준히 받으면서 3주 차부터 발표 전 가슴 두근거림이 차분하게 가라앉았고, 이제는 발표도 여유롭게 주도하고 있습니다.",
+      hasTreatment: true,
+      treatmentType: "온담탕 가감 처방 + 자율신경 조절 침구 치료"
+    }
+  ];
+
+  function generateContinuousNewReview(existingTitles, deletedPoolIds, state) {
+    for (var i = 0; i < extendedReviewTopics.length; i++) {
+      var item = extendedReviewTopics[i];
+      var norm = normalizeReviewTitle(item.title);
+      if (!existingTitles.has(norm) && !deletedPoolIds.has(item.id)) {
+        return item;
+      }
+    }
+
+    var dynamicReviews = [
+      {
+        id: "rev-dyn-1",
+        category: "지하철/광장공포",
+        author: "30대 직장인 송OO 님",
+        title: "출퇴근 만원 지하철에서 숨 막히던 광장공포증, 단계적 탈감작과 한약으로 완전히 극복했습니다",
+        content: "지하철 문만 닫히면 뛰어내리고 싶던 지옥 같은 출퇴근길이었습니다. 원장님의 단계적 노출 지도와 가슴 울화를 풀어주는 한약을 복용하며 한 정거장씩 성공 경험을 쌓았고, 3개월 만에 신도림 환승역도 아무렇지 않게 통과하고 있습니다.",
+        hasTreatment: true,
+        treatmentType: "맞춤 한약 + 단계적 탈감작 인지행동치료"
+      },
+      {
+        id: "rev-dyn-2",
+        category: "식후 어지럼증",
+        author: "40대 자영업 한OO 님",
+        title: "밥만 먹으면 심장이 쿵쾅거리고 쓰러질 것 같던 식후 공황, 위장 담적 치료로 편안해졌습니다",
+        content: "식사 후 명치가 돌처럼 굳고 공황발작이 와서 식사 자체가 공포였습니다. 위-미주신경 반사를 안정시키는 평위산 가감 한약과 복부 온열 침 치료를 통해 명치의 체기가 내려가면서 두근거림도 거짓말처럼 사라졌습니다.",
+        hasTreatment: true,
+        treatmentType: "평위산 가감방 + 복부 온열 침구 요법"
+      }
+    ];
+
+    var idx = (state.dynamicRevIndex || 0) % dynamicReviews.length;
+    state.dynamicRevIndex = (state.dynamicRevIndex || 0) + 1;
+    return dynamicReviews[idx];
+  }
+
+
   // ──────────────────────────────────────────────────────────
   // 3. 중복 방지 및 기존 글 안전 조회 엔진
   // ──────────────────────────────────────────────────────────
+  function cleanReviewBaseTitle(title) {
+    if (!title || typeof title !== 'string') return '';
+    var s = String(title).trim();
+    s = s.replace(/^\[.*?\]\s*/, '');
+    s = s.replace(/\s*-\s*(재발\s*방지.*|두개천골요법.*|맞춤\s*치료.*|회복\s*수기.*|치료\s*기록.*|극복\s*수기.*)/i, '');
+    s = s.replace(/\s*\((예기불안\s*극복|치료\s*수기|임상\s*호전|완전\s*회복)\)\s*$/i, '');
+    return s.trim();
+  }
+
   function normalizeReviewTitle(title) {
     if (!title || typeof title !== 'string') return '';
-    return title
+    var base = cleanReviewBaseTitle(title);
+    return base
       .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
       .trim()
       .toLowerCase();
+  }
+
+  function getDeletedReviewPoolIds() {
+    var ids = new Set();
+    try {
+      var raw = localStorage.getItem('healim_deleted_pool_ids_reviews');
+      if (raw) {
+        var arr = JSON.parse(raw) || [];
+        arr.forEach(function(id) { if (id) ids.add(String(id)); });
+      }
+    } catch(e) {}
+    return ids;
   }
 
   function getExistingReviewTitles() {
@@ -411,6 +521,17 @@
         if (it && it.title) titles.add(normalizeReviewTitle(it.title));
       });
     }
+
+    // 5) Deleted titles blacklist (Permanent exclusion)
+    try {
+      var rawDelTitles = localStorage.getItem('healim_deleted_titles_reviews');
+      if (rawDelTitles) {
+        var delTitles = JSON.parse(rawDelTitles) || [];
+        delTitles.forEach(function(dt) {
+          if (dt) titles.add(normalizeReviewTitle(dt));
+        });
+      }
+    } catch(e) {}
 
     return titles;
   }
@@ -462,61 +583,45 @@
       if (poolLength === 0) return null;
 
       var existingTitles = getExistingReviewTitles();
+      var deletedPoolIds = getDeletedReviewPoolIds();
 
-      // 기존 등록 글과 중복되지 않는 첫 번째 신규 후기 탐색
       var chosenIndex = -1;
       var candidatePoolItem = null;
-      var poolIdx = (typeof state.poolIndex === 'number') ? state.poolIndex : 0;
 
       for (var i = 0; i < poolLength; i++) {
-        var testIdx = (poolIdx + i) % poolLength;
+        var testIdx = (state.poolIndex + i) % poolLength;
         var cand = pool[testIdx];
         var normT = normalizeReviewTitle(cand.title);
-        if (!existingTitles.has(normT)) {
+        var pId = cand.id;
+
+        if (!existingTitles.has(normT) && !deletedPoolIds.has(String(pId))) {
           chosenIndex = testIdx;
           candidatePoolItem = cand;
           break;
         }
       }
 
-      // 모든 기본 30편 풀이 이미 발행된 경우:
-      // 중단하지 않고, 심층 임상 호전 회차(에디션)로 무제한 연속 발행!
-      var isCycleEdition = false;
-      if (!candidatePoolItem) {
-        isCycleEdition = true;
-        chosenIndex = poolIdx % poolLength;
-        candidatePoolItem = pool[chosenIndex];
+      var poolItem = candidatePoolItem;
+      if (!poolItem) {
+        // 🌟 핵심 요구사항: 풀 소진 시 확장 풀 및 동적 생성기 가동!
+        poolItem = generateContinuousNewReview(existingTitles, deletedPoolIds, state);
       }
 
-      var poolItem = candidatePoolItem;
+      if (!poolItem) {
+        console.warn('[Healim Auto-Review Engine] 발행 가능한 미중복 치료후기를 찾지 못해 안전하게 중단합니다.');
+        return null;
+      }
+
       var pubTimestamp = isManual ? now : (state.nextScheduledTime || now);
-      var seedDateObj = new Date('2026-09-10T12:00:00');
       var effectiveDate = new Date(pubTimestamp);
-      if (effectiveDate < seedDateObj) {
-        effectiveDate = new Date();
-      }
-      if (effectiveDate < seedDateObj) {
-        effectiveDate = new Date('2026-09-11T09:30:00');
-      }
+      var seedDateObj = new Date('2026-09-10T12:00:00');
+      if (effectiveDate < seedDateObj) effectiveDate = new Date();
       var dateStr = effectiveDate.getFullYear() + '.' + String(effectiveDate.getMonth() + 1).padStart(2, '0') + '.' + String(effectiveDate.getDate()).padStart(2, '0');
 
       var finalTitle = poolItem.title;
       var finalContent = poolItem.content;
 
-      if (isCycleEdition) {
-        var reviewVariations = [
-          function(t) { return '[임상 호전기] ' + t.replace(/^[\s\[.*?\]]+/, '') + ' (치료 3개월 경과)'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 체질 맞춤 한약과 자율신경 조절 훈련 회복 증례'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 재발 방지 사후 관리 및 1:1 맞춤 치료 기록'; },
-          function(t) { return '[치유 증례] ' + t.replace(/^[\s\[.*?\]]+/, '') + ' (예기불안 극복)'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 두개천골요법(CST) 병행 뇌신경계 회복 수기'; }
-        ];
-        var vFn = reviewVariations[(state.poolIndex || 0) % reviewVariations.length];
-        finalTitle = vFn(poolItem.title);
-        finalContent = '> 💡 **[해아림 공황장애 실제 임상 호전 증례]**\n> 본 수기는 유사한 증상으로 고통받는 환자분들께 희망을 드리고 올바른 치유 과정을 안내하기 위해 환자분의 동의를 얻어 기록된 임상 사례입니다.\n\n' + poolItem.content;
-      }
-
-      var imgIdx = (chosenIndex % 6) + 1;
+      var imgIdx = ((chosenIndex !== -1 ? chosenIndex : 1) % 6) + 1;
       var newPost = {
         id: 'reviews-' + pubTimestamp,
         category: poolItem.category || '치료후기',
@@ -531,20 +636,35 @@
         isCustom: true,
         isAutoPublished: true,
         createdAt: effectiveDate.getTime(),
-        updatedAt: effectiveDate.getTime()
+        updatedAt: effectiveDate.getTime(),
+        poolId: poolItem.id
       };
 
-      // 스토리지 및 IndexedDB 영구 반영 (다계층 머지 & 무결성 보존)
+      // 🌟 핵심 요구사항 1: 엄격한 중복 감지 시 강제 발행 즉각 중단!
+      var normCand = normalizeReviewTitle(newPost.title);
+      var rawB = localStorage.getItem('healim_board_reviews');
+      var currRevList = rawB ? (JSON.parse(rawB) || []) : [];
+      var exists = currRevList.some(function(it) {
+        return it.id === newPost.id || normalizeReviewTitle(it.title) === normCand;
+      });
+
+      if (exists || existingTitles.has(normCand)) {
+        console.warn('[Healim Auto-Review Engine] 🚫 중복 치료후기 감지되어 발행을 즉각 중단합니다: "' + newPost.title + '"');
+        state.poolIndex = (state.poolIndex + 1) % poolLength;
+        saveAutoReviewState(state);
+        return null; // 강제 발행 취소!
+      }
+
+      // 스토리지 및 IndexedDB 영구 반영
       try {
         var defaultRevSeed = (window.defaultReviewsData || window.defaultReviewsList || []);
 
         var revList = [];
-        var rawB = localStorage.getItem('healim_board_reviews');
         if (rawB) revList = JSON.parse(rawB) || [];
         if ((!revList || revList.length === 0) && defaultRevSeed.length > 0) {
           revList = defaultRevSeed.slice();
         }
-        revList = revList.filter(function(p) { return p.id !== newPost.id; });
+        revList = revList.filter(function(p) { return p.id !== newPost.id && normalizeReviewTitle(p.title) !== normalizeReviewTitle(newPost.title); });
         revList.unshift(newPost);
         localStorage.setItem('healim_board_reviews', JSON.stringify(revList));
 
@@ -554,29 +674,27 @@
         if ((!vaultList || vaultList.length === 0) && revList.length > 0) {
           vaultList = revList.slice();
         }
-        vaultList = vaultList.filter(function(p) { return p.id !== newPost.id; });
+        vaultList = vaultList.filter(function(p) { return p.id !== newPost.id && normalizeReviewTitle(p.title) !== normalizeReviewTitle(newPost.title); });
         vaultList.unshift(newPost);
         localStorage.setItem('healim_vault_all_posts_reviews', JSON.stringify(vaultList));
-
-        var customList = [];
-        var rawC = localStorage.getItem('healim_custom_reviews_posts');
-        if (rawC) customList = JSON.parse(rawC) || [];
-        customList = customList.filter(function(p) { return p.id !== newPost.id; });
-        customList.unshift(newPost);
-        localStorage.setItem('healim_custom_reviews_posts', JSON.stringify(customList));
-
-        // Synchronize to healim_community_posts_v2 (Unified Cross-Board Vault)
-        var rawLeg = localStorage.getItem('healim_community_posts_v2');
-        var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
-        legList = legList.filter(function(p) { return p.id !== newPost.id; });
-        legList.unshift(newPost);
-        localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
 
         if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
           window.HealimPermanentDB.saveVault('reviews', vaultList);
         }
 
-        // Synchronize to Global Cloud DB & Universal Sync Engine
+        var customList = [];
+        var rawC = localStorage.getItem('healim_custom_reviews_posts');
+        if (rawC) customList = JSON.parse(rawC) || [];
+        customList = customList.filter(function(p) { return p.id !== newPost.id && normalizeReviewTitle(p.title) !== normalizeReviewTitle(newPost.title); });
+        customList.unshift(newPost);
+        localStorage.setItem('healim_custom_reviews_posts', JSON.stringify(customList));
+
+        var rawLeg = localStorage.getItem('healim_community_posts_v2');
+        var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
+        legList = legList.filter(function(p) { return p.id !== newPost.id && normalizeReviewTitle(p.title) !== normalizeReviewTitle(newPost.title); });
+        legList.unshift(newPost);
+        localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+
         if (typeof window !== 'undefined') {
           if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
             window.HealimCloudDB.savePost('reviews', newPost);
@@ -587,26 +705,25 @@
         }
       } catch(e) {}
 
-      // 상태 업데이트
-      state.lastPublishedTime = pubTimestamp;
-      if (!Array.isArray(state.publishedPoolIds)) state.publishedPoolIds = [];
-      if (state.publishedPoolIds.indexOf(poolItem.id) === -1) {
-        state.publishedPoolIds.push(poolItem.id);
-      }
-      state.poolIndex = (chosenIndex + 1) % poolLength;
-      var nextDate = calculateNextReviewScheduleTime(new Date(pubTimestamp));
-      state.nextScheduledTime = nextDate.getTime();
+      // Update state
+      state.lastPublishedTime = now;
+      state.nextScheduledTime = calculateNextReviewScheduleTime(effectiveDate);
+      state.poolIndex = ((chosenIndex !== -1 ? chosenIndex : state.poolIndex) + 1) % poolLength;
       saveAutoReviewState(state);
 
-      // 이벤트 전파
+      updateAutoReviewStatusUI(state);
+
       try {
-        window.dispatchEvent(new CustomEvent('healim-community-updated', { detail: { boardType: 'reviews', action: 'auto-publish', post: newPost } }));
-        if (typeof window.broadcastHealimCommunityUpdate === 'function') {
-          window.broadcastHealimCommunityUpdate('reviews', 'auto-publish');
-        }
+        window.dispatchEvent(new CustomEvent('healim-community-updated', {
+          detail: {
+            type: 'reviews',
+            post: newPost,
+            isAutoPublished: true,
+            nextScheduleTime: state.nextScheduledTime
+          }
+        }));
       } catch(e) {}
 
-      updateAutoReviewStatusUI(state);
       return newPost;
     }
 
@@ -615,13 +732,13 @@
   }
 
   function updateAutoReviewStatusUI(state) {
+    if (typeof document === 'undefined') return;
     var el = document.getElementById('autoReviewNextScheduleText');
     if (el && state) {
-      el.textContent = '다음 예정: ' + formatScheduleTime(state.nextScheduledTime);
+      el.textContent = '다음 발행: ' + formatScheduleTime(state.nextScheduledTime);
     }
   }
 
-  // 전역 API 노출
   window.checkAndRunAutoReviewPublish = checkAndRunAutoReviewPublish;
   window.getAutoReviewState = getAutoReviewState;
   window.calculateNextReviewScheduleTime = calculateNextReviewScheduleTime;

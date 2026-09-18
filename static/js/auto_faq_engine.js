@@ -264,6 +264,117 @@
   }
 ];
 
+
+  // ──────────────────────────────────────────────────────────
+  // 1.5. 공황장애 지속적 신규 FAQ 생성기 (Continuous FAQ Generator)
+  // ──────────────────────────────────────────────────────────
+  var extendedFaqTopics = [
+    {
+      id: "faq-ext-1",
+      category: "약물/부작용",
+      title: "공황장애 약(SSRI 항우울제, 신경안정제)을 먹고 살이 찌거나 낮에 너무 졸린데 부작용인가요?",
+      summary: "항우울제 및 항불안제 복용 중 나타나는 대사 저하, 주간 졸림증의 원인과 안전한 해결책.",
+      content: "정신건강의학과에서 처방받는 SSRI(선택적 세로토닌 재흡수 억제제)는 뇌의 5-HT2C 수용체에 작용하여 식욕 조절 중추를 자극하고 인슐린 저항성을 유발할 수 있습니다. 또한 벤조디아제핀계 안정제는 중추신경을 억제하여 낮 동안 멍함과 심한 무기력감을 부릅니다.\n\n이러한 증상은 약물의 대표적 부작용으로, 환자 임의로 약을 끊으면 심한 반동 불안이 오므로 주의해야 합니다. 한의학에서는 비위(脾胃)의 수습(水濕)을 배출하고 담음을 삭이는 보비조습 한약과 뇌 혈류를 맑게 하는 침 치료를 결합하여, 양약의 진정 효과는 유지하면서도 졸림과 체중 증가 부작용을 완충해 드립니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-2",
+      category: "생활 관리",
+      title: "공황장애 환자는 사우나, 찜질방, 뜨거운 온천욕을 피해야 하나요? 가슴이 답답해집니다.",
+      summary: "체온 상승과 말초 혈관 확장이 유발하는 심박수 급상승과 미주신경 반사성 어지럼증 해설.",
+      content: "사우나나 찜질방의 고온 다습한 환경에 들어가면 체온을 식히기 위해 말초 혈관이 급격히 확장됩니다. 혈관이 늘어나면 혈압이 일시적으로 떨어지고, 심장은 뇌로 피를 보내기 위해 분당 120회 이상 빠르게 뛰어야 합니다. 뇌 편도체는 이 뜨거운 열기와 빠른 심박수를 '공황발작이 시작되었다'는 비상 신호로 오판하여 극심한 답답함과 탈출 충동을 일으킵니다.\n\n따라서 공황장애 급성기에는 40도 이상의 고온 사우나나 밀폐된 찜질방을 피하시고, 37~38도의 미온수에서 15분 이내로 가볍게 반신욕을 하시는 것이 자율신경 안정에 유익합니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-3",
+      category: "증상 감별",
+      title: "갑작스러운 한기와 오한으로 이가 덜덜 떨리는데 이것도 공황발작의 전조 증상인가요?",
+      summary: "시상하부 체온 조절 중추의 일시적 혼선과 말초 혈관 수축으로 인한 급성 오한 반응 분석.",
+      content: "많은 분들이 공황발작 하면 '식은땀'과 '열감'만 생각하시지만, 환자의 40% 이상은 반대로 한겨울에 발가벗겨진 것처럼 이가 딱딱 부딪히고 온몸에 닭살이 돋는 극심한 한기(Chills)를 경험합니다. 이는 교감신경 폭주로 피부 모세혈관이 강하게 수축하여 체표 온도가 급강하하고, 뇌 시상하부의 체온 조절 센터가 일시적으로 교란되었기 때문입니다.\n\n이때는 당황하지 마시고 따뜻한 물을 한 잔 마신 뒤 담요를 덮고 복식호흡을 시행하여 말초 순환을 안정시켜야 합니다. 한의학에서는 계지탕, 당귀사역탕 처방을 통해 상열하한(上熱下寒)을 교정하여 체온 불균형을 신속히 바로잡습니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-4",
+      category: "운동 가이드",
+      title: "공황장애가 있으면 유산소 운동이나 헬스를 해도 되나요? 심장이 빨리 뛰어 무섭습니다.",
+      summary: "운동으로 인한 생리적 빈맥과 공황발작의 차이점 및 안전한 단계별 심박수 적응 훈련법.",
+      content: "러닝머신을 뛰거나 무거운 역기를 들 때 심장이 빠르게 뛰고 숨이 가빠지면, 공황 환자의 뇌는 이를 '발작의 시작'으로 착각하여 운동을 기피하게 됩니다. 그러나 적절한 운동은 뇌 유래 신경영양인자(BDNF)를 촉진하여 뇌 자생력을 키우는 최상의 치료제입니다.\n\n핵심은 '단계적 심박수 적응(Desensitization)'입니다. 처음에는 빠른 걸음 15분부터 시작하여 심박수가 110회 내외로 오르는 것을 경험하고, '심장이 빨리 뛰어도 나는 안전하다'는 인지적 성공 경험을 덮어써야 합니다. 해아림한의원에서는 운동 유발성 불안을 완화하는 한방 처방과 맞춤형 운동 강도를 설계해 드립니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-5",
+      category: "심장/부정맥",
+      title: "공황장애와 조기 심실수축(부정맥)은 어떻게 구별하나요? 쿵 내려앉는 느낌이 듭니다.",
+      summary: "심장이 한 박자 덜컹 내려앉는 기외수축과 공황발작 빈맥의 심장내과적 감별 진단.",
+      content: "맥박을 짚어보면 가끔 심장이 '쿵-' 하고 아래로 떨어지거나 한 박자 건너뛰는 듯한 느낌이 드는 것을 조기 심실수축(PVC: Premature Ventricular Contraction)이라고 부릅니다. 건강한 사람에게도 하루 수십 회씩 발생하는 양성 기외수축이지만, 공황 환자는 이 한 번의 덜컹거림에 극도의 공포를 느껴 연쇄 발작으로 이어집니다.\n\n24시간 홀터 심전도 검사상 위험한 부정맥이 아니라면, 이는 교감신경 과긴장으로 인한 심장 신경의 민감증입니다. 심장의 허혈을 다스리는 자감초탕, 삼황사심탕 가감 처방으로 심근의 과민성을 차분하게 진정시킬 수 있습니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-6",
+      category: "음주/숙취",
+      title: "술 마신 다음 날 숙취와 함께 극심한 공황발작이 오는 이유는 무엇인가요? (행오버 패닉)",
+      summary: "알코올 해독 과정의 아세트알데히드 독성과 GABA 결핍이 부르는 반동성 패닉 기전.",
+      content: "술자리에서는 멀쩡하다가 다음 날 아침 눈을 뜨자마자 심장이 터질 듯 뛰고 숨이 막히는 '숙취 공황(Hangxiety)'은 알코올 대사의 필연적 결과입니다. 술을 마시면 억제성 물질인 GABA가 인위적으로 과다 분비되지만, 알코올이 분해되면서 GABA 농도가 급락하고 흥분성 신경전달물질인 글루타메이트가 폭발합니다.\n\n여기에 탈수와 저혈당이 겹쳐 교감신경이 극단적으로 흥분하게 됩니다. 공황장애 환자에게 음주는 뇌 신경망에 불을 지르는 것과 같으므로 치료 기간 동안 금주가 원칙입니다. 숙취 공황이 왔을 때는 충분한 전해질 수분 섭취와 비타민B, 갈근탕 복용이 도움이 됩니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-7",
+      category: "시각/VDT",
+      title: "스마트폰을 오래 보거나 모니터를 집중해서 볼 때 어지럽고 공황이 오는 이유는 무엇인가요?",
+      summary: "청색광(블루라이트)과 경추 굴곡 자세가 유발하는 시각 피질 과부하 및 VDT 자율신경 증후군.",
+      content: "고개를 푹 숙인 채 스마트폰 릴스나 쇼츠 영상을 빠르게 넘겨보거나, 어두운 방에서 밝은 모니터를 장시간 응시하면 뇌의 시각 피질과 전정신경계에 막대한 양의 감각 데이터가 쏟아집니다. 시신경의 피로는 뇌간의 망상체를 자극하여 교감신경을 각성시킵니다.\n\n동시에 일자목 자세로 인해 후두하근이 굳으면서 뇌로 가는 혈류가 차단되어 '시각 유발성 어지럼증'과 공황이 발생합니다. 50분 작업 후 10분 먼 산 바라보기, 화면 밝기 낮추기, 경추 이완 스트레칭을 반드시 실천해야 합니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-8",
+      category: "응급 팩트",
+      title: "공황발작 중 어지러워서 쓰러지거나 기절해서 뇌 손상을 입을 위험은 없나요?",
+      summary: "실신을 유발하는 저혈압과 공황발작 고혈압의 의학적 모순 분석 및 실신 공포의 허구성 규명.",
+      content: "공황 환자분들이 가장 두려워하는 것 중 하나가 '이러다 기절해서 뇌를 다치지 않을까' 하는 생각입니다. 그러나 생리학적으로 공황발작 중에 사람이 기절하는 것은 거의 불가능합니다.\n\n사람이 기절(실신)하려면 혈압이 급격히 떨어져 뇌로 가는 피가 부족해야 합니다. 하지만 공황발작 중에는 아드레날린이 분비되어 혈압이 오르고 심장이 더 세게 뜁니다. 즉 뇌로 피가 콸콸 공급되는 상태이므로 의식을 잃을 확률은 제로에 가깝습니다. 머리가 붕 뜨고 핑 도는 느낌은 혈관 수축에 따른 일시적 감각 이상일 뿐입니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-9",
+      category: "계절/기상",
+      title: "환절기나 비 오기 전날 날씨가 흐릴 때 유독 공황장애 증상이 심해지는 이유는 무엇인가요?",
+      summary: "저기압 전선 통과 시 체내 히스타민 분비 증가와 세로토닌 합성 저하의 기상병(氣象病) 기전.",
+      content: "비가 오기 전 저기압이 접근하면 대기 중 산소 분압이 낮아지고 체내 부교감신경이 일시적으로 항진되면서 혈압이 떨어지고 나른해집니다. 이에 대항하기 위해 신체는 교감신경을 반사적으로 가동하는데, 이 조절 과정에서 자율신경 불균형이 극대화됩니다.\n\n또한 흐린 날씨로 햇빛을 받지 못하면 뇌의 세로토닌 합성이 줄어들고 멜라토닌 리듬이 깨져 불안감이 증폭됩니다. 한의학에서는 이를 '습담(濕痰)과 풍한(風寒)'의 영향으로 다스리며, 온담탕과 실내 조명 밝히기, 가벼운 실내 스트레칭으로 기압 변화에 유연하게 대처할 수 있도록 치료합니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    },
+    {
+      id: "faq-ext-10",
+      category: "한양방 병용",
+      title: "공황장애 치료 중 한약과 정신과 양약을 함께 복용해도 안전한가요? 간에 무리가 가지 않나요?",
+      summary: "양약과 한약의 상호작용 및 1시간 시간차 복용 원칙, 정기 간기능 검사를 통한 안전성 입증.",
+      content: "치료 초기에는 기존에 드시던 신경안정제나 항우울제를 복용하시면서 한약 치료를 병행하는 '한양방 협진 치료'가 매우 효과적입니다. 한약은 양약과 작용 기전이 달라 상호 충돌하지 않으며, 오히려 양약의 복용량을 서서히 줄여갈 때 나타나는 반동성 불안을 든든하게 막아줍니다.\n\n복용 시에는 위장 내 흡수 간섭을 피하기 위해 1시간 정도의 시간차를 두고 복용하시면 안전합니다. 해아림한의원에서 처방하는 모든 한약재는 식약처(KFDA) hGMP 인증을 통과한 규격품 의약품용 약재만을 사용하며, 정기적인 간기능 및 신장기능 검사를 통해 안전성을 엄격히 검증하고 있습니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)"
+    }
+  ];
+
+  function generateContinuousNewFaq(existingTitles, deletedPoolIds, state) {
+    // 1. 확장 풀에서 미발행 질문 탐색
+    for (var i = 0; i < extendedFaqTopics.length; i++) {
+      var item = extendedFaqTopics[i];
+      var norm = normalizeQuestionTitle(item.title);
+      if (!existingTitles.has(norm) && !deletedPoolIds.has(item.id)) {
+        return item;
+      }
+    }
+
+    // 2. 다이나믹 FAQ 조합 생성기
+    var faqQuestions = [
+      { q: "공황발작이 올 때 찬물을 마시거나 얼굴에 찬물을 끼얹는 것이 도움이 되나요?", a: "얼굴의 삼차신경에 찬물이 닿으면 '잠수 반사(Diving Reflex)'가 유도되어 미주신경이 활성화되고 심박수가 즉각 10~20% 강하합니다. 매우 과학적인 응급 처치입니다." },
+      { q: "공황장애 환자가 카페인 없는 차를 마실 때 가장 추천하는 한방차는 무엇인가요?", a: "심장의 열을 내리고 안신(安神) 효과가 뛰어난 볶은 산조인차, 대추차, 캐모마일차, 연자육차가 신경계를 부드럽게 이완하는 데 매우 우수합니다." },
+      { q: "공황장애 환자가 밤에 잠들기 전 스마트폰을 보면 왜 발작 위험이 높아지나요?", a: "화면의 청색광(블루라이트)이 송과체의 멜라토닌 분비를 억제하고 각성 호르몬인 코르티솔을 자극하여 새벽 수면 중 편도체 경보를 촉발하기 때문입니다." },
+      { q: "공황장애 치료를 받으면 언제부터 대중교통이나 비행기를 편안하게 탈 수 있나요?", a: "대개 1단계 급성 발작 제어와 2단계 탈감작 훈련을 거치는 2~3개월 차부터 점진적으로 탑승 거리를 늘려가며 일상으로 복귀하게 됩니다." }
+    ];
+
+    var idx = (state.dynamicFaqIndex || 0) % faqQuestions.length;
+    state.dynamicFaqIndex = (state.dynamicFaqIndex || 0) + 1;
+    var fq = faqQuestions[idx];
+
+    var fullAnswer = fq.a + "\n\n공황장애는 뇌 편도체의 과열과 자율신경계 불균형이 초래하는 기능적 질환입니다. 신체 증상에 지레 겁먹지 마시고 '이것은 내 몸이 보내는 피로 신호이며 반드시 지나간다'는 마음가짐을 유지하십시오.\n\n해아림한의원에서는 1:1 맞춤 한약과 두개천골요법, 침구 치료를 통해 뇌 자율신경망의 자생력을 근본적으로 회복시켜 드립니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)";
+
+    return {
+      id: "faq-dyn-" + Date.now(),
+      category: "공황장애FAQ",
+      title: fq.q,
+      summary: fq.a.substring(0, 80) + "...",
+      content: fullAnswer
+    };
+  }
+
+
   // ──────────────────────────────────────────────────────────
   // 2. 질문 제목 정규화 및 기존 게시글 중복 방지 검사 헬퍼
   // ──────────────────────────────────────────────────────────
@@ -275,13 +386,38 @@
     '재발을 방지하려면 치료 후 어떤 관리가 필요한가요?'
   ];
 
+  function cleanFaqBaseTitle(t) {
+    if (!t) return '';
+    var s = String(t).trim();
+    // 접두사 제거
+    s = s.replace(/^Q[\.:\s\-]+/i, '');
+    s = s.replace(/^\[.*?\]\s*/, '');
+    // 접미사/수식어 제거
+    s = s.replace(/\s*-\s*(원인\s*분석과.*|치료\s*중\s*주의할.*|병원\s*검사로.*|재발\s*위험을.*|한약과\s*침구.*|한방\s*치료.*|극복\s*가이드.*|신경\s*가소성.*)/i, '');
+    s = s.replace(/\s*\((심층\s*안내|심층\s*연재|심층\s*해설|임상\s*문답)\)\??\s*$/i, '');
+    s = s.replace(/\?+$/, '');
+    return s.trim();
+  }
+
   function normalizeQuestionTitle(t) {
     if (!t) return '';
-    return String(t)
-      .replace(/^Q[\.:\s\-]+/i, '')
+    var base = cleanFaqBaseTitle(t);
+    return base
       .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
       .trim()
       .toLowerCase();
+  }
+
+  function getDeletedFaqPoolIds() {
+    var ids = new Set();
+    try {
+      var raw = localStorage.getItem('healim_deleted_pool_ids_faq');
+      if (raw) {
+        var arr = JSON.parse(raw) || [];
+        arr.forEach(function(id) { if (id) ids.add(String(id)); });
+      }
+    } catch(e) {}
+    return ids;
   }
 
   function isObsoleteMockFaq(item) {
@@ -617,24 +753,26 @@
 
     if (forceImmediate || now >= state.nextScheduledTime) {
       var existingTitles = getExistingFaqTitles();
+      var deletedPoolIds = getDeletedFaqPoolIds();
       var poolLength = window.autoFaqContentPool.length;
       var candidatePoolItem = null;
       var chosenIndex = -1;
 
-      // Pool 순환 탐색: 기존에 작성되어 있는 글과 질문 제목이 중복되지 않는 첫 번째 아이템 선정
+      // Pool 순환 탐색: 기존에 작성되어 있는 글과 삭제된 글을 철저히 배제
       for (var i = 0; i < poolLength; i++) {
         var testIdx = (state.poolIndex + i) % poolLength;
         var pItem = window.autoFaqContentPool[testIdx];
         var normTitle = normalizeQuestionTitle(pItem.title);
+        var pId = pItem.id;
 
-        if (!existingTitles.has(normTitle)) {
+        if (!existingTitles.has(normTitle) && !deletedPoolIds.has(String(pId))) {
           candidatePoolItem = pItem;
           chosenIndex = testIdx;
           break;
         }
       }
 
-      // Load current FAQ board to determine total existing count
+      // Load current FAQ board
       var currentFaqList = [];
       try {
         var raw = localStorage.getItem('healim_board_faq');
@@ -644,16 +782,17 @@
         currentFaqList = (window.defaultFaqData || window.defaultFaqList).slice();
       }
 
-      var isCycleEdition = false;
-      if (!candidatePoolItem) {
-        // 모든 18개 기본 임상 질문이 이미 등록되어 있는 경우:
-        // 중단하지 않고, 심층 임상 질의응답 회차(에디션)로 무제한 연속 발행!
-        isCycleEdition = true;
-        chosenIndex = state.poolIndex % poolLength;
-        candidatePoolItem = window.autoFaqContentPool[chosenIndex];
+      var poolItem = candidatePoolItem;
+      if (!poolItem) {
+        // 🌟 핵심 요구사항: 기본 풀 소진 시 재탕하지 않고 확장 풀 및 동적 생성기 가동!
+        poolItem = generateContinuousNewFaq(existingTitles, deletedPoolIds, state);
       }
 
-      var poolItem = candidatePoolItem;
+      if (!poolItem) {
+        console.warn('[Healim Auto-FAQ Engine] 발행 가능한 미중복 FAQ를 찾지 못해 안전하게 중단합니다.');
+        return null;
+      }
+
       var pubTimestamp = forceImmediate ? now : state.nextScheduledTime;
       var seedDateObj = new Date('2026-09-10T12:00:00');
       var effectiveDate = new Date(pubTimestamp);
@@ -667,19 +806,6 @@
 
       var faqTitle = sanitizeMedicalCompliance(poolItem.title);
       var faqContent = sanitizeMedicalCompliance(poolItem.content);
-      if (isCycleEdition) {
-        // Natural clinical question variations without mechanical bracket prefixes:
-        var variationTemplates = [
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 원인 분석과 한방 치료 관리법은?'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 치료 중 주의할 점과 일상 수칙은?'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 병원 검사로 안 나오는 기전과 치료법?'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 재발 위험을 낮추는 공황장애 회복 가이드?'; },
-          function(t) { return t.replace(/[\?\.]*$/, '') + ' - 한약과 침구 치료의 구체적 원리는?'; }
-        ];
-        var vFn = variationTemplates[(state.poolIndex || 0) % variationTemplates.length];
-        faqTitle = vFn(poolItem.title);
-        faqContent = '> 💡 **[해아림 공황장애 심층 질의응답]**\n> 본 질의응답은 환자분들의 이해와 빠른 쾌유를 돕기 위해 해아림한의원 원장단이 지속적으로 연재하는 심층 임상 문답입니다.\n\n' + poolItem.content;
-      }
 
       var newPost = {
         id: 'faq-auto-' + pubTimestamp,
@@ -688,7 +814,7 @@
         date: dateStr,
         views: Math.floor(Math.random() * 80) + 140,
         title: sanitizeMedicalCompliance(faqTitle),
-        image: poolItem.image,
+        image: poolItem.image || '/images/faq/faq_1_exam.svg',
         content: sanitizeMedicalCompliance(faqContent),
         isAutoPublished: true,
         isCustom: true,
@@ -697,76 +823,73 @@
         poolId: poolItem.id
       };
 
-      // 최종 이중 중복 검사
+      // 🌟 핵심 요구사항 1: 엄격한 중복 감지 시 강제 발행 즉시 중단!
       var normCandidate = normalizeQuestionTitle(newPost.title);
       var exists = currentFaqList.some(function(it) {
         return it.id === newPost.id || normalizeQuestionTitle(it.title) === normCandidate;
       });
 
-      if (exists) {
-        newPost.title = faqTitle.replace(/[\?\.]*$/, '') + ' (심층 안내)?';
+      if (exists || existingTitles.has(normCandidate)) {
+        console.warn('[Healim Auto-FAQ Engine] 🚫 중복 FAQ 감지되어 발행을 즉각 중단합니다: "' + newPost.title + '"');
+        state.poolIndex = (state.poolIndex + 1) % poolLength;
+        saveAutoFaqState(state);
+        return null; // 강제 발행 취소!
       }
 
       currentFaqList.unshift(newPost);
-        try {
-          localStorage.setItem('healim_board_faq', JSON.stringify(currentFaqList));
-
-          // Save to Permanent Master Vault
-          var vaultList = [];
-          var rawV = localStorage.getItem('healim_vault_all_posts_faq');
-          if (rawV) vaultList = JSON.parse(rawV) || [];
-          if ((!vaultList || vaultList.length === 0) && currentFaqList.length > 0) {
-            vaultList = currentFaqList.slice();
-          }
-          vaultList = vaultList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normCandidate; });
-          vaultList.unshift(newPost);
-          localStorage.setItem('healim_vault_all_posts_faq', JSON.stringify(vaultList));
-
-          // Save to IndexedDB
-          if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
-            window.HealimPermanentDB.saveVault('faq', vaultList);
-          }
-
-          var customList = [];
-          var rawC = localStorage.getItem('healim_custom_faq_posts');
-          if (rawC) customList = JSON.parse(rawC) || [];
-          customList = customList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normCandidate; });
-          customList.unshift(newPost);
-          localStorage.setItem('healim_custom_faq_posts', JSON.stringify(customList));
-
-          var rawLeg = localStorage.getItem('healim_community_posts_v2');
-          var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
-          legList = legList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normCandidate; });
-          legList.unshift(newPost);
-          localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
-
-          // Synchronize to Global Cloud DB & Universal Sync Engine
-          if (typeof window !== 'undefined') {
-            if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
-              window.HealimCloudDB.savePost('faq', newPost);
-            }
-            if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
-              window.HealimUniversalSync.syncPostToRemote('faq', newPost, 'create');
-            }
-          }
-        } catch(e) {}
-
-      // 상태 전진 (선택된 인덱스 다음으로)
-      state.lastPublishedTime = pubTimestamp;
-      if (state.publishedPoolIds.indexOf(poolItem.id) === -1) {
-        state.publishedPoolIds.push(poolItem.id);
-      }
-      state.poolIndex = (chosenIndex + 1) % poolLength;
-      var nextDate = calculateNextScheduleTime(new Date(pubTimestamp));
-      state.nextScheduledTime = nextDate.getTime();
-      saveAutoFaqState(state);
-
-      // 전체 탭 및 하단 컴포넌트 실시간 이벤트 전송
       try {
-        window.dispatchEvent(new CustomEvent('healim-community-updated', { detail: { boardType: 'faq', action: 'auto-publish', post: newPost } }));
+        localStorage.setItem('healim_board_faq', JSON.stringify(currentFaqList));
+
+        var vKey = 'healim_vault_all_posts_faq';
+        var vaultList = JSON.parse(localStorage.getItem(vKey) || '[]');
+        vaultList = vaultList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normalizeQuestionTitle(newPost.title); });
+        vaultList.unshift(newPost);
+        localStorage.setItem(vKey, JSON.stringify(vaultList));
+
+        if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
+          window.HealimPermanentDB.saveVault('faq', vaultList);
+        }
+
+        var customList = JSON.parse(localStorage.getItem('healim_custom_faq_posts') || '[]');
+        customList = customList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normalizeQuestionTitle(newPost.title); });
+        customList.unshift(newPost);
+        localStorage.setItem('healim_custom_faq_posts', JSON.stringify(customList));
+
+        var rawLeg = localStorage.getItem('healim_community_posts_v2');
+        var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
+        legList = legList.filter(function(p) { return p.id !== newPost.id && normalizeQuestionTitle(p.title) !== normalizeQuestionTitle(newPost.title); });
+        legList.unshift(newPost);
+        localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+
+        if (typeof window !== 'undefined') {
+          if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
+            window.HealimCloudDB.savePost('faq', newPost);
+          }
+          if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
+            window.HealimUniversalSync.syncPostToRemote('faq', newPost, 'create');
+          }
+        }
       } catch(e) {}
 
+      // Update state
+      state.lastPublishedTime = now;
+      state.nextScheduledTime = calculateNextScheduleTime(effectiveDate);
+      state.poolIndex = ((chosenIndex !== -1 ? chosenIndex : state.poolIndex) + 1) % poolLength;
+      saveAutoFaqState(state);
+
       updateAutoFaqStatusUI(state);
+
+      try {
+        window.dispatchEvent(new CustomEvent('healim-community-updated', {
+          detail: {
+            type: 'faq',
+            post: newPost,
+            isAutoPublished: true,
+            nextScheduleTime: state.nextScheduledTime
+          }
+        }));
+      } catch(e) {}
+
       return newPost;
     }
 
@@ -775,13 +898,13 @@
   }
 
   function updateAutoFaqStatusUI(state) {
+    if (typeof document === 'undefined') return;
     var el = document.getElementById('autoFaqNextScheduleText');
     if (el && state) {
-      el.textContent = '다음 예정: ' + formatScheduleTime(state.nextScheduledTime);
+      el.textContent = '다음 발행: ' + formatScheduleTime(state.nextScheduledTime);
     }
   }
 
-  // 전역 노출 API
   window.checkAndRunAutoFaqPublish = checkAndRunAutoFaqPublish;
   window.getAutoFaqState = getAutoFaqState;
   window.calculateNextScheduleTime = calculateNextScheduleTime;
