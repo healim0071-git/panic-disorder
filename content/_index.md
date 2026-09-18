@@ -239,9 +239,9 @@ sections:
               <p class="text-xs md:text-sm text-[#666666] leading-relaxed">한방신경정신과 전문의 및 박사·석사 등 의료진의 체계적 진료</p>
             </div>
             <div class="trust-card">
-              <div class="trust-number">15<span>개 지점</span></div>
+              <div class="trust-number" id="trust-branch-count">16<span>개 지점</span></div>
               <h3 class="text-base font-bold text-[#0d3a42] mb-1">전국 네트워크</h3>
-              <p class="text-xs md:text-sm text-[#666666] leading-relaxed">서울, 경기, 인천, 대구, 대전, 부산, 제주 등 전국 주요 거점 네트워크</p>
+              <p class="text-xs md:text-sm text-[#666666] leading-relaxed">서울, 경기, 인천, 대구, 대전, 울산, 부산, 제주 등 전국 주요 거점 네트워크</p>
             </div>
             <div class="trust-card">
               <div class="trust-number">HRV<span>정밀측정</span></div>
@@ -281,7 +281,7 @@ sections:
             <p class="text-xs text-slate-300 mt-1">가까운 해아림한의원 지점에서 1:1 맞춤 진료 상담을 도와드립니다.</p>
           </div>
           <div class="flex justify-center">
-            <a href="#branches" class="px-6 py-2.5 rounded-md bg-[#c16e1f] text-white font-bold text-sm hover:bg-[#a85d18] transition-colors">가까운 16개 지점 찾기 &gt;</a>
+            <a href="#branches" id="banner-branch-link-bottom" class="px-6 py-2.5 rounded-md bg-[#c16e1f] text-white font-bold text-sm hover:bg-[#a85d18] transition-colors">가까운 16개 지점 찾기 &gt;</a>
           </div>
         </div>
 ---

@@ -55,6 +55,79 @@
       window.scrollToBranchesElement();
     }, 350);
   }
+
+  // A(하단 지점 배너/버튼의 지점 갯수) -> B(4대 신뢰 지표 '전국 네트워크' 카드의 지점 갯수) 자동 연동 시스템
+  function syncBranchCountFromAtoB() {
+    // A 요소 찾기 (우선순위: #banner-branch-link-bottom -> .bg-[#0d3a42] 내부 링크 -> 지점 찾기 텍스트 링크)
+    var aBtn = document.getElementById('banner-branch-link-bottom');
+    if (!aBtn) {
+      var allBranchLinks = document.querySelectorAll('a[href*="#branches"], a[href*="branches"]');
+      for (var j = allBranchLinks.length - 1; j >= 0; j--) {
+        var lText = allBranchLinks[j].textContent || '';
+        if (lText.indexOf('지점 찾기') !== -1 || lText.indexOf('지점') !== -1) {
+          aBtn = allBranchLinks[j];
+          break;
+        }
+      }
+    }
+
+    // B 요소 찾기 (우선순위: #trust-branch-count -> '전국 네트워크' 카드의 .trust-number)
+    var bElem = document.getElementById('trust-branch-count');
+    if (!bElem) {
+      var allTrustCards = document.querySelectorAll('.trust-card');
+      for (var i = 0; i < allTrustCards.length; i++) {
+        if (allTrustCards[i].textContent.indexOf('전국 네트워크') !== -1) {
+          bElem = allTrustCards[i].querySelector('.trust-number');
+          break;
+        }
+      }
+    }
+
+    if (!aBtn || !bElem) return;
+
+    // A의 텍스트에서 지점 갯수 추출 (예: "가까운 16개 지점 찾기 >" -> "16")
+    var aText = (aBtn.textContent || aBtn.innerText || '').trim();
+    var match = aText.match(/(\d+)\s*개\s*지점/);
+    if (!match) {
+      match = aText.match(/(\d+)/);
+    }
+
+    if (match && match[1]) {
+      var branchCount = match[1];
+      var targetHtml = branchCount + '<span>개 지점</span>';
+      if (bElem.innerHTML.trim() !== targetHtml) {
+        bElem.innerHTML = targetHtml;
+      }
+    }
+  }
+
+  window.syncBranchCountFromAtoB = syncBranchCountFromAtoB;
+
+  // 1) 즉시 실행 및 DOMContentLoaded / Load 이벤트 연동
+  syncBranchCountFromAtoB();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncBranchCountFromAtoB);
+  }
+  window.addEventListener('load', syncBranchCountFromAtoB);
+
+  // 2) A 요소의 텍스트 변경 감지 시 B 요소 자동 동기화 (MutationObserver)
+  function attachAObserver() {
+    var aBtn = document.getElementById('banner-branch-link-bottom') ||
+               document.querySelector('a[href*="#branches"]');
+    if (aBtn && window.MutationObserver && !aBtn._branchSyncObserverAttached) {
+      aBtn._branchSyncObserverAttached = true;
+      var observer = new MutationObserver(function() {
+        syncBranchCountFromAtoB();
+      });
+      observer.observe(aBtn, { childList: true, characterData: true, subtree: true });
+    }
+  }
+
+  attachAObserver();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachAObserver);
+  }
+  window.addEventListener('load', attachAObserver);
 })();
 </script>
 
