@@ -11,7 +11,7 @@
  *   1) [공황장애 정밀검사 알아보기] -> https://healim-panic.com/panic-diagnosis
  *   2) [공황장애 치료방법 알아보기] -> https://healim-panic.com/panic-treatment
  *   3) [전국 지점 안내] -> https://www.healim.com
- * - 스케줄: 매주 4~5회 (1~2일 간격 랜덤), 오전 8시~11시 (08:00:00 ~ 10:59:59) 랜덤 발행
+ * - 스케줄: 매주 2~3회 (2~3일 간격 랜덤), 오전 8시~11시 (08:00:00 ~ 10:59:59) 랜덤 발행
  * - 엄격한 중복 방지: 기존 작성글(시드, 수동작성, 기발행글)과 제목이 중복되지 않도록 정규화 비교 필터링 적용
  * ==============================================================================
  */
@@ -19,24 +19,54 @@
 (function() {
   'use strict';
 
-  
-  // Automatic purge of obsolete dysautonomia mock columns from localStorage
-  (function purgeOldDysautonomiaColumns() {
+  // 비정상 동적 조합 생성 글 및 구형 목업 칼럼 자동 정화 (54~61번 등 과다 발행 글 완전 제거)
+  (function purgeObsoleteAndOverpublishedColumns() {
     try {
-      var keys = ['healim_board_columns', 'healim_vault_all_posts_columns', 'healim_community_posts_v2'];
+      var keys = ['healim_board_columns', 'healim_vault_all_posts_columns', 'healim_custom_columns_posts', 'healim_community_posts_v2'];
       var badKeywords = ['이갈이', '골반통', '미각', '후각', '살이 쭉쭉', '동결', '장내 세균총', '술 한잔', '배란기나 생리', '비 오기 전날', '안정 회복까지 얼마나 걸릴까'];
+      var dynamicSymptomPairs = [
+        '숨이 턱 막히는 기도 폐쇄 공포와 질식감',
+        '머리가 붕 뜨고 세상이 낯선 비현실감·이인증',
+        '밀폐된 공간에서 덮쳐오는 폐소공포',
+        '체온 조절 실패로 인한 급성 한기와 식은땀',
+        '가슴 두근거림과 심장 부정맥 불안'
+      ];
+      var dynamicPerspectivePairs = [
+        '자율신경 균형과 미주신경 브레이크 강화 솔루션',
+        '임상 검사상 정상 환자를 위한 1:1 맞춤 치료 가이드',
+        '약물 의존 부담을 덜며 자생력을 키우는 단계별 치료',
+        '스트레스 저항도를 극대화하는 한방신경정신과 치법',
+        '뇌 신경 가소성 회복과 재발율을 낮추는 체계적 치료'
+      ];
+
+      function isBadItem(it) {
+        if (!it) return true;
+        var pId = String(it.poolId || '');
+        var id = String(it.id || '');
+        if (pId.indexOf('col-dyn-') !== -1 || id.indexOf('col-dyn-') !== -1) return true;
+        if (!it.title) return false;
+        if (badKeywords.some(function(bad) { return it.title.indexOf(bad) !== -1; })) return true;
+        
+        // 동적 조합 글(54~61번 등) 정밀 감지
+        var hasSymptom = dynamicSymptomPairs.some(function(s) { return it.title.indexOf(s) !== -1; });
+        var hasPerspective = dynamicPerspectivePairs.some(function(p) { return it.title.indexOf(p) !== -1; });
+        if (hasSymptom && hasPerspective) return true;
+
+        return false;
+      }
+
       keys.forEach(function(k) {
         var raw = localStorage.getItem(k);
         if (raw) {
           var arr = JSON.parse(raw);
           if (Array.isArray(arr)) {
-            var filtered = arr.filter(function(it) {
-              if (!it || !it.title) return true;
-              return !badKeywords.some(function(bad) { return it.title.indexOf(bad) !== -1; });
-            });
+            var filtered = arr.filter(function(it) { return !isBadItem(it); });
             if (filtered.length !== arr.length) {
               localStorage.setItem(k, JSON.stringify(filtered));
-              console.log('[HealimAutoColumnEngine] Purged obsolete dysautonomia posts from ' + k);
+              console.log('[HealimAutoColumnEngine] Purged obsolete/overpublished posts from ' + k + ' (' + (arr.length - filtered.length) + ' items removed)');
+              if (k === 'healim_vault_all_posts_columns' && typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
+                window.HealimPermanentDB.saveVault('columns', filtered);
+              }
             }
           }
         }
@@ -609,12 +639,12 @@
 
   /**
    * Calculate next schedule:
-   * - 4~5 posts per week: 1 day later (50%) or 2 days later (50%) -> avg 1.5 days
+   * - 2~3 posts per week: 2 days later (50%) or 3 days later (50%) -> avg 2.5 days
    * - Strict random time between 08:00:00 and 10:59:59 AM
    */
   function calculateNextColumnSchedule(baseTime) {
     var base = (baseTime instanceof Date) ? baseTime : new Date();
-    var dayOffset = Math.random() < 0.5 ? 1 : 2;
+    var dayOffset = Math.random() < 0.5 ? 2 : 3;
     var next = new Date(base.getTime() + dayOffset * 24 * 60 * 60 * 1000);
 
     // Random hour between 8 and 10 (8, 9, 10 -> strictly 08:00:00 to 10:59:59)
@@ -827,6 +857,29 @@
     if (!isManual && now < state.nextScheduledTime) {
       updateStatusBadgeUI(state);
       return false; // Not yet scheduled time
+    }
+
+    // 🌟 핵심 요구사항: 하루 최대 1편 발행 락 (Daily Cap)
+    // 수동 즉시 발행이 아닌 자동 스케줄의 경우, 오늘 날짜에 이미 발행된 칼럼이 있다면 당일 추가 발행을 원천 차단하고 다음 스케줄로 안전하게 연기
+    if (!isManual) {
+      var todayStr = formatDateOnly(new Date(now));
+      var existingColsForToday = [];
+      try {
+        var rawC = localStorage.getItem(STORAGE_BOARD_KEY);
+        if (rawC) existingColsForToday = JSON.parse(rawC) || [];
+      } catch(e) {}
+      var alreadyPublishedToday = existingColsForToday.some(function(item) {
+        return item && (item.date === todayStr || (item.createdAt && formatDateOnly(new Date(item.createdAt)) === todayStr));
+      });
+      if (alreadyPublishedToday || (state.lastPublishedTime && formatDateOnly(new Date(state.lastPublishedTime)) === todayStr)) {
+        if (state.nextScheduledTime <= now) {
+          var nextD = calculateNextColumnSchedule(new Date());
+          state.nextScheduledTime = nextD.getTime();
+          saveAutoColumnState(state);
+        }
+        updateStatusBadgeUI(state);
+        return false;
+      }
     }
 
     var existingTitles = getExistingColumnTitles();

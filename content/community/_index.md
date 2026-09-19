@@ -175,7 +175,7 @@ sections:
         <div class="board-control-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
         <div id="autoColumnStatusBadge" class="flex items-center gap-2 text-xs text-[#0d3a42] bg-[#f0f7f8] border border-[#badfe3] px-3.5 py-2 rounded-lg" style="display: none;">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span><strong>공황장애 치료칼럼 자동 발행</strong>: 주 4~5회 (오전 08:00~11:00 랜덤)</span>
+          <span><strong>공황장애 치료칼럼 자동 발행</strong>: 주 2~3회 (오전 08:00~11:00 랜덤)</span>
           <span class="text-[#888888] mx-1">|</span>
           <span id="autoColumnNextScheduleText" class="text-[#1c6e78] font-semibold">다음 예정: 확인 중...</span>
           <button type="button" id="btnTriggerColumnPublish" onclick="triggerAutoColumnPublishManual()" class="ml-1 text-xs px-2.5 py-1 bg-white border border-[#badfe3] rounded hover:bg-[#eaf3f4] text-[#1c6e78] font-bold transition-colors shadow-2xs" title="스케줄 대기 없이 지금 즉시 1편 자동 발행">⚡ 즉시 1편 발행</button>
@@ -2561,9 +2561,31 @@ sections:
 
         function isObsoleteMockColumn(item) {
           if (!item) return false;
+          // 🌟 동적 매트릭스 조합으로 과다 발행된 글(54~61번: col-dyn-* 및 해당 제목 패턴) 자동 제거
+          var pId = String(item.poolId || '');
+          var sId = String(item.id || '');
+          if (pId.indexOf('col-dyn-') !== -1 || sId.indexOf('col-dyn-') !== -1) return true;
+          if (item.title) {
+            var dynSymptoms = [
+              '숨이 턱 막히는 기도 폐쇄 공포와 질식감',
+              '머리가 붕 뜨고 세상이 낯선 비현실감·이인증',
+              '밀폐된 공간에서 덮쳐오는 폐소공포',
+              '체온 조절 실패로 인한 급성 한기와 식은땀',
+              '가슴 두근거림과 심장 부정맥 불안'
+            ];
+            var dynPerspectives = [
+              '자율신경 균형과 미주신경 브레이크 강화 솔루션',
+              '임상 검사상 정상 환자를 위한 1:1 맞춤 치료 가이드',
+              '약물 의존 부담을 덜며 자생력을 키우는 단계별 치료',
+              '스트레스 저항도를 극대화하는 한방신경정신과 치법',
+              '뇌 신경 가소성 회복과 재발율을 낮추는 체계적 치료'
+            ];
+            var hasSym = dynSymptoms.some(function(s) { return item.title.indexOf(s) !== -1; });
+            var hasPer = dynPerspectives.some(function(p) { return item.title.indexOf(p) !== -1; });
+            if (hasSym && hasPer) return true;
+          }
           if (item.isCustom) return false;
-          var strId = String(item.id || '');
-          if (/^col(umns)?-\d{8,}/.test(strId)) return false;
+          if (/^col(umns)?-\d{8,}/.test(sId)) return false;
           if (item.id === 'col-auto-latest') return true;
           if (!item.title) return false;
           var norm = String(item.title)
@@ -2614,7 +2636,7 @@ sections:
               localStorage.removeItem('healim_auto_faq_state');
               localStorage.setItem('healim_faq_panic_v8', 'true');
             }
-            if (localStorage.getItem('healim_mock_purge_done_v5')) return;
+            if (localStorage.getItem('healim_mock_purge_done_v6')) return;
             ['faq', 'columns', 'reviews'].forEach(function(bKey) {
               var isObsoleteFn = (bKey === 'faq' ? isObsoleteMockFaq : (bKey === 'columns' ? isObsoleteMockColumn : isObsoleteMockReview));
 
@@ -2634,8 +2656,20 @@ sections:
                 var bList = (JSON.parse(rawB) || []).filter(function(it) { return !isObsoleteFn(it); });
                 localStorage.setItem(bStorageKey, JSON.stringify(bList));
               }
+
+              var cKey = 'healim_custom_' + bKey + '_posts';
+              var rawC = localStorage.getItem(cKey);
+              if (rawC) {
+                var cList = (JSON.parse(rawC) || []).filter(function(it) { return !isObsoleteFn(it); });
+                localStorage.setItem(cKey, JSON.stringify(cList));
+              }
             });
-            localStorage.setItem('healim_mock_purge_done_v5', 'true');
+            var rawLeg = localStorage.getItem('healim_community_posts_v2');
+            if (rawLeg) {
+              var legList = (JSON.parse(rawLeg) || []).filter(function(it) { return !isObsoleteMockColumn(it) && !isObsoleteMockFaq(it); });
+              localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+            }
+            localStorage.setItem('healim_mock_purge_done_v6', 'true');
           } catch(e) {}
         }
         purgeObsoleteMockPosts();

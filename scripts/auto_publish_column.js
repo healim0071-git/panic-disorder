@@ -9,7 +9,7 @@
  *    - [공황장애 검사 알아보기](https://healim-panic.com/panic-diagnosis)
  *    - [공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)
  *    - [전국 지점 안내](https://www.healim.com)
- * 4. 주기: 매주 4~5개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
+ * 4. 주기: 매주 2~3개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
  * 5. 중복 방지: 단 질문과 핵심주제는 기존에 작성되어 있는 글들의 제목과 중복되지 않도록 엄격한 정규화 비교 필터링 및 중복 방지 알고리즘 적용
  * 6. 의료광고법 및 5대 표현 가이드라인 철저 준수:
  *    - 원칙 1: 근원치료/근본치료, 완치된다, 전문병원, 전문/특화/첨단, 완벽해결, 부작용이 없다 등 지양
@@ -81,7 +81,7 @@ if (duplicatesFound === 0) {
 
 function calculateNextColumnSchedule(baseTime = new Date()) {
   const base = (baseTime instanceof Date) ? baseTime : new Date();
-  const dayOffset = Math.random() < 0.5 ? 1 : 2;
+  const dayOffset = Math.random() < 0.5 ? 2 : 3;
   const next = new Date(base.getTime() + dayOffset * 24 * 60 * 60 * 1000);
 
   const hour = 8 + Math.floor(Math.random() * 3);
@@ -92,7 +92,7 @@ function calculateNextColumnSchedule(baseTime = new Date()) {
   return next;
 }
 
-console.log('\n--- Sample Column Schedule Calculations (4~5 posts/week, 08:00~11:00 AM) ---');
+console.log('\n--- Sample Column Schedule Calculations (2~3 posts/week, 08:00~11:00 AM) ---');
 let cur = new Date();
 for (let i = 1; i <= 5; i++) {
   cur = calculateNextColumnSchedule(cur);
