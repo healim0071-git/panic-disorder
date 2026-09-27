@@ -3325,18 +3325,24 @@ section#section-markdown:first-of-type {
 /* Academic Paper & Test Chart Gallery Subtitles */
 .healim-paper-desc {
   text-align: center;
-  font-size: clamp(0.74rem, 2.3vw, 0.85rem);
+  font-size: clamp(0.72rem, 2.2vw, 0.85rem);
   color: #555555;
-  line-height: 1.45;
+  line-height: 1.42;
   margin-top: -0.25rem;
   margin-bottom: 0.65rem;
   word-break: keep-all;
   letter-spacing: -0.025em;
   padding: 0 0.25rem;
-  min-height: 2.9em;
+  min-height: 4.3em;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .healim-paper-desc {
+    min-height: 2.8em;
+  }
 }
 
 @media (min-width: 768px) {

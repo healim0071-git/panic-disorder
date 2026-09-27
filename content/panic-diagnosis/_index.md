@@ -214,14 +214,14 @@ sections:
         <div class="max-w-4xl mx-auto grid grid-cols-2 gap-3 sm:gap-6 md:gap-8 mb-8">
         <div>
         <div class="healim-paper-tag">&lt; 뇌파 뇌기능검사 &gt;</div>
-        <div class="healim-paper-desc">뇌파 분석을 통해 뇌의 기능적 상태와 공포 제어 균형을 확인하는 검사 자료입니다.</div>
+        <div class="healim-paper-desc">뇌파 분석을 통해 뇌 기능 상태와 각성 균형을 확인하는 검사 자료입니다.</div>
         <div class="healim-image-frame">
         <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과">
         </div>
         </div>
         <div>
         <div class="healim-paper-tag">&lt; HRV 자율신경검사 &gt;</div>
-        <div class="healim-paper-desc">공황 시 급발진하는 교감신경과 부교감신경의 조절상태를 확인하는 검사 자료입니다.</div>
+        <div class="healim-paper-desc">교감신경과 부교감신경의 조절상태를 확인하는 검사 자료입니다.</div>
         <div class="healim-image-frame">
         <img src="/images/hrv_autonomic_test.png?v=20260907_v2" alt="HRV 자율신경검사 분석 결과">
         </div>

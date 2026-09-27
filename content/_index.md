@@ -190,7 +190,7 @@ sections:
           <div class="max-w-4xl mx-auto grid grid-cols-2 gap-3 sm:gap-6 md:gap-8 mb-8">
             <div>
               <div class="healim-paper-tag">&lt; 뇌파 뇌기능검사 &gt;</div>
-              <div class="healim-paper-desc">뇌파 분석을 통해 뇌의 기능적 상태와 각성 균형을 확인하는 검사 자료입니다.</div>
+              <div class="healim-paper-desc">뇌파 분석을 통해 뇌 기능 상태와 각성 균형을 확인하는 검사 자료입니다.</div>
               <div class="healim-image-frame">
                 <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과">
               </div>
