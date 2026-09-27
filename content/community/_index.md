@@ -2561,31 +2561,11 @@ sections:
 
         function isObsoleteMockColumn(item) {
           if (!item) return false;
-          // 🌟 동적 매트릭스 조합으로 과다 발행된 글(54~61번: col-dyn-* 및 해당 제목 패턴) 자동 제거
-          var pId = String(item.poolId || '');
+          // Never purge user custom or valid auto-published columns
+          if (item.isCustom || item.isAutoPublished) return false;
           var sId = String(item.id || '');
-          if (pId.indexOf('col-dyn-') !== -1 || sId.indexOf('col-dyn-') !== -1) return true;
-          if (item.title) {
-            var dynSymptoms = [
-              '숨이 턱 막히는 기도 폐쇄 공포와 질식감',
-              '머리가 붕 뜨고 세상이 낯선 비현실감·이인증',
-              '밀폐된 공간에서 덮쳐오는 폐소공포',
-              '체온 조절 실패로 인한 급성 한기와 식은땀',
-              '가슴 두근거림과 심장 부정맥 불안'
-            ];
-            var dynPerspectives = [
-              '자율신경 균형과 미주신경 브레이크 강화 솔루션',
-              '임상 검사상 정상 환자를 위한 1:1 맞춤 치료 가이드',
-              '약물 의존 부담을 덜며 자생력을 키우는 단계별 치료',
-              '스트레스 저항도를 극대화하는 한방신경정신과 치법',
-              '뇌 신경 가소성 회복과 재발율을 낮추는 체계적 치료'
-            ];
-            var hasSym = dynSymptoms.some(function(s) { return item.title.indexOf(s) !== -1; });
-            var hasPer = dynPerspectives.some(function(p) { return item.title.indexOf(p) !== -1; });
-            if (hasSym && hasPer) return true;
-          }
-          if (item.isCustom) return false;
-          if (/^col(umns)?-\d{8,}/.test(sId)) return false;
+          var pId = String(item.poolId || '');
+          if (/^col(umns)?-\d{8,}/.test(sId) || /^col-auto-/.test(sId) || /^col-fresh-/.test(pId) || /^col-ext-/.test(pId)) return false;
           if (item.id === 'col-auto-latest') return true;
           if (!item.title) return false;
           var norm = String(item.title)
