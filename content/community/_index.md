@@ -4002,7 +4002,7 @@ sections:
             item.image = safeFaqImg;
             var photoBadge = '<span class="text-xs font-bold px-1.5 py-0.5 rounded bg-[#f0f7f8] text-[#1c6e78] border border-[#badfe3] ml-1 shrink-0">📷 사진</span>';
             var richContent = renderRichContent(item.content);
-            var imageHtml = (safeFaqImg && richContent.indexOf(safeFaqImg) === -1) ? '<div class="my-3 rounded-lg overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-md"><img src="' + safeFaqImg + '" alt="' + cleanTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\'; this.src=\'/images/faq/faq_1_exam.svg\';}else{this.parentElement.style.display=\'none\';}" /></div>' : ''; this.parentElement.style.display=\'none\';" /></div>' : '';
+            var imageHtml = (safeFaqImg && richContent.indexOf(safeFaqImg) === -1) ? '<div class="my-3 rounded-lg overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-md"><img src="' + safeFaqImg + '" alt="' + cleanTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\'; this.src=\'/images/faq/faq_1_exam.svg\';}else{this.parentElement.style.display=\'none\';}" /></div>' : '';
 
             var adminButtonsHtml = isSuperAdmin ? (
               '<div class="flex items-center gap-1.5">' +
