@@ -517,7 +517,7 @@
         </div>
         <div id="commonBottomModalYoutubeArea" class="mb-4" style="display: none;"></div>
         <div id="commonBottomModalImageArea" class="mb-4" style="display: none;">
-          <img id="commonBottomModalImage" src="" alt="첨부 사진" class="w-full max-h-[380px] object-contain rounded-xl border border-[#badfe3] bg-[#f8fafb]" onerror="this.onerror=null; this.parentElement.style.display='none';" />
+          <img id="commonBottomModalImage" src="" alt="첨부 사진" class="w-full max-h-[380px] object-contain rounded-xl border border-[#badfe3] bg-[#f8fafb]" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\'; this.src=\'/images/faq/faq_1_exam.svg\';}else{this.parentElement.style.display=\'none\';}" />
           <div id="commonBottomModalBlurNotice" class="mt-2 text-xs text-[#1c6e78] font-semibold flex items-center justify-between bg-[#f0f7f8] px-3 py-1.5 rounded-lg border border-[#badfe3]" style="display: none;">
             <span class="flex items-center gap-1.5"><span>🔒</span> <span>회원 인증 열람: 의료법 제56조에 따라 로그인 회원에게 제공되는 원본 치료후기 사진입니다.</span></span>
           </div>
@@ -2636,6 +2636,11 @@
         var imgEl = document.getElementById('commonBottomModalImage');
         var blurNotice = document.getElementById('commonBottomModalBlurNotice');
         var displayImg = item.image || item.thumb || '';
+        if (boardType === 'faq' && !displayImg) {
+          displayImg = getFaqFallbackImage(item.id || item.title, item.category);
+        } else if (boardType === 'columns' && !displayImg) {
+          displayImg = getColumnFallbackImage(item.id || item.title, item.category);
+        }
         if (boardType === 'youtube') displayImg = '';
 
         if (displayImg) {
@@ -2837,10 +2842,8 @@
               var hasAnyImage = item.image || (item.content && (item.content.indexOf('![') !== -1 || item.content.indexOf('<img') !== -1));
               var photoBadge = hasAnyImage ? '<span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-[#f0f7f8] text-[#1c6e78] border border-[#badfe3] ml-1.5">📷 사진</span>' : '';
 
-              var imageHtml = '';
-              if (item.image && richContent.indexOf(item.image) === -1) {
-                imageHtml = '<div class="my-3.5 rounded-xl overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-lg shadow-xs"><img src="' + item.image + '" alt="' + formattedTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="this.onerror=null; this.parentElement.style.display=\'none\';" /></div>';
-              }
+              var safeFaqImg = item.image || getFaqFallbackImage(item.id || item.title, item.category);
+              var imageHtml = '<div class="my-3.5 rounded-xl overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-lg shadow-xs"><img src="' + safeFaqImg + '" alt="' + formattedTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\'; this.src=\'/images/faq/faq_1_exam.svg\';}else{this.parentElement.style.display=\'none\';}" /></div>';
 
               var isOpenAttr = (currentlyOpenId && (currentlyOpenId === String(item.id) || currentlyOpenId === safeFaqId || (formattedTitle && currentlyOpenId === formattedTitle))) ? ' open' : '';
 
@@ -2916,7 +2919,7 @@
               var cleanContent = (item.content || '').replace(/<img[^>]*>/gi, '[사진]').replace(/!\[.*?\]\(.*?\)/g, '[사진]').replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
               cleanContent = cleanContent.replace(/\*\*(.*?)\*\*/g, '$1').replace(/__(.*?)__/g, '$1').replace(/^#+\s*/g, '');
               if (cleanContent.length > 110) cleanContent = cleanContent.slice(0, 110) + '...';
-              var img = item.image || item.thumb || '/images/columns/column_1_palpitation.svg';
+              var img = item.image || item.thumb || getColumnFallbackImage(item.id || item.title, item.category);
               var cat = item.category || '칼럼';
               var author = item.author || '해아림한의원';
               var date = item.date || '2026.09.09';

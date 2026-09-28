@@ -421,7 +421,7 @@ sections:
         </div>
         <div id="detailModalYoutubeArea" class="mb-4" style="display: none;"></div>
         <div id="detailModalImageArea" class="mb-4" style="display: none;">
-        <img id="detailModalImage" src="" alt="첨부 사진" class="w-full max-h-[380px] object-contain rounded-xl border border-[#badfe3] bg-[#f8fafb]" onerror="this.onerror=null; this.parentElement.style.display='none';" />
+        <img id="detailModalImage" src="" alt="첨부 사진" class="w-full max-h-[380px] object-contain rounded-xl border border-[#badfe3] bg-[#f8fafb]" onerror="if(!this.dataset.fallback){this.dataset.fallback='1'; this.src=(window.currentDetailBoardType==='faq'?'/images/faq/faq_1_exam.svg':'/images/columns/column_30_cure_homeostasis.svg');}else{this.parentElement.style.display='none';}" />
         </div>
         <div id="detailModalContent" class="text-sm text-[#333333] leading-relaxed py-2 min-h-[120px]">
         내용이 여기에 표시됩니다.
@@ -2932,6 +2932,60 @@ sections:
           return null;
         }
 
+        function getFaqFallbackImage(seedKey, category) {
+          var faqImages = [
+            '/images/faq/faq_1_exam.svg', '/images/faq/faq_2_panic.svg', '/images/faq/faq_3_thermal.svg',
+            '/images/faq/faq_4_vagus.svg', '/images/faq/faq_5_sleep.svg', '/images/faq/faq_6_pots.svg',
+            '/images/faq/faq_7_brainfog.svg', '/images/faq/faq_8_tapering.svg', '/images/faq/faq_9_cst.svg',
+            '/images/faq/faq_10_sweat.svg', '/images/faq/faq_11_period.svg', '/images/faq/faq_12_lifestyle.svg',
+            '/images/faq/faq_13_vision.svg', '/images/faq/faq_14_weather.svg', '/images/faq/faq_15_alcohol.svg',
+            '/images/faq/faq_16_hormone.svg', '/images/faq/faq_17_weight.svg', '/images/faq/faq_18_recovery.svg',
+            '/images/faq/faq_19_globus.svg', '/images/faq/faq_20_morning.svg', '/images/faq/faq_21_drymouth.svg',
+            '/images/faq/faq_22_orthostatic.svg', '/images/faq/faq_23_sensory.svg', '/images/faq/faq_24_bladder.svg',
+            '/images/faq/faq_25_safety.svg', '/images/faq/faq_26_gustatory.svg', '/images/faq/faq_27_chestpain.svg',
+            '/images/faq/faq_28_fasciculation.svg', '/images/faq/faq_29_raynaud.svg', '/images/faq/faq_30_pulsatile.svg'
+          ];
+          var hash = 0;
+          var str = String(seedKey || category || Math.random());
+          for (var i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+          }
+          var idx = Math.abs(hash) % faqImages.length;
+          return faqImages[idx];
+        }
+        window.getFaqFallbackImage = getFaqFallbackImage;
+
+        function getColumnFallbackImage(seedKey, category) {
+          var colImages = [
+            '/images/columns/column_1_palpitation.svg', '/images/columns/column_2_gut_brain.svg',
+            '/images/columns/column_3_temp_dysregulation.svg', '/images/columns/column_4_pots_dizziness.svg',
+            '/images/columns/column_5_neuroplasticity.svg', '/images/columns/column_6_adrenal_fatigue.svg',
+            '/images/columns/column_7_cervical_cst.svg', '/images/columns/column_8_tinnitus_vagus.svg',
+            '/images/columns/column_9_sweat_dysregulation.svg', '/images/columns/column_10_hyperventilation.svg',
+            '/images/columns/column_11_chronic_fatigue.svg', '/images/columns/column_12_brainfog_glymphatic.svg',
+            '/images/columns/column_13_somatization.svg', '/images/columns/column_14_recovery_roadmap.svg',
+            '/images/columns/column_15_neurotransmitter.svg', '/images/columns/column_16_hormone.svg',
+            '/images/columns/column_17_alcohol.svg', '/images/columns/column_18_gut_brain_axis.svg',
+            '/images/columns/column_19_burnout_vagus.svg', '/images/columns/column_20_metabolism.svg',
+            '/images/columns/column_21_olfactory_gustatory.svg', '/images/columns/column_22_pelvic_pain.svg',
+            '/images/columns/column_23_bruxism_tmj.svg', '/images/columns/column_24_reactive_hypoglycemia.svg',
+            '/images/columns/column_25_microvascular_angina.svg', '/images/columns/column_26_photophobia_pupil.svg',
+            '/images/columns/column_27_premature_ventricular.svg', '/images/columns/column_28_seasonal_adaptation.svg',
+            '/images/columns/column_29_panic_boundary.svg', '/images/columns/column_30_cure_homeostasis.svg'
+          ];
+          var hash = 0;
+          var str = String(seedKey || category || Math.random());
+          for (var i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+          }
+          var idx = Math.abs(hash) % colImages.length;
+          return colImages[idx];
+        }
+        window.getColumnFallbackImage = getColumnFallbackImage;
+
+
         // ─────────────────────────────────────────────────────────────
         // Healim Universal Realtime Sync Engine (Cross-Browser & Multi-Device)
         // ─────────────────────────────────────────────────────────────
@@ -3948,10 +4002,11 @@ sections:
           pageItems.forEach(function(item) {
             var safeFaqId = String(item.id || '').replace(/'/g, "\\'");
             var cleanTitle = (item.title || '').replace(/^Q[\.:\s\-]+/i, '').replace(/\*\*(.*?)\*\*/g, '$1').replace(/__(.*?)__/g, '$1').trim();
-            var hasAnyImage = item.image || (item.content && (item.content.indexOf('![') !== -1 || item.content.indexOf('<img') !== -1));
-            var photoBadge = hasAnyImage ? '<span class="text-xs font-bold px-1.5 py-0.5 rounded bg-[#f0f7f8] text-[#1c6e78] border border-[#badfe3] ml-1 shrink-0">📷 사진</span>' : '';
+            var safeFaqImg = item.image || extractFirstImageFromContent(item.content) || getFaqFallbackImage(item.id || item.title, item.category);
+            item.image = safeFaqImg;
+            var photoBadge = '<span class="text-xs font-bold px-1.5 py-0.5 rounded bg-[#f0f7f8] text-[#1c6e78] border border-[#badfe3] ml-1 shrink-0">📷 사진</span>';
             var richContent = renderRichContent(item.content);
-            var imageHtml = (item.image && richContent.indexOf(item.image) === -1) ? '<div class="my-3 rounded-lg overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-md"><img src="' + item.image + '" alt="' + cleanTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="this.onerror=null; this.parentElement.style.display=\'none\';" /></div>' : '';
+            var imageHtml = (safeFaqImg && richContent.indexOf(safeFaqImg) === -1) ? '<div class="my-3 rounded-lg overflow-hidden border border-[#badfe3] bg-[#f8fafb] max-w-md"><img src="' + safeFaqImg + '" alt="' + cleanTitle + '" class="max-h-80 w-auto object-contain rounded-lg" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback=\'1\'; this.src=\'/images/faq/faq_1_exam.svg\';}else{this.parentElement.style.display=\'none\';}" /></div>' : ''; this.parentElement.style.display=\'none\';" /></div>' : '';
 
             var adminButtonsHtml = isSuperAdmin ? (
               '<div class="flex items-center gap-1.5">' +
@@ -4296,8 +4351,9 @@ sections:
           var html = '';
           pageItems.forEach(function(item, idx) {
             var safeColId = String(item.id || ('col-' + idx)).replace(/'/g, "\\'");
-            var hasAnyImage = item.image || (item.content && (item.content.indexOf('![') !== -1 || item.content.indexOf('<img') !== -1));
-            var photoBadge = hasAnyImage ? ' <span class="text-[12px] text-[#1c6e78] font-bold" title="사진 첨부">📷</span>' : '';
+            var safeColImg = item.image || extractFirstImageFromContent(item.content) || getColumnFallbackImage(item.id || item.title, item.category);
+            item.image = safeColImg;
+            var photoBadge = ' <span class="text-[12px] text-[#1c6e78] font-bold" title="사진 첨부">📷</span>';
             var itemNumber = totalItems - startIndex - idx;
             var manageTd = isSuperAdmin ? (
               '<td class="col-desktop-only" style="text-align: center; white-space: nowrap;">' +
@@ -5232,6 +5288,10 @@ sections:
         var modalDialog = document.querySelector('#detailModalBackdrop .healim-modal-dialog');
         if (boardType === 'reviews' && !item.image) {
           item.image = extractFirstImageFromContent(item.content) || getReviewFallbackImage(item.id || item.title);
+        } else if (boardType === 'faq' && !item.image) {
+          item.image = extractFirstImageFromContent(item.content) || getFaqFallbackImage(item.id || item.title, item.category);
+        } else if (boardType === 'columns' && !item.image) {
+          item.image = extractFirstImageFromContent(item.content) || getColumnFallbackImage(item.id || item.title, item.category);
         }
 
         if (modalDialog) {

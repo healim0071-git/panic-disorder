@@ -136,6 +136,33 @@ if (complianceViolations === 0) {
   process.exitCode = 1;
 }
 
+
+console.log('====================================================');
+console.log('  치료칼럼 이미지(16:9 메디컬 벡터 일러스트) 무결성 검증');
+console.log('====================================================');
+let imgViolations = 0;
+const staticDir = path.join(__dirname, '../static');
+
+columnsPool.forEach((item, idx) => {
+  if (!item.image) {
+    console.error(`[IMAGE MISSING] Column #${idx + 1} has no image defined!`);
+    imgViolations++;
+  } else {
+    const localImgPath = path.join(staticDir, item.image.replace(/^\//, ''));
+    if (!fs.existsSync(localImgPath)) {
+      console.error(`[IMAGE NOT FOUND ON DISK] Column #${idx + 1}: ${item.image}`);
+      imgViolations++;
+    }
+  }
+});
+
+if (imgViolations === 0) {
+  console.log(`✅ All ${columnsPool.length} Columns have valid 16:9 illustration images that 100% exist on disk! (0 missing)\n`);
+} else {
+  console.error(`❌ Found ${imgViolations} image violations in Column pool!\n`);
+  process.exitCode = 1;
+}
+
 module.exports = {
   columnsPool,
   calculateNextColumnSchedule,

@@ -224,6 +224,33 @@ if (complianceViolations === 0) {
   process.exitCode = 1;
 }
 
+
+console.log('====================================================');
+console.log('  6. FAQ 이미지(썸네일) 무결성 및 파일 존재 검증');
+console.log('====================================================');
+let imgViolations = 0;
+const staticDir = path.join(__dirname, '../static');
+
+allAuditItems.forEach((item, idx) => {
+  if (!item.image) {
+    console.error(`[IMAGE MISSING] FAQ item ${item.id || idx + 1} has no image defined!`);
+    imgViolations++;
+  } else {
+    const localImgPath = path.join(staticDir, item.image.replace(/^\//, ''));
+    if (!fs.existsSync(localImgPath)) {
+      console.error(`[IMAGE NOT FOUND ON DISK] FAQ item ${item.id || idx + 1}: ${item.image}`);
+      imgViolations++;
+    }
+  }
+});
+
+if (imgViolations === 0) {
+  console.log(`✅ All ${allAuditItems.length} FAQ articles have valid images that 100% exist on disk! (0 missing)\n`);
+} else {
+  console.error(`❌ Found ${imgViolations} image violations in FAQ pool!\n`);
+  process.exitCode = 1;
+}
+
 module.exports = {
   autoFaqContentPool,
   extendedFaqTopics,
