@@ -1014,7 +1014,7 @@
     var postId = 'col-auto-' + now;
 
     var postTitle = sanitizeMedicalCompliance(article.title);
-    var postContent = sanitizeMedicalCompliance(article.content);
+    var postContent = sanitizeMedicalCompliance(String(article.content).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n'));
 
     var newPost = {
       id: postId,
@@ -1131,6 +1131,16 @@
 
   // Global exports
   window.checkAndRunAutoColumnPublish = checkAndRunAutoColumnPublish;
+  // Normalize literal escaped newlines in columnsPool
+  columnsPool.forEach(function(item) {
+    if (item && item.content) {
+      item.content = String(item.content).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
+    }
+    if (item && item.summary) {
+      item.summary = String(item.summary).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
+    }
+  });
+
   window.columnsPool = columnsPool;
   window.triggerAutoColumnPublishManual = function() {
     var isHealimAdmin = false;

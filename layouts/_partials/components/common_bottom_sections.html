@@ -2350,6 +2350,7 @@
       function renderFaqRichContent(rawText) {
         if (!rawText) return '';
         var s = String(rawText).trim();
+        s = s.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
 
         // (1) 스크립트 및 위험 태그 살균
         s = s
@@ -2398,8 +2399,9 @@
         });
 
         // (9) 줄바꿈 보존
-        if (s.indexOf('<p') === -1 && s.indexOf('<div') === -1) {
+        if (s.indexOf('<p') === -1) {
           s = s.replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>');
+          s = s.replace(/(?:<br\s*\/?>\s*)+(<div|<h4|<blockquote)/gi, '$1').replace(/(<\/div>|<\/h4>|<\/blockquote>)(?:\s*<br\s*\/?>)+/gi, '$1');
         }
 
         return s;

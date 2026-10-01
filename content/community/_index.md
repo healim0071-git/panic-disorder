@@ -2122,6 +2122,13 @@ sections:
         window.defaultFaqList = defaultFaqData;
         window.defaultReviewsData = defaultReviewsData;
         window.defaultYoutubeData = defaultYoutubeData;
+        if (Array.isArray(defaultColumnsData)) {
+          defaultColumnsData.forEach(function(col) {
+            if (col && col.content) {
+              col.content = String(col.content).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
+            }
+          });
+        }
         window.defaultColumnsData = defaultColumnsData;
 
         // YouTube Helper Functions
@@ -3789,6 +3796,7 @@ sections:
         // --- Rich Content Parser (Markdown + Inline Images + Videos) ---
         function renderRichContent(rawText) {
           if (!rawText) return '';
+          rawText = String(rawText).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
 
           // If content already contains rich HTML tags from editor or formatted data
           var hasRichHtml = /<(?:p|div|img|br|strong|b|a|span|h[1-6]|ul|ol|li)\b/i.test(rawText);
@@ -5642,6 +5650,7 @@ sections:
           }
 
           var contentHtml = rawContent;
+          contentHtml = String(contentHtml).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n');
           // Restore reading-mode inline images into interactive editable WYSIWYG widgets with delete button
           try {
             contentHtml = contentHtml.replace(/<div class="article-inline-img-wrap">\s*<img src="([^"]+)"[^>]*>\s*<\/div>/gi, function(match, src) {
