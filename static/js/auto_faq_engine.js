@@ -657,13 +657,7 @@
     var initState = {
       lastPublishedTime: 0,
       nextScheduledTime: next.getTime(),
-      publishedPoolIds: [
-        'pool-faq-1', 'pool-faq-2', 'pool-faq-3', 'pool-faq-4', 'pool-faq-5',
-        'pool-faq-6', 'pool-faq-7', 'pool-faq-8', 'pool-faq-9', 'pool-faq-10',
-        'pool-faq-11', 'pool-faq-12', 'pool-faq-13', 'pool-faq-14', 'pool-faq-15',
-        'pool-faq-16', 'pool-faq-17', 'pool-faq-18', 'pool-faq-19', 'pool-faq-20',
-        'pool-faq-21', 'pool-faq-22'
-      ],
+      publishedPoolIds: ["faq-ext-9", "faq-ext-7", "faq-ext-6", "faq-ext-5", "faq-ext-3", "faq-ext-2", "faq-ext-4", "faq-ext-1", "faq-ext-10", "faq-ext-8", "faq-auto-22-1788884900000", "faq-auto-21-1788884890000", "faq-auto-20-1788884880000", "faq-auto-19-1788884870000", "faq-auto-18-1788884860000", "faq-auto-17-1788884850000", "faq-auto-16-1788884840000", "faq-auto-15-1788884830000", "faq-auto-14-1788884820000", "faq-auto-13-1788884810000", "faq-auto-12-1788884800000", "faq-auto-11-1788884790000", "faq-auto-10-1788884780000", "faq-auto-9-1788884770000", "faq-auto-8-1788884760000", "faq-auto-7-1788884750000", "faq-auto-6-1788884740000", "faq-auto-5-1788884730000", "faq-auto-4-1788884720000", "faq-auto-3-1788884710000", "faq-auto-2-1788884700000", "faq-auto-1-1788884690000"],
       poolIndex: 22
     };
     saveAutoFaqState(initState);

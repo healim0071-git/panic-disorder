@@ -109,9 +109,9 @@
       })
       .then(function(data) {
         var rawHub = data.data || data;
-        var CURRENT_EPOCH = '20260916_panic_v15';
+        var CURRENT_EPOCH = '20261005_panic_v16';
         // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH!
-        if (!rawHub || rawHub.epoch !== CURRENT_EPOCH || (rawHub.version && rawHub.version < 15)) {
+        if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 15)) {
           console.warn('[HealimCloudDB] Remote static hub is outdated (' + (rawHub ? rawHub.epoch : 'none') + '). Preserving local canonical seeds.');
           if (onDone) onDone(false, null);
           return;
