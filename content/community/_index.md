@@ -21,7 +21,7 @@ sections:
         </p>
         </div>
 
-        <!-- 4-Tab Community Navigation Bar -->
+        <!-- 5-Tab Community Navigation Bar -->
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
@@ -31,7 +31,7 @@ sections:
         </li>
         <li>
         <button type="button" class="community-tab-btn" data-tab="reviews" onclick="switchCommunityTab('reviews')">
-        치료후기 <span class="lock-tag">🔒 회원전용</span>
+        공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </button>
         </li>
         <li>
@@ -43,6 +43,11 @@ sections:
         <button type="button" class="community-tab-btn" data-tab="columns" onclick="switchCommunityTab('columns')">
         공황장애 치료 칼럼
         </button>
+        </li>
+        <li>
+        <a href="https://www.healim.com/5-6" target="_blank" rel="noopener noreferrer" class="community-tab-btn" style="text-decoration: none;">
+        한약과 비용고시
+        </a>
         </li>
         </ul>
         </div>
