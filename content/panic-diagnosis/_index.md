@@ -1,5 +1,5 @@
 ---
-title: "공황장애의 원인과 정밀 진단 체계 | 해아림 3단계 검사"
+title: "공황장애의 원인과 검사 진단 체계 | 해아림 3단계 검사"
 seo:
   title: "공황장애 원인 검사 및 3단계 진단 시스템 | 해아림한의원"
 description: "눈에 보이지 않는 신경계 불균형과 편도체 과민성을 객관적 수치로 확인하는 HRV 자율신경 검사, 뇌파(QEEG) 뇌기능 검사, 스트레스 저항도 등 해아림 공황장애 원인 검사 및 3단계 진단 시스템을 안내합니다."
@@ -16,7 +16,7 @@ sections:
         <div class="mb-10 text-center md:text-left">
         <span class="inline-block px-3 py-1 bg-[#eaf3f4] text-[#1c6e78] font-bold text-xs rounded-full uppercase tracking-wider mb-2">Precision Diagnosis</span>
         <h1 class="text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-4">
-        공황장애의 원인과 정밀 진단 체계
+        공황장애의 원인과 검사 진단 체계
         </h1>
         <p class="text-[#555555] text-base md:text-lg leading-relaxed max-w-3xl">
         눈에 보이지 않는 공포 회로의 과민성과 자율신경 불균형을 수치와 그래프로 객관화합니다. 해아림한의원은 공황 유발 요인에 대한 다각적인 분석과 과학적 생체 신호 검사, 한의학적 변증 진단을 결합하여 치료의 시작점을 정밀하게 설정합니다.
