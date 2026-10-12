@@ -6,8 +6,8 @@
  * 1. 대상: 공황장애 및 공황발작 및 예기불안 환자 다빈도 질문
  * 2. 분량: 사용자 설정 900자~1,000자 사이 엄격 유지 (기본 풀 1,000자 내외, 자동발행 신규 풀 900~1,000자 정밀 세팅)
  * 3. 구성: 상단 썸네일 사진 + 본문 답변 + 하단 3대 링크 (줄바꿔서 1줄씩 띄움)
- *    - [공황장애 검사 알아보기](https://healim-panic.com/panic-diagnosis)
- *    - [공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)
+ *    - [공황장애 검사 알아보기](https://healim-panic.com/panic-diagnosis/)
+ *    - [공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment/)
  *    - [전국 지점 안내](https://www.healim.com)
  * 4. 주기: 매주 2~3개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
  * 5. 중복 방지: 질문글은 기존에 작성되어 있는 글과 중복되지 않도록 엄격한 정규화 비교 필터링 적용
@@ -147,7 +147,7 @@ for (let i = 1; i <= 4; i++) {
   } catch(e) {}
 
   // Test enforceFaqTargetLength
-  const sampleShort = "공황발작이 올 때 찬물을 마시는 것은 잠수 반사를 유도합니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n[전국 지점 안내](https://www.healim.com)";
+  const sampleShort = "공황발작이 올 때 찬물을 마시는 것은 잠수 반사를 유도합니다.\n\n[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis/)\n\n[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment/)\n\n[전국 지점 안내](https://www.healim.com)";
   const enforcedShort = enforceFaqTargetLength(sampleShort);
   if (enforcedShort.length < AUTO_FAQ_CONFIG.minLength || enforcedShort.length > AUTO_FAQ_CONFIG.maxLength) {
     console.error(`[ENFORCE FAIL] Enforced short text is ${enforcedShort.length} chars!`);

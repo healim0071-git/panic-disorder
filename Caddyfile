@@ -1,7 +1,36 @@
-# Caddyfile for automatic HTTPS via Let's Encrypt
+﻿# ══════════════════════════════════════════════════════════════
+# Caddyfile: 해아림한의원 공황장애 클리닉
+# SEO & 구글 서치콘솔 최적화 웹 서버 설정
+# ══════════════════════════════════════════════════════════════
+
+# 1. www -> non-www 영구 리디렉션 (301 Canonical Redirect)
+www.healim-panic.com {
+    redir https://healim-panic.com{uri} permanent
+}
+
+# 2. 메인 도메인 설정
 healim-panic.com {
     root * ./public
+    encode gzip zstd
     file_server
-    encode gzip
-    # Caddy will automatically obtain and renew TLS certificates from Let's Encrypt
+
+    # 검색엔진 피드 및 사이트맵 자동 매핑 (404 방지)
+    rewrite /feed /rss.xml
+    rewrite /feed.xml /rss.xml
+    rewrite /atom.xml /rss.xml
+    rewrite /sitemap_index.xml /sitemap.xml
+
+    # 보안 및 SEO 응답 헤더
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    }
+
+    # 사용자 정의 404 오류 페이지 처리
+    handle_errors {
+        rewrite * /404.html
+        file_server
+    }
 }

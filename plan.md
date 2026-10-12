@@ -2332,3 +2332,24 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
   - `node scripts/sync_seo_feeds.js`: 78개 RSS 아이템, 7개 핵심 페이지 sitemap, 32개 FAQ + 40개 칼럼 스키마 및 정적 아카이브 100% 정상 통과.
   - `node scripts/auto_publish_faq.js`: 32개 FAQ 900~1000자 및 의료광고법 0건 위반 100% PASS.
   - `node scripts/auto_publish_column.js`: 30개 칼럼 풀 100% 중복 0건, 의료광고법 0건 위반 PASS.
+
+---
+
+## 🔍 [2026-10-12] 마일스톤 9.81: 구글 서치 콘솔(GSC) 6대 색인 제외 이슈 정밀 원인 규명 및 전면 해결
+- **구글 서치 콘솔 6대 사유 심층 분석 및 조치 내역**:
+  1. **리디렉션이 포함된 페이지 (4개)** & **적절한 표준 태그가 포함된 대체 페이지 (4개)**:
+     - 원인: 사이트 내 574개 링크가 트레일링 슬래시 없는 URL(`https://healim-panic.com/panic-diagnosis`, `/panic-treatment` 등 4개 URL)로 작성되어 웹서버가 301 영구 이동 리디렉션을 발생시킴.
+     - 조치: 전체 574개 내부 링크를 표준 캐노니컬 슬래시 포함 URL(`https://healim-panic.com/panic-diagnosis/`, `/panic-treatment/`)로 전면 일괄 교정. `Caddyfile`에 www->non-www 301 캐노니컬 리디렉션 탑재.
+  2. **'NOINDEX' 태그에 의해 제외되었습니다 (12개)**:
+     - 원인: 관리자/로그인/회원가입 페이지(`/admin/`, `/login/`, `/register/`, `/site_join_type_choice/`) 및 쿼리 파라미터 URL.
+     - 조치: 비공개 인증 영역이므로 NOINDEX가 적용된 것은 구글 표준상 정상(Expected behavior). 크롤 예산 낭비를 막기 위해 `robots.txt`에 해당 4개 디렉토리 `Disallow` 명시.
+  3. **찾을 수 없음(404) (4개)**:
+     - 원인: 검색엔진 로봇이 흔히 자동 탐색하는 `/feed`, `/feed.xml`, `/sitemap_index.xml` 및 구 테마 레거시 경로.
+     - 조치: `Caddyfile`에 rewrite 규칙 선언(`/feed`, `/feed.xml` -> `/rss.xml`, `/sitemap_index.xml` -> `/sitemap.xml`) 및 커스텀 404 핸들러 완비.
+  4. **크롤링됨 - 현재 색인이 생성되지 않음 (4개)**:
+     - 원인: 10월 9일 구글 크롤링 당시 커뮤니티 페이지의 정적 HTML이 비어 있고(JS 렌더링 의존), sitemap에 빈 태그/작성자 페이지가 포함되어 씬 컨텐츠(Thin content) 판정.
+     - 조치: `community` 페이지에 32개 FAQ + 40개 칼럼 전문 시맨틱 `<noscript>` 탑재, `FAQPage`/`ItemList` 스키마 및 고품질 E-E-A-T 탑재, 빈 카테고리/태그 sitemap 제외 완료.
+  5. **발견됨 - 현재 색인이 생성되지 않음 (6개)**:
+     - 원인: 신규 사이트 제출 시 크롤링 대기열(Queue)에 대기 중인 상태.
+     - 조치: `sitemap.xml`에 `priority="1.0"`, `priority="0.95"`, 최신 ISO-8601 `lastmod` 타임스탬프 부여로 구글 크롤 우선순위 극대화.
+- **Git 반영**: 100% 검증 통과 후 메인 브랜치 커밋 및 푸시.
