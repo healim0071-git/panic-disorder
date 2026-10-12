@@ -1,4 +1,4 @@
-{{/* Custom Hugo Blox Markdown Block: Matches B section container (max-w-7xl) on PC with full mobile responsiveness */}}
+﻿{{/* Custom Hugo Blox Markdown Block: Matches B section container (max-w-7xl) on PC with full mobile responsiveness */}}
 {{ $page := .wcPage }}
 {{ $block := .wcBlock }}
 {{ $content := $block.content }}
@@ -20,5 +20,46 @@
   <div class="w-full">
     {{ . }}
   </div>
+  {{ end }}
+
+  {{/* ══════════════════════════════════════════════════════════════ */}}
+  {{/*  구글, 네이버(Yeti), AI검색(GEO/AEO) 전용 정적 시맨틱 아카이브  */}}
+  {{/*  (자바스크립트 미실행 크롤러 및 AI 검색엔진 100% 본문 색인 보장) */}}
+  {{/* ══════════════════════════════════════════════════════════════ */}}
+  {{ if in $page.RelPermalink "/community/" }}
+  <noscript>
+    <div class="healim-noscript-seo-archive bg-white p-6 rounded-xl border border-gray-200 mt-8">
+      <h2 class="text-2xl font-bold text-[#0d3a42] mb-4">공황장애 자주 묻는 질문(FAQ) 및 전문 치료 칼럼 아카이브 (검색엔진 전문 색인)</h2>
+      <p class="text-sm text-gray-600 mb-6">해아림한의원 16여 년 임상 노하우가 담긴 자주 묻는 질문 32문답과 전문 의료 칼럼 40편의 전체 내용입니다.</p>
+      
+      <div class="mb-10">
+        <h3 class="text-xl font-bold text-[#1c6e78] mb-4 pb-2 border-b">공황장애 FAQ (자주 묻는 질문 32문답)</h3>
+        {{ with hugo.Data.healim_community_hub }}
+          {{ range .faq }}
+          <article class="mb-6 pb-6 border-b border-gray-100" id="faq-static-{{ .id }}">
+            <h4 class="text-lg font-bold text-[#0d3a42] mb-2">Q. {{ .title }}</h4>
+            <p class="text-xs text-gray-500 mb-2">분류: {{ .category }} | 작성: {{ .author }} | 발행일: {{ .date }}</p>
+            <div class="p-3 bg-[#f0f7f8] rounded-lg text-sm text-[#0d3a42] mb-3"><strong>핵심 요약:</strong> {{ .summary | default .title }}</div>
+            <div class="text-sm text-gray-700 leading-relaxed space-y-2">{{ .content | markdownify }}</div>
+          </article>
+          {{ end }}
+        {{ end }}
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold text-[#1c6e78] mb-4 pb-2 border-b">공황장애 한방신경정신과 치료 칼럼 (40편)</h3>
+        {{ with hugo.Data.healim_community_hub }}
+          {{ range .columns }}
+          <article class="mb-6 pb-6 border-b border-gray-100" id="col-static-{{ .id }}">
+            <h4 class="text-lg font-bold text-[#0d3a42] mb-2">{{ .title }}</h4>
+            <p class="text-xs text-gray-500 mb-2">분류: {{ .category }} | 작성: {{ .author }} | 발행일: {{ .date }}</p>
+            <div class="p-3 bg-[#fdf9f2] rounded-lg text-sm text-[#8c6218] mb-3"><strong>칼럼 요약:</strong> {{ .summary | default .title }}</div>
+            <div class="text-sm text-gray-700 leading-relaxed space-y-2">{{ .content | markdownify }}</div>
+          </article>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </noscript>
   {{ end }}
 </div>

@@ -1,2 +1,74 @@
+﻿# ══════════════════════════════════════════════════════════════
+# 해아림한의원 공황장애 클리닉 robots.txt
+# 구글(Google), 네이버(Naver), 다음(Daum) 및 글로벌 AI 검색(GEO/AEO) 최적화
+# ══════════════════════════════════════════════════════════════
+
+# 1. 모든 일반 검색엔진 기본 규칙
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /site_join_type_choice/
+
+# 2. 국내 주요 검색엔진 (네이버 Yeti, 다음/카카오 Daumoa)
+User-agent: Yeti
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /site_join_type_choice/
+
+User-agent: Daumoa
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /site_join_type_choice/
+
+# 3. 글로벌 주요 검색엔진 (Googlebot, Bingbot)
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /site_join_type_choice/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /site_join_type_choice/
+
+# 4. 글로벌 AI 검색 및 답변 엔진 (GEO / AEO 최적화 수집 봇 명시적 허용)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# 5. 사이트맵 및 RSS 피드 선언 (네이버 서치어드바이저 & 구글 서치콘솔)
+Sitemap: https://healim-panic.com/sitemap.xml
+Sitemap: https://healim-panic.com/rss.xml

@@ -2296,3 +2296,39 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
 - **빌드 및 배포**:
   - Hugo 최적화 프로덕션 빌드(`hugo --cleanDestinationDir --minify`) 정상 완료 (Pages: 32개, Error: 0건).
   - GitHub 원격 저장소(`main` 브랜치) 푸시 완료.
+
+---
+
+## 🚀 [2026-10-12] 마일스톤 9.80: 구글·네이버 SEO & 글로벌 AI 검색(GEO) / 답변(AEO) 통합 최적화 및 자동발행 동기화 체계 완비
+- **요구사항 분석 및 진단**:
+  1. 기존 상태:
+     - 구글/네이버 색인용 robots.txt에 관리자/비공개 페이지 차단 누락, 글로벌 AI 검색 봇(GPTBot, PerplexityBot, ClaudeBot 등) 명시적 허용 부재.
+     - sitemap.xml에 lastmod(수정일시), priority(우선순위) 부재 및 빈 분류(tags/categories/authors) 노출.
+     - rss.xml에 자동 발행된 32편 FAQ와 40편 치료칼럼이 전혀 들어가지 않아 네이버 서치어드바이저 수집 누락 발생.
+     - 커뮤니티 페이지(community)가 순수 클라이언트 JS로만 렌더링되어 초기 정적 HTML이 비어 있어 비-JS 크롤러(네이버 Yeti, AI 크롤러) 본문 색인 불가.
+     - JSON-LD 스키마에 FAQ가 3개만 하드코딩되어 있고, 의료진 E-E-A-T, 감별진단, Wikidata 지식그래프 엔티티 연동, Speakable 스키마 결여.
+  2. 전면 해결 및 구축 내역:
+     - **구글 & 네이버 SEO 최적화**:
+       * `layouts/robots.txt` & `static/robots.txt`: 관리자/인증 페이지 Disallow, 글로벌 AI 크롤러 9대 봇 명시적 허용, sitemap 및 rss 선언.
+       * `layouts/_default/sitemap.xml`: 빈 태그 배제, 페이지별 priority(1.0, 0.95, 0.9) 및 최신 ISO-8601 lastmod 자동 생성.
+       * `layouts/_default/rss.xml`: 6대 정적 페이지 + 40편 치료칼럼 + 32편 FAQ(총 78개 콘텐츠) 전체를 RFC 822 pubDate, 고유 guid, 두괄식 요약과 함께 완전 발행.
+     - **글로벌 AI 검색(GEO: Generative Engine Optimization) 최적화**:
+       * `layouts/_partials/hooks/head-end/seo_schema.html`:
+         - `MedicalClinic`: psychiatric/TCM 전문과목, knowsAbout, sameAs(공식홈, 유튜브, 네이버블로그) 완비.
+         - `Physician`: 한방신경정신과 전문의/한의학박사 자격(hasCredential), 대한한방신경정신과학회 소속(memberOf), 16여 년 임상 노하우 반영.
+         - `ScholarlyArticle`: 해아림 의료진 연구 논문 실적 스키마 연동으로 학술 권위도 극대화.
+         - Wikidata/Wikipedia 엔티티 연동: 공황장애(Q202360), 자율신경계(Q174360), 심계항진(Q326306).
+         - 감별진단(differentialDiagnosis): 자율신경실조증(G90.9), 부정맥(I49.9), 협심증(I20.9), 갑상선기능항진증(E05.9) 명시.
+     - **AI 답변(AEO: Answer Engine Optimization) 최적화**:
+       * `FAQPage` 스키마: `hugo.Data.healim_community_hub.faq` 연동으로 32개 전체 FAQ 문답 자동 렌더링.
+       * `ItemList` 스키마: 40편 치료칼럼 전체 BlogPosting 리치 스니펫 제공.
+       * `SpeakableSpecification` 스키마: 구글 AI Overviews 및 음성 검색용 CSS 셀렉터 선언.
+       * `HowTo` 스키마: 공황발작 3분 긴급 대처법(4-6 복식호흡, 인지 재구조화, 5-4-3-2-1 그라운딩) 3단계 구조화.
+       * `layouts/_partials/hbx/blocks/markdown/block.html`: 비-JS 크롤러(네이버 Yeti 등)를 위한 `<noscript>` 시맨틱 정적 아카이브 탑재(32개 FAQ 및 40개 칼럼 전문 색인 보장).
+     - **자동발행 글 & 향후 발행 글 최적화 파이프라인**:
+       * 현재 발행된 32편 FAQ 및 40편 칼럼 전수 검사: 두괄식 요약 100%, 3대 내부 필수 링크 100%, 의료광고법 5대 원칙 위반 0건 클린 검증.
+       * `scripts/sync_seo_feeds.js` 구축: 데이터 허브 무결성 검증, Hugo 빌드, rss.xml 및 sitemap.xml 자동 동기화 일원화.
+- **검증 결과**:
+  - `node scripts/sync_seo_feeds.js`: 78개 RSS 아이템, 7개 핵심 페이지 sitemap, 32개 FAQ + 40개 칼럼 스키마 및 정적 아카이브 100% 정상 통과.
+  - `node scripts/auto_publish_faq.js`: 32개 FAQ 900~1000자 및 의료광고법 0건 위반 100% PASS.
+  - `node scripts/auto_publish_column.js`: 30개 칼럼 풀 100% 중복 0건, 의료광고법 0건 위반 PASS.

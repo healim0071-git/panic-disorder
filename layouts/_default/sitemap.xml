@@ -1,0 +1,27 @@
+﻿{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{- range site.Pages -}}
+    {{- $isPrivate := or .Params.private (in .RelPermalink "/admin/") (in .RelPermalink "/login/") (in .RelPermalink "/register/") (in .RelPermalink "/site_join_type_choice/") (in .RelPermalink "/tags/") (in .RelPermalink "/categories/") (in .RelPermalink "/authors/") -}}
+    {{- if not $isPrivate -}}
+      {{- $priority := "0.8" -}}
+      {{- $changefreq := "weekly" -}}
+      {{- if .IsHome -}}
+        {{- $priority = "1.0" -}}
+        {{- $changefreq = "daily" -}}
+      {{- else if in .RelPermalink "/community/" -}}
+        {{- $priority = "0.95" -}}
+        {{- $changefreq = "daily" -}}
+      {{- else if or (in .RelPermalink "/panic-disorder/") (in .RelPermalink "/panic-symptoms/") (in .RelPermalink "/panic-diagnosis/") (in .RelPermalink "/panic-treatment/") (in .RelPermalink "/panic-clinic/") -}}
+        {{- $priority = "0.9" -}}
+        {{- $changefreq = "weekly" -}}
+      {{- end -}}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    <lastmod>{{ if not .Date.IsZero }}{{ .Date.Format "2006-01-02T15:04:05+09:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05+09:00" }}{{ end }}</lastmod>
+    <changefreq>{{ $changefreq }}</changefreq>
+    <priority>{{ $priority }}</priority>
+  </url>
+    {{- end -}}
+  {{- end -}}
+</urlset>
