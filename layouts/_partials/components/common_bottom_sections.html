@@ -541,12 +541,30 @@
     <script>
     (function() {
       // Community Epoch v9 System: isolate & purge obsolete vaults
-      var CURRENT_COMMUNITY_EPOCH = '20261005_panic_v16';
+      var CURRENT_COMMUNITY_EPOCH = '20261013_panic_v17';
       try {
         if (localStorage.getItem('healim_community_epoch') !== CURRENT_COMMUNITY_EPOCH) {
           ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
+            var vKey = 'healim_vault_all_posts_' + k;
+            var rawV = localStorage.getItem(vKey);
+            var preserved = [];
+            if (rawV) {
+              try {
+                var list = JSON.parse(rawV) || [];
+                preserved = list.filter(function(p) {
+                  if (!p || !p.id) return false;
+                  var sId = String(p.id);
+                  return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1;
+                });
+              } catch(err) {}
+            }
             localStorage.removeItem('healim_board_' + k);
-            localStorage.removeItem('healim_vault_all_posts_' + k);
+            if (preserved.length > 0) {
+              localStorage.setItem(vKey, JSON.stringify(preserved));
+              localStorage.setItem('healim_board_' + k, JSON.stringify(preserved));
+            } else {
+              localStorage.removeItem(vKey);
+            }
           });
           localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
         }

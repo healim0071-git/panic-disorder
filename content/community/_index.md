@@ -452,38 +452,34 @@ sections:
         <script src="/js/healim_cloud_db.js"></script>
         <script>        (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20260916_panic_v15';
+        var CURRENT_COMMUNITY_EPOCH = '20261013_panic_v17';
         try {
           var userEpoch = localStorage.getItem('healim_community_epoch');
           if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
-            console.log('[Healim Master Hub] Epoch upgrade detected (' + userEpoch + ' -> ' + CURRENT_COMMUNITY_EPOCH + '). Cleanly harmonizing board vaults...');
+            console.log('[Healim Master Hub] Epoch upgrade detected (' + userEpoch + ' -> ' + CURRENT_COMMUNITY_EPOCH + '). Cleanly harmonizing board vaults with post preservation...');
             ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
+              var vKey = 'healim_vault_all_posts_' + k;
+              var rawV = localStorage.getItem(vKey);
+              var preserved = [];
+              if (rawV) {
+                try {
+                  var list = JSON.parse(rawV) || [];
+                  preserved = list.filter(function(p) {
+                    if (!p || !p.id) return false;
+                    var sId = String(p.id);
+                    return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1;
+                  });
+                } catch(err) {}
+              }
               localStorage.removeItem('healim_board_' + k);
-              localStorage.removeItem('healim_vault_all_posts_' + k);
+              if (preserved.length > 0) {
+                localStorage.setItem(vKey, JSON.stringify(preserved));
+                localStorage.setItem('healim_board_' + k, JSON.stringify(preserved));
+              } else {
+                localStorage.removeItem(vKey);
+              }
             });
-            // Force purge any obsolete dysautonomia posts
-            try {
-              ['healim_board_columns', 'healim_vault_all_posts_columns'].forEach(function(ck) {
-                var raw = localStorage.getItem(ck);
-                if (raw) {
-                  var arr = JSON.parse(raw);
-                  if (Array.isArray(arr)) {
-                    var cleaned = arr.filter(function(p) {
-                      if (!p || !p.title) return false;
-                      var t = p.title;
-                      return !(['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기'].some(function(bk) { return t.indexOf(bk) !== -1; }));
-                    });
-                    localStorage.setItem(ck, JSON.stringify(cleaned));
-                  }
-                }
-              });
-            } catch(e) {}
-            localStorage.removeItem('healim_community_posts_v2');
-            localStorage.removeItem('healim_deleted_post_ids');
             localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
-            if (typeof window !== 'undefined' && window.indexedDB) {
-              try { window.indexedDB.deleteDatabase('HealimCommunityDB'); } catch(e) {}
-            }
           }
         } catch(e) {}
         // --- Seed Data ---
@@ -3113,6 +3109,11 @@ sections:
                   var filtered = [];
                   list.forEach(function(item) {
                     if (!item) return;
+                    // Never purge user custom or valid auto-published columns
+                    if (item.isCustom || item.isAutoPublished) {
+                      filtered.push(item);
+                      return;
+                    }
                     var sId = String(item.id || '');
                     if (sId && seenIds[sId]) return;
                     var t = String(item.title || '');
