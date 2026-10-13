@@ -73,7 +73,7 @@
   "@graph": [
     {{/* ── A. 글로벌 의료기관 스키마 (MedicalClinic with full E-E-A-T) ── */}}
     {
-      "@type": "MedicalClinic",
+      "@type": ["MedicalClinic", "Organization", "MedicalBusiness"],
       "@id": "https://healim-panic.com/#clinic",
       "name": "해아림한의원",
       "alternateName": ["해아림한의원 공황장애 클리닉", "해아림한의원 전국 16개 네트워크"],
@@ -100,7 +100,9 @@
         "https://www.healim.com",
         "https://www.youtube.com/@healimtv",
         "https://blog.naver.com/healim_clinic",
-        "https://www.wikidata.org/wiki/Q202360"
+        "https://map.naver.com/p/search/%ED%95%B4%EC%95%84%EB%A6%BC%ED%95%9C%EC%9D%98%EC%9B%90",
+        "https://www.wikidata.org/wiki/Q202360",
+        "https://search.naver.com/search.naver?query=%ED%95%B4%EC%95%84%EB%A6%BC%ED%95%9C%EC%9D%98%EC%9B%90"
       ],
       "areaServed": {
         "@type": "Country",
@@ -128,7 +130,7 @@
 
     {{/* ── B. 의료진 스키마 (Physician - E-E-A-T 전문성 극대화) ── */}}
     {
-      "@type": "Physician",
+      "@type": ["Physician", "Person"],
       "@id": "https://healim-panic.com/#physician",
       "name": "해아림한의원 전문 의료진",
       "jobTitle": "한방신경정신과 전문의, 한의학 박사 및 석사",
@@ -162,6 +164,13 @@
         }
       ],
       "description": "공황장애, 불안장애, 자율신경실조증을 16여 년간 중점 진료해 온 한방신경정신과 전문의 및 박사진 네트워크",
+      "sameAs": [
+        "https://www.healim.com",
+        "https://blog.naver.com/healim_clinic",
+        "https://www.youtube.com/@healimtv",
+        "https://search.shopping.naver.com/book/catalog/32467364622",
+        "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=207212720"
+      ],
       "knowsAbout": [
         "공황장애 (Panic Disorder)",
         "공황발작 및 예기불안",
@@ -212,7 +221,70 @@
       "@id": "https://healim-panic.com/#website",
       "name": "해아림한의원 공황장애 클리닉",
       "url": "https://healim-panic.com/",
-      "description": "16여 년 임상 노하우와 정밀 진단 시스템의 공황장애 전문 한의원"
+      "description": "16여 년 임상 노하우와 정밀 진단 시스템의 공황장애 전문 한의원",
+      "publisher": {
+        "@id": "https://healim-panic.com/#clinic"
+      }
+    },
+    {
+      "@type": "MedicalWebPage",
+      "@id": "https://healim-panic.com/#webpage",
+      "name": "공황장애 원인, 자가진단 및 한방 뇌신경계 치료법 - 해아림한의원",
+      "url": "https://healim-panic.com/",
+      "description": "공황장애 초기증상, 공황발작 자가진단 기준(DSM-5), 급성 발작 대처법 및 자율신경계 회복을 위한 1:1 맞춤 치료 가이드",
+      "author": {
+        "@id": "https://healim-panic.com/#physician"
+      },
+      "publisher": {
+        "@id": "https://healim-panic.com/#clinic"
+      },
+      "about": {
+        "@id": "https://healim-panic.com/#condition"
+      },
+      "citation": [
+        "건강보험심사평가원(HIRA) 2017-2022 보건의료빅데이터 공황장애 진료인원 통계",
+        "보건복지부 국립정신건강센터 2021 국가 정신건강현황 보고서",
+        "American Psychiatric Association (APA) Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition (DSM-5)",
+        "World Health Organization (WHO) ICD-10 Panic Disorder [F41.0]"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://healim-panic.com/#main-faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "공황장애란 무엇이며 왜 갑자기 발생하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황장애는 특별한 위험 상황이 없음에도 불구하고 뇌 편도체(Amygdala)와 뇌간 자율신경계 경보 회로의 기능 이상으로 인해 극심한 공포와 함께 심계항진·호흡곤란·질식감이 급격히 발현되는 신경정신 질환입니다. 대개 10분 이내에 증상이 정점에 달하며, 신체 질환이 아니므로 사망하지는 않으나 반복되는 예기불안을 방치할 경우 만성화되므로 교감신경 안정과 뇌 신경계 조절력 회복을 위한 조기 집중 치료가 필수적입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "공황장애 자가진단 기준과 주요 증상은 어떻게 되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "미국정신의학회(APA) DSM-5 진단 기준에 따르면 가슴 두근거림, 숨가쁨 및 질식감, 흉부 통증, 어지럼증, 손발 저림과 떨림, 죽을 것 같은 공포 등 13가지 전형적인 신체 및 심리 증상 중 4가지 이상이 갑작스럽게 동시에 발생하면 공황발작으로 진단합니다. 이후 발작이 다시 올까 두려워하는 예기불안이나 외출을 꺼리는 회피 행동이 1개월 이상 지속될 때 정밀 검사를 통한 전문 치료가 요구됩니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "공황장애는 어떻게 치료하며 완치가 가능한가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황장애는 편도체 과민 반응을 조절하고 교감신경의 과항진을 낮추는 1:1 맞춤 한약 치료와 심박변이도(HRV) 바이오피드백, 두개천골요법(CST), 인지행동요법(CBT)을 병행하여 자율신경계 균형을 회복할 때 효과적으로 완치 및 일상 복귀가 가능합니다. 단순 신경안정제 의존을 넘어 뇌신경계의 자기 조절력을 스스로 강화함으로써 재발 없는 근본적인 신경계 안정 상태를 확립할 수 있습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "공황발작이 시작되었을 때 즉각적인 응급 대처법은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "공황발작 발생 시 4초간 코로 천천히 숨을 들이마시고 6초간 입으로 길게 내쉬는 4-6 복식호흡을 통해 과호흡을 진정시키고, '공황발작은 뇌의 오작동일 뿐 신체는 안전하며 10분 내로 가라앉는다'는 인지 재구조화를 떠올린 뒤, 주변의 시각·촉각·청각에 집중하는 5-4-3-2-1 그라운딩 기법을 적용하면 급성 교감신경 흥분을 신속하게 완화할 수 있습니다."
+          }
+        }
+      ]
     },
     {
       "@type": "MedicalCondition",
