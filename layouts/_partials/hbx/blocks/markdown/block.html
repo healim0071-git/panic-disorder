@@ -1,4 +1,4 @@
-﻿{{/* Custom Hugo Blox Markdown Block: Matches B section container (max-w-7xl) on PC with full mobile responsiveness */}}
+{{/* Custom Hugo Blox Markdown Block: Matches B section container (max-w-7xl) on PC with full mobile responsiveness */}}
 {{ $page := .wcPage }}
 {{ $block := .wcBlock }}
 {{ $content := $block.content }}
@@ -6,7 +6,15 @@
 {{ $title := "" }}
 {{ with index $content "title" }}{{ $title = printf "%v" . | emojify | $page.RenderString }}{{ end }}
 {{ $text := "" }}
-{{ with index $content "text" }}{{ $text = printf "%v" . | emojify | $page.RenderString | safeHTML }}{{ end }}
+{{ with index $content "text" }}
+  {{ $raw := printf "%v" . | emojify }}
+  {{ $trimmed := strings.TrimLeft " \t\r\n" $raw }}
+  {{ if strings.HasPrefix $trimmed "<" }}
+    {{ $text = replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" $raw | safeHTML }}
+  {{ else }}
+    {{ $text = $raw | $page.RenderString | safeHTML }}
+  {{ end }}
+{{ end }}
 
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

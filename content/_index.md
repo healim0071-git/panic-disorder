@@ -71,53 +71,51 @@ sections:
           </div>
 
           <div class="space-y-6 max-w-4xl mx-auto">
-            <!-- Question 1 -->
-            <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
-                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q1</span>
-                <span>공황장애란 무엇이며 왜 갑자기 발생하나요?</span>
-              </h2>
-              <div class="mt-4 pl-0 md:pl-10">
-                <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
-                  공황장애는 특별한 외적 위험이나 신체 질환이 없음에도 불구하고 뇌 편도체의 공포 경보 회로와 교감신경계가 과민하게 폭주하여 극심한 공포와 함께 심계항진, 호흡곤란, 질식감이 급격히 발현되는 신경정신 질환입니다. 증상은 대개 10분 이내에 최고조에 달하며 신체적으로는 사망하지 않으나, 반복되는 예기불안을 방치하면 만성화되므로 편도체 과흥분을 가라앉히고 자율신경계 조절력을 회복하는 조기 집중 치료가 필수적입니다.
-                </p>
-                <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
-                  <span class="font-semibold">✓ 의학 검수:</span> 한방신경정신과 전문의 감수 | 뇌신경계 편도체-자율신경 조절 모델 기준
-                </div>
+          <!-- Question 1 -->
+          <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+            <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q1</span>
+              <span>공황장애란 무엇이며 왜 갑자기 발생하나요?</span>
+            </h2>
+            <div class="mt-4 pl-0 md:pl-10">
+              <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
+                공황장애는 특별한 외적 위험이나 신체 질환이 없음에도 불구하고 뇌 편도체의 공포 경보 회로와 교감신경계가 과민하게 폭주하여 극심한 공포와 함께 심계항진, 호흡곤란, 질식감이 급격히 발현되는 신경정신 질환입니다. 증상은 대개 10분 이내에 최고조에 달하며 신체적으로는 사망하지 않으나, 반복되는 예기불안을 방치하면 만성화되므로 편도체 과흥분을 가라앉히고 자율신경계 조절력을 회복하는 조기 집중 치료가 필수적입니다.
+              </p>
+              <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
+                <span class="font-semibold">✓ 의학 검수:</span> 한방신경정신과 전문의 감수 | 뇌신경계 편도체-자율신경 조절 모델 기준
               </div>
             </div>
-
-            <!-- Question 2 -->
-            <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
-                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q2</span>
-                <span>공황장애 자가진단 기준과 주요 증상은 어떻게 되나요?</span>
-              </h2>
-              <div class="mt-4 pl-0 md:pl-10">
-                <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
-                  미국정신의학회(APA) DSM-5 진단 편람에 따르면 가슴 두근거림, 숨가쁨 및 질식감, 흉부 통증, 어지럼증과 현기증, 손발 저림과 떨림, 비현실감, 죽을 것 같은 공포 등 13가지 핵심 신체·심리 지표 중 4가지 이상이 예고 없이 급작스럽게 나타날 때 공황발작으로 진단합니다. 이러한 발작 이후 '언제 또 발작이 찾아올까' 끊임없이 두려워하는 예기불안이나 외출과 대중교통을 피하는 회피 행동이 1개월 이상 지속된다면 전문적인 정밀 진단이 필요합니다.
-                </p>
-                <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
-                  <span class="font-semibold">✓ 1차 출처:</span> American Psychiatric Association (APA) DSM-5 공황발작 진단 기준표
-                </div>
+          </div>
+          <!-- Question 2 -->
+          <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+            <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q2</span>
+              <span>공황장애 자가진단 기준과 주요 증상은 어떻게 되나요?</span>
+            </h2>
+            <div class="mt-4 pl-0 md:pl-10">
+              <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
+                미국정신의학회(APA) DSM-5 진단 편람에 따르면 가슴 두근거림, 숨가쁨 및 질식감, 흉부 통증, 어지럼증과 현기증, 손발 저림과 떨림, 비현실감, 죽을 것 같은 공포 등 13가지 핵심 신체·심리 지표 중 4가지 이상이 예고 없이 급작스럽게 나타날 때 공황발작으로 진단합니다. 이러한 발작 이후 '언제 또 발작이 찾아올까' 끊임없이 두려워하는 예기불안이나 외출과 대중교통을 피하는 회피 행동이 1개월 이상 지속된다면 전문적인 정밀 진단이 필요합니다.
+              </p>
+              <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
+                <span class="font-semibold">✓ 1차 출처:</span> American Psychiatric Association (APA) DSM-5 공황발작 진단 기준표
               </div>
             </div>
-
-            <!-- Question 3 -->
-            <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
-              <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
-                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q3</span>
-                <span>공황장애는 어떻게 치료하며 완치가 가능한가요?</span>
-              </h2>
-              <div class="mt-4 pl-0 md:pl-10">
-                <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
-                  공황장애는 과흥분된 편도체와 자율신경계 불균형을 안정시키는 1:1 체질 맞춤 탕약 치료와 심박변이도(HRV) 바이오피드백, 두개천골요법(CST), 인지행동요법(CBT)을 복합 적용하여 신경계 스스로의 자가조절력을 회복할 때 효과적인 완치가 가능합니다. 일시적으로 증상만 억제하는 신경안정제 의존에서 벗어나 두뇌 경보 중추의 과민성을 근본적으로 낮춤으로써 약물 중단 후에도 재발 없는 안정적인 일상생활을 유지할 수 있습니다.
-                </p>
-                <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
-                  <span class="font-semibold">✓ 임상 기전:</span> 16여 년 신경정신 임상 연구 | HRV 자율신경 균형도 측정 및 편도체 진정 프로토콜
-                </div>
+          </div>
+          <!-- Question 3 -->
+          <div class="bg-white border-2 border-[#1c6e78]/25 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+            <h2 class="text-lg md:text-xl font-bold text-[#0d3a42] flex items-start gap-3">
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#1c6e78] text-white font-bold text-sm shrink-0 mt-0.5">Q3</span>
+              <span>공황장애는 어떻게 치료하며 완치가 가능한가요?</span>
+            </h2>
+            <div class="mt-4 pl-0 md:pl-10">
+              <p class="text-sm md:text-base text-[#333333] leading-relaxed bg-[#f2f8f9] p-4 md:p-5 rounded-xl border-l-4 border-[#1c6e78]">
+                공황장애는 과흥분된 편도체와 자율신경계 불균형을 안정시키는 1:1 체질 맞춤 탕약 치료와 심박변이도(HRV) 바이오피드백, 두개천골요법(CST), 인지행동요법(CBT)을 복합 적용하여 신경계 스스로의 자가조절력을 회복할 때 효과적인 완치가 가능합니다. 일시적으로 증상만 억제하는 신경안정제 의존에서 벗어나 두뇌 경보 중추의 과민성을 근본적으로 낮춤으로써 약물 중단 후에도 재발 없는 안정적인 일상생활을 유지할 수 있습니다.
+              </p>
+              <div class="flex items-center gap-2 mt-3 text-xs text-[#0d3a42]/70">
+                <span class="font-semibold">✓ 임상 기전:</span> 16여 년 신경정신 임상 연구 | HRV 자율신경 균형도 측정 및 편도체 진정 프로토콜
               </div>
             </div>
+          </div>
           </div>
         </div>
 
@@ -291,7 +289,6 @@ sections:
               <p class="text-xs text-[#666666] mt-2 leading-relaxed">2017년 144,943명에서 2022년 242,746명으로 지속적 증가세</p>
               <cite class="text-[11px] text-[#0d3a42] font-semibold block mt-3 pt-2 border-t border-slate-100">출처: 건강보험심사평가원 보건의료빅데이터(2022)</cite>
             </div>
-
             <div class="bg-white p-5 rounded-xl border border-[#d8e6e9] shadow-sm">
               <div class="text-xs font-bold text-[#1c6e78] uppercase tracking-wider mb-1">발병 연령 집중도</div>
               <div class="text-2xl md:text-3xl font-extrabold text-[#0d3a42]">68.4<span class="text-base font-semibold text-[#666666]">%</span></div>
@@ -299,7 +296,6 @@ sections:
               <p class="text-xs text-[#666666] mt-2 leading-relaxed">40대(24.4%), 50대(22.8%), 30대(21.2%) 순으로 과중한 스트레스와 뇌 피로 밀접</p>
               <cite class="text-[11px] text-[#0d3a42] font-semibold block mt-3 pt-2 border-t border-slate-100">출처: 국민건강보험공단 정신질환 통계(2023)</cite>
             </div>
-
             <div class="bg-white p-5 rounded-xl border border-[#d8e6e9] shadow-sm">
               <div class="text-xs font-bold text-[#1c6e78] uppercase tracking-wider mb-1">평생 유병률 &amp; 조기 호전율</div>
               <div class="text-2xl md:text-3xl font-extrabold text-[#0d3a42]">70~80<span class="text-base font-semibold text-[#666666]">%</span></div>
@@ -307,7 +303,6 @@ sections:
               <p class="text-xs text-[#666666] mt-2 leading-relaxed">평생 유병률 1.6%~3.5%, 조기 신경계 조절 개입 시 70~80% 이상 일상 정상 복귀</p>
               <cite class="text-[11px] text-[#0d3a42] font-semibold block mt-3 pt-2 border-t border-slate-100">출처: 보건복지부 국립정신건강센터 / WHO</cite>
             </div>
-
             <div class="bg-white p-5 rounded-xl border border-[#d8e6e9] shadow-sm">
               <div class="text-xs font-bold text-[#1c6e78] uppercase tracking-wider mb-1">발작 피크 시간 &amp; 지표</div>
               <div class="text-2xl md:text-3xl font-extrabold text-[#0d3a42]">10<span class="text-base font-semibold text-[#666666]">분 피크</span></div>
