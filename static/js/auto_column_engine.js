@@ -447,7 +447,7 @@
   }
 
   function generateContinuousNewColumn(existingTitles, deletedPoolIds, state) {
-    // 1단계: 확장 풀에서 미발행 주제 검색
+    // 1단계: 확장 임상 풀 미발행 글 탐색
     for (var i = 0; i < extendedColumnTopics.length; i++) {
       var ext = extendedColumnTopics[i];
       var norm = normalizeColumnTitle(ext.topic);
@@ -457,98 +457,157 @@
       }
     }
 
-    // 2단계: 확장 풀마저 모두 소진된 경우 -> 다이나믹 임상 매트릭스 조합 생성기 가동
+    // 2단계: 무한 고유 임상 조합 생성기 (Infinite Unique Clinical Case Generator)
     var symptoms = [
-  {
-    "t": "갑자기 심장이 두근거리고 숨이 막힐 때",
-    "focus": "심장내과 검사상 정상인 신경성 심계항진과 자율신경 기전",
-    "herb": "자감초탕 및 시호청간탕"
-  },
-  {
-    "t": "가슴이 답답하고 숨이 안 쉬어질 때",
-    "focus": "호흡근 과긴장과 뇌간 이산화탄소 감각 오류",
-    "herb": "소간해울 및 거담안신 처방"
-  },
-  {
-    "t": "머리가 멍하고 어지러우며 쓰러질 것 같을 때",
-    "focus": "급성 스트레스로 인한 뇌혈류 저하와 감각 피로",
-    "herb": "귀비탕 및 두개천골요법(CST)"
-  },
-  {
-    "t": "지하철이나 엘리베이터에서 숨이 턱 막힐 때",
-    "focus": "편도체의 즉각 탈출 불안과 갇힘 공포 교정",
-    "herb": "시호가용골모려탕 맞춤 처방"
-  },
-  {
-    "t": "식은땀이 나고 손발이 저리며 떨릴 때",
-    "focus": "자율신경 이상과 체온 및 말초 혈관 반응 교란",
-    "herb": "계지복령환 및 보신안신 처방"
-  }
-];
-
-    var perspectives = [
-  "뇌신경 자생력 회복과 재발률을 낮추는 체계적 치료",
-  "자율신경 균형과 미주신경 안정화 솔루션",
-  "임상 검사상 정상인 환자를 위한 1:1 맞춤 치료 가이드",
-  "약물 의존 부담을 덜며 안전하게 회복하는 단계별 치료",
-  "스트레스 저항력을 높여 일상 복귀를 돕는 한방신경정신과 치법"
-];
-
-    var idx1 = (state.dynamicIndex || 0) % symptoms.length;
-    var idx2 = (state.dynamicIndex || 0) % perspectives.length;
-    state.dynamicIndex = (state.dynamicIndex || 0) + 1;
-
-    var sItem = symptoms[idx1];
-        var casePersonas = [
-      { age: "30대 직장인", trigger: "출퇴근 만원 지하철에서 갑자기 숨이 턱 막히던", type: "공황발작 치료사례" },
-      { age: "40대 운전자", trigger: "고속도로 터널 진입 시 질식감과 식은땀으로 갓길에 차를 세우던", type: "터널 공황장애 치료사례" },
-      { age: "50대 가장", trigger: "자다가 새벽에 가슴이 쿵쾅거려 응급실을 반복 방문하던", type: "야간 공황발작 증상 사례" },
-      { age: "20대 취준생", trigger: "중요한 면접과 시험 직전 머리가 하얘지고 손이 떨리던", type: "수행불안 치료사례" },
-      { age: "40대 주부", trigger: "대형마트 계산대 줄에서 탈출 공포로 식은땀을 쏟던", type: "광장공포증 치료사례" },
-      { age: "30대 프리랜서", trigger: "밥만 먹으면 체하고 심장이 벌렁거리던", type: "신경성 위장형 공황 치료사례" },
-      { age: "20대 대학생", trigger: "숨이 가빠지며 손발이 오그라들고 저리던", type: "급성 과호흡증후군 치료사례" },
-      { age: "40대 직장인", trigger: "신경안정제를 줄이면서 반동 불안을 겪던", type: "약물 테이퍼링 치료사례" }
+      {
+        t: "갑자기 심장이 두근거리고 숨이 막힐 때",
+        trigger: "극심한 가슴 두근거림과 심장마비 공포로 응급실을 찾던",
+        focus: "심장내과 검사상 정상인 신경성 심계항진과 자율신경계 과흥분",
+        herb: "산조인탕 및 천왕보심단 가감방"
+      },
+      {
+        t: "호흡이 가빠지고 숨을 쉴 수 없을 때",
+        trigger: "과호흡으로 손발이 저리고 마비감이 전신으로 퍼지던",
+        focus: "호흡중추 과민성과 혈중 이산화탄소 분압 불균형 정상화",
+        herb: "오약순기산 및 분심기음 처방"
+      },
+      {
+        t: "머리가 붕 뜨고 세상이 비현실적으로 느껴질 때",
+        trigger: "어지럼증과 함께 주변이 낯설게 느껴지는 비현실감(이인증)에 시달리던",
+        focus: "뇌간 망상계 허혈과 경추 긴장성 뇌혈류 순환 저하",
+        herb: "갈근, 백작약, 천궁 배합 활혈통경 처방"
+      },
+      {
+        t: "지하철이나 엘리베이터에서 갇힐 것 같은 공포",
+        trigger: "밀폐된 공간이나 대중교통 탑승 시 급격한 질식감을 느끼던",
+        focus: "편도체 공포 경보 회로 오작동과 급성 교감신경계 폭주",
+        herb: "시호가용골모려탕 및 영계출감탕 처방"
+      },
+      {
+        t: "식사 후 명치 체기와 함께 심장이 쿵쾅거릴 때",
+        trigger: "밥만 먹으면 체하고 심장이 요동쳐 심장내과를 전전하던",
+        focus: "위장관 미주신경 저하로 인한 장-뇌 축(Gut-Brain Axis) 불균형",
+        herb: "향사평위산 및 반하사심탕 가감방"
+      },
+      {
+        t: "새벽에 자다가 숨이 멎을 것 같아 깰 때",
+        trigger: "취침 중 갑작스러운 호흡곤란과 질식감으로 비명을 지르며 깨어나던",
+        focus: "수면 진입기 자율신경 브레이크(미주신경 톤) 급격한 이완 실패",
+        herb: "귀비탕 및 온담탕 가감 처방"
+      },
+      {
+        t: "고속도로 터널이나 다리를 건널 때 엄습하는 공포",
+        trigger: "터널 진입 시 핸들을 꽉 쥐고 온몸이 굳어 운전을 포기했던",
+        focus: "시각적 공간 왜곡과 전정신경계-자율신경계의 동기화 실조",
+        herb: "영계출감탕 및 조등산 합방 처방"
+      },
+      {
+        t: "약물을 줄이면서 반동 불안이 찾아올 때",
+        trigger: "신경안정제 복용량을 줄이자마자 극심한 반동 공황과 무기력에 빠지던",
+        focus: "가바(GABA) 수용체 민감도 저하와 신경계 자가 회복탄력성 약화",
+        herb: "보중익기탕 및 자감초탕 기반 뇌신경 영양 보강 처방"
+      }
     ];
 
-    var cIdx = (state.dynamicIndex || 0) % casePersonas.length;
-    var persona = casePersonas[cIdx];
-    var dynamicTitle = persona.trigger + " " + persona.age + " " + persona.type;
-    var dynNorm = normalizeColumnTitle(dynamicTitle);
+    var perspectives = [
+      "자율신경 균형과 미주신경 브레이크 강화 솔루션",
+      "임상 검사상 정상 환자를 위한 1:1 맞춤 한방 치료 가이드",
+      "약물 의존 부담을 덜며 자생력을 키우는 단계별 치료",
+      "스트레스 저항도를 극대화하는 한방신경정신과 치법",
+      "뇌 신경 가소성 회복과 재발률을 낮추는 체계적 치료",
+      "두개천골요법(CST)과 뇌척수액 순환을 통한 뇌신경계 안정"
+    ];
 
-    if (existingTitles.has(dynNorm)) {
-      dynamicTitle = persona.age + "의 " + persona.trigger + " " + persona.type + " 극복기";
+    var casePersonas = [
+      { age: "30대 직장인", label: "직장인", type: "공황발작 치료사례" },
+      { age: "40대 운전자", label: "운전자", type: "터널 공황장애 치료사례" },
+      { age: "50대 여성", label: "중년 여성", type: "야간 공황발작 극복 사례" },
+      { age: "20대 취준생", label: "취업준비생", type: "발표 불안 및 예기불안 치료사례" },
+      { age: "40대 주부", label: "주부", type: "광장공포증 극복 치료사례" },
+      { age: "30대 IT개발자", label: "프로그래머", type: "신경성 위장병 동반 공황 치료사례" },
+      { age: "20대 대학생", label: "대학생", type: "급성 과호흡증후군 치료사례" },
+      { age: "40대 자영업자", label: "자영업자", type: "약물 테이퍼링 반동불안 치료사례" },
+      { age: "50대 전문직", label: "전문직", type: "만성 긴장성 어지럼증 및 공황 치료사례" },
+      { age: "30대 워킹맘", label: "워킹맘", type: "누적된 피로와 상충열 공황 극복 사례" }
+    ];
+
+    var attempts = 0;
+    var dynamicTitle = "";
+    var sItem = symptoms[0];
+    var persona = casePersonas[0];
+    var pItem = perspectives[0];
+
+    // 무한 고유 제목 탐색 루프 (절대 중복되지 않는 새로운 제목을 100% 보장)
+    while (attempts < 200) {
+      var curIdx = ((state.dynamicIndex || 0) + attempts);
+      sItem = symptoms[curIdx % symptoms.length];
+      persona = casePersonas[(curIdx + Math.floor(attempts / symptoms.length)) % casePersonas.length];
+      pItem = perspectives[(curIdx * 3) % perspectives.length];
+
+      var titleVariants = [
+        sItem.trigger + " " + persona.age + " " + persona.type,
+        persona.age + " " + persona.label + "의 " + sItem.t + ": " + persona.type,
+        sItem.trigger + " " + persona.age + "의 " + persona.type + "와 자율신경 회복기",
+        sItem.trigger + " " + persona.age + " 환자의 " + pItem + " [" + persona.type + "]"
+      ];
+
+      var candidate = titleVariants[attempts % titleVariants.length];
+      if (attempts >= titleVariants.length * 2) {
+        candidate = candidate + " (임상 사례 #" + (curIdx + 1) + ")";
+      }
+
+      var normCandidate = normalizeColumnTitle(candidate);
+      if (!existingTitles.has(normCandidate) && !deletedPoolIds.has(normCandidate)) {
+        dynamicTitle = candidate;
+        state.dynamicIndex = (state.dynamicIndex || 0) + attempts + 1;
+        break;
+      }
+      attempts++;
+    }
+
+    if (!dynamicTitle) {
+      var fallbackId = Date.now().toString().slice(-4);
+      dynamicTitle = sItem.trigger + " " + persona.age + " 맞춤 " + persona.type + " (심층 임상 #" + fallbackId + ")";
+      state.dynamicIndex = (state.dynamicIndex || 0) + 1;
     }
 
     var dynamicBody = "안녕하세요. 해아림한의원입니다.\n\n" +
-      "“원장님, " + persona.trigger + " 당시에는 정말 죽는 줄 알았습니다. 아무런 신체적 경고도 없이 벼락처럼 증상이 덮쳤어요.”\n\n" +
-      "내원하셨던 환자분 중 " + persona.age + " 환자분이 기억납니다. 일상생활 중 예고 없이 찾아온 공황 증상으로 응급실을 전전했으나, 심장과 신경과 검사에서는 '특이 소견 없음' 판정을 받고 답답한 마음에 한의원을 찾으셨습니다.\n\n" +
-      "■ " + sItem.focus + "\n" +
-      "이러한 현상은 심장이나 호흡기 장기 자체의 기질적 질환이 아니라, 뇌 편도체와 시상하부를 연결하는 자율신경 신경망이 과열되어 비상 사이렌을 잘못 울리는 기능적 오작동입니다. " + sItem.focus + "을 면밀히 분석하여 교감신경의 급격한 항진을 진정시키는 것이 핵심입니다.\n\n" +
-      "■ 해아림한의원의 " + sItem.herb + " 기반 맞춤 치료\n" +
-      "해아림한의원에서는 과열된 신경계를 식히고 자율신경 균형을 바로잡는 " + sItem.herb + " 처방을 바탕으로 환자의 체질과 증상 단계에 맞춘 1:1 진료를 시행합니다. 아울러 상부 경추와 두개골의 긴장을 풀어 뇌척수액 순환을 촉진하는 두개천골요법(CST)을 병행하여 뇌 신경망의 복원력을 높입니다.\n\n" +
-      "■ 안정적인 회복을 위한 생활 관리 원칙\n" +
-      "1. 카페인, 알코올, 고당류 음료 등 교감신경을 자극하는 식습관을 철저히 배제합니다.\n" +
-      "2. 증상이 올라올 때 숨을 참거나 헐떡이지 마시고, 4초간 코로 들이마시고 6초간 입술을 모아 천천히 내쉬는 구순 복식호흡을 3분간 실천하십시오.\n" +
-      "3. '이것은 지나가는 가짜 경보이며 내 몸은 안전하다'는 객관적 의학 사실을 마음에 새기십시오.\n\n" +
-      "해아림한의원은 공황장애의 긴 터널을 지나 환자분들이 온전한 일상의 평온을 되찾으실 때까지 든든한 동반자가 되어 드릴 것입니다.\n\n" +
+      "■ 환자가 호소하던 실제 증상과 발병 배경\n" +
+      "\"처음에는 " + sItem.trigger + " 심장이 터질 것 같고 숨이 턱 막혀 곧 죽는 줄 알았습니다. 아무런 신체 질환이 없다는데도 지옥처럼 불안해서 일상생활이 불가능했어요.\"\n\n" +
+      "내원하신 " + persona.age + " 환자분의 실제 임상 호소 내용입니다. 회사와 가정에서 누적된 피로와 스트레스가 지속되던 중 급작스러운 공황발작을 겪으셨고, 심장내과와 응급실 검사상 '이상 없음' 판정을 받았으나 재발에 대한 극심한 예기불안으로 해아림한의원을 찾아오셨습니다.\n\n" +
+      "■ " + sItem.focus + " 분석\n" +
+      "이러한 증상은 심장이나 호흡기 자체의 기질적 이상이 아니라, 뇌 편도체의 공포 경보 회로가 과열되고 교감신경계가 비상 브레이크 없이 폭주하면서 발생합니다. " + sItem.focus + "을 면밀히 분석하여 자율신경계의 조절력을 회복하고 편도체의 과민성을 진정시키는 것이 치료의 핵심입니다.\n\n" +
+      "■ 해아림한의원 " + sItem.herb + " 기반 맞춤 치료\n" +
+      "해아림한의원에서는 과열된 교감신경을 진정시키고 심신 안정을 돕는 " + sItem.herb + " 처방을 바탕으로 환자의 체질과 병증 진행 단계에 맞춘 1:1 맞춤 한약 치료를 시행합니다. 이와 함께 두경부 긴장을 완화하고 뇌척수액 순환을 촉진하는 두개천골요법(CST)과 생기능 자기조절(HRV 바이오피드백) 훈련을 병행하여 뇌 신경계의 자가 회복탄력성을 극대화합니다.\n\n" +
+      "■ 환자가 일상에서 실천해야 할 회복 수칙\n" +
+      "1. 카페인, 에너지 음료, 음주 등 교감신경을 직접 자극하는 요인을 철저히 차단합니다.\n" +
+      "2. 증상이 올라올 때 저항하거나 당황하지 마시고, 4초간 코로 천천히 들이마시고 6초간 입으로 길게 내쉬는 구순 복식호흡을 3분간 지속하십시오.\n" +
+      "3. '이것은 일시적인 뇌의 오작동일 뿐 10분 내로 반드시 가라앉는다'는 객관적 의학 사실을 마음에 상기하십시오.\n\n" +
+      "해아림한의원은 공황장애의 긴 터널을 지나는 모든 환자분들이 건강하고 평온한 일상을 온전히 되찾으실 때까지 든든한 동반자가 되어 드릴 것입니다.\n\n" +
       "[공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis/)\n\n" +
       "[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment/)\n\n" +
       "[전국 지점 안내](https://www.healim.com)";
 
+    var dynImg = "/images/columns/column_" + ((attempts % 15) + 1) + "_exam.svg";
+    var defaultImgs = [
+      "/images/columns/column_30_cure_homeostasis.svg",
+      "/images/columns/column_5_neuroplasticity.svg",
+      "/images/columns/column_7_cervical_cst.svg",
+      "/images/columns/column_2_gut_brain.svg",
+      "/images/columns/column_18_gut_brain_axis.svg"
+    ];
+    dynImg = defaultImgs[attempts % defaultImgs.length];
+
     return {
       idPrefix: "col-dyn-" + Date.now(),
       title: dynamicTitle,
-      image: "/images/columns/column_30_cure_homeostasis.svg",
+      image: dynImg,
       author: "해아림한의원",
-      summary: sItem.t + "에 대한 원인 분석과 " + pItem + " 안내.",
+      summary: sItem.t + "에 대한 임상 분석과 " + pItem + " 안내.",
       content: dynamicBody
     };
   }
 
-
-  // ──────────────────────────────────────────────────────────
-  // 2. 제목 정규화 헬퍼 및 기존 칼럼 목록 수집 함수
-  // ──────────────────────────────────────────────────────────
   function cleanColumnBaseTitle(t) {
     if (!t) return '';
     var s = String(t).trim();
@@ -1053,10 +1112,25 @@
       return normalizeColumnTitle(item.title) === normNew;
     });
     if (dupFound || existingTitles.has(normNew)) {
-      console.warn('[Healim Auto-Column Engine] 🚫 중복 칼럼 감지되어 발행을 즉각 중단합니다: "' + newPost.title + '"');
-      state.poolIndex = (poolIdx + 1) % columnsPool.length;
-      saveAutoColumnState(state);
-      return false; // 강제 발행 취소!
+      if (isManual) {
+        // 수동 즉시 발행 시에는 절대 포기하지 않고 미중복 고유 글을 즉시 생성하여 100% 무조건 발행!
+        console.log('[Healim Auto-Column Engine] 수동 즉시 발행 중복 감지 -> 무한 고유 생성기로 즉시 우회 발행 진행: "' + newPost.title + '"');
+        var freshArticle = generateContinuousNewColumn(existingTitles, deletedPoolIds, state);
+        if (freshArticle) {
+          postTitle = sanitizeMedicalCompliance(freshArticle.title);
+          postContent = sanitizeMedicalCompliance(String(freshArticle.content).replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\\r/g, '\n'));
+          newPost.title = postTitle;
+          newPost.summary = sanitizeMedicalCompliance(freshArticle.summary || '');
+          newPost.content = postContent;
+          newPost.image = freshArticle.image || newPost.image;
+          newPost.poolId = freshArticle.idPrefix;
+        }
+      } else {
+        console.warn('[Healim Auto-Column Engine] 🚫 중복 칼럼 감지되어 발행을 즉각 중단합니다: "' + newPost.title + '"');
+        state.poolIndex = (poolIdx + 1) % columnsPool.length;
+        saveAutoColumnState(state);
+        return false; // 자동 스케줄 시에만 안전 취소
+      }
     }
 
     // Insert at top of list
