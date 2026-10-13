@@ -181,19 +181,29 @@
 
     {{/* ── C. 학술 논문 및 연구 실적 (GEO 권위도 보강) ── */}}
     {
-      "@type": "ScholarlyArticle",
+      "@type": ["ScholarlyArticle", "Article"],
       "@id": "https://healim-panic.com/#thesis-1",
       "headline": "해아림 의료진 뇌신경계 및 공황 증상 한방 임상 연구 논문",
+      "name": "해아림 의료진 뇌신경계 및 공황 증상 한방 임상 연구 논문",
+      "description": "공황장애 및 뇌신경계 질환의 한의학적 진단 및 치료 기전 임상 연구",
       "author": { "@id": "https://healim-panic.com/#physician" },
       "publisher": { "@id": "https://healim-panic.com/#clinic" },
       "image": "https://healim-panic.com/images/thesis_paper_1.png",
+      "datePublished": "2024-03-15T09:00:00+09:00",
+      "dateModified": "2026-09-08T12:00:00+09:00",
+      "inLanguage": "ko-KR",
+      "mainEntityOfPage": { "@id": "https://healim-panic.com/#webpage" },
+      "isPartOf": { "@id": "https://healim-panic.com/#webpage" },
       "about": "공황장애 및 뇌신경계 질환의 한의학적 진단 및 치료 기전"
     },
 
     {{/* ── D. 탐색 경로 (BreadcrumbList) ── */}}
     {
       "@type": "BreadcrumbList",
-      "@id": "{{ .Permalink }}#breadcrumb",
+      "@id": "https://healim-panic.com/#breadcrumb",
+      "isPartOf": {
+        "@id": "{{ if .IsHome }}https://healim-panic.com/#webpage{{ else }}{{ .Permalink }}#webpage{{ end }}"
+      },
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -220,18 +230,27 @@
       "@type": "WebSite",
       "@id": "https://healim-panic.com/#website",
       "name": "해아림한의원 공황장애 클리닉",
+      "alternateName": ["해아림한의원", "해아림한의원 전국 16개 네트워크"],
       "url": "https://healim-panic.com/",
       "description": "16여 년 임상 노하우와 정밀 진단 시스템의 공황장애 전문 한의원",
+      "inLanguage": "ko-KR",
       "publisher": {
         "@id": "https://healim-panic.com/#clinic"
       }
     },
     {
-      "@type": "MedicalWebPage",
+      "@type": ["WebPage", "MedicalWebPage"],
       "@id": "https://healim-panic.com/#webpage",
       "name": "공황장애 원인, 자가진단 및 한방 뇌신경계 치료법 - 해아림한의원",
       "url": "https://healim-panic.com/",
       "description": "공황장애 초기증상, 공황발작 자가진단 기준(DSM-5), 급성 발작 대처법 및 자율신경계 회복을 위한 1:1 맞춤 치료 가이드",
+      "inLanguage": "ko-KR",
+      "isPartOf": {
+        "@id": "https://healim-panic.com/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://healim-panic.com/#breadcrumb"
+      },
       "author": {
         "@id": "https://healim-panic.com/#physician"
       },
@@ -241,6 +260,11 @@
       "about": {
         "@id": "https://healim-panic.com/#condition"
       },
+      "mainEntity": {
+        "@id": "https://healim-panic.com/#condition"
+      },
+      "datePublished": "2024-01-10T09:00:00+09:00",
+      "dateModified": "2026-10-13T10:00:00+09:00",
       "citation": [
         "건강보험심사평가원(HIRA) 2017-2022 보건의료빅데이터 공황장애 진료인원 통계",
         "보건복지부 국립정신건강센터 2021 국가 정신건강현황 보고서",
@@ -558,6 +582,28 @@
       "@id": "https://healim-panic.com/panic-clinic/#about",
       "name": "해아림한의원 공황장애 클리닉 소개",
       "description": "한방신경정신과 전문의·박사 의료진의 16여 년 임상 노하우와 전국 16개 네트워크 클리닉 안내"
+    }
+    {{ end }}
+    {{ if not .IsHome }}
+    ,
+    {
+      "@type": ["WebPage", "MedicalWebPage"],
+      "@id": "{{ .Permalink }}#webpage",
+      "name": {{ .Title | plainify | jsonify }},
+      "url": "{{ .Permalink }}",
+      "description": {{ .Description | default site.Params.hugoblox.identity.description | plainify | jsonify }},
+      "inLanguage": "ko-KR",
+      "isPartOf": {
+        "@id": "https://healim-panic.com/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://healim-panic.com/#breadcrumb"
+      },
+      "publisher": {
+        "@id": "https://healim-panic.com/#clinic"
+      },
+      "datePublished": "2024-01-10T09:00:00+09:00",
+      "dateModified": "2026-10-13T10:00:00+09:00"
     }
     {{ end }}
   ]
