@@ -1,6 +1,53 @@
+﻿# ==============================================================================
+# Cloudflare Pages Custom HTTP Headers
+# Optimized for Google Search Console indexing & SEO integrity
+# ==============================================================================
+
+# 1. Default for all normal content pages
 /*
   X-Robots-Tag: index, follow
 
+# 2. RSS Feeds (XML files) - Do NOT index XML documents in SERP, but follow links
+/index.xml
+  X-Robots-Tag: noindex, follow
+  Content-Type: application/xml; charset=utf-8
+
+/*/index.xml
+  X-Robots-Tag: noindex, follow
+  Content-Type: application/xml; charset=utf-8
+
+/rss.xml
+  X-Robots-Tag: noindex, follow
+  Content-Type: application/xml; charset=utf-8
+
+# 3. Auth, Admin, and System pages - Exclude from Google indexing
+/register
+  X-Robots-Tag: noindex, nofollow
+/register/
+  X-Robots-Tag: noindex, nofollow
+/register/*
+  X-Robots-Tag: noindex, nofollow
+
+/login
+  X-Robots-Tag: noindex, nofollow
+/login/
+  X-Robots-Tag: noindex, nofollow
+/login/*
+  X-Robots-Tag: noindex, nofollow
+
+/site_join_type_choice
+  X-Robots-Tag: noindex, nofollow
+/site_join_type_choice/
+  X-Robots-Tag: noindex, nofollow
+/site_join_type_choice/*
+  X-Robots-Tag: noindex, nofollow
+
+/admin
+  X-Robots-Tag: noindex, nofollow
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+
+# 4. Cache Control for Dynamic JSON & HTML Assets
 /community
   Cache-Control: public, max-age=0, must-revalidate
 
