@@ -575,6 +575,11 @@
   function checkAndRunAutoReviewPublish(isManual) {
     var state = getAutoReviewState();
     var now = Date.now();
+
+    // Zero-Divergence Guarantee: Disable background auto-publishing into client localStorage
+    if (!isManual) {
+      return false;
+    }
     var shouldPublish = isManual || (state.nextScheduledTime && now >= state.nextScheduledTime);
 
     if (shouldPublish) {

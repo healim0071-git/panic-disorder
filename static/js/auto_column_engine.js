@@ -996,32 +996,12 @@
     var state = getAutoColumnState();
     var now = Date.now();
 
-    if (!isManual && now < state.nextScheduledTime) {
-      updateStatusBadgeUI(state);
-      return false; // Not yet scheduled time
-    }
-
-    // 🌟 핵심 요구사항: 하루 최대 1편 발행 락 (Daily Cap)
-    // 수동 즉시 발행이 아닌 자동 스케줄의 경우, 오늘 날짜에 이미 발행된 칼럼이 있다면 당일 추가 발행을 원천 차단하고 다음 스케줄로 안전하게 연기
+    // Zero-Divergence Guarantee: Background auto-publishing into client localStorage is disabled
+    // so that PC, mobile, and all visitors always see 100% identical canonical posts.
     if (!isManual) {
-      var todayStr = formatDateOnly(new Date(now));
-      var existingColsForToday = [];
-      try {
-        var rawC = localStorage.getItem(STORAGE_BOARD_KEY);
-        if (rawC) existingColsForToday = JSON.parse(rawC) || [];
-      } catch(e) {}
-      var alreadyPublishedToday = existingColsForToday.some(function(item) {
-        return item && (item.date === todayStr || (item.createdAt && formatDateOnly(new Date(item.createdAt)) === todayStr));
-      });
-      if (alreadyPublishedToday || (state.lastPublishedTime && formatDateOnly(new Date(state.lastPublishedTime)) === todayStr)) {
-        if (state.nextScheduledTime <= now) {
-          var nextD = calculateNextColumnSchedule(new Date());
-          state.nextScheduledTime = nextD.getTime();
-          saveAutoColumnState(state);
-        }
-        updateStatusBadgeUI(state);
-        return false;
-      }
+      updateStatusBadgeUI(state);
+      return false;
+    }
     }
 
     var existingTitles = getExistingColumnTitles();

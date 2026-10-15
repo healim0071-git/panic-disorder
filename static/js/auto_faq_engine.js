@@ -834,6 +834,12 @@
     var state = getAutoFaqState();
     var now = Date.now();
 
+    // Zero-Divergence Guarantee: Disable background auto-publishing into client localStorage
+    if (!forceImmediate) {
+      updateAutoFaqStatusUI(state);
+      return null;
+    }
+
     // 🌟 핵심 안전장치: 하루 최대 1편 발행 락 (Daily Cap)
     // 수동 즉시 발행이 아닌 자동 스케줄의 경우, 오늘 날짜에 이미 발행된 FAQ가 있다면 당일 추가 발행을 원천 차단하고 다음 스케줄로 안전하게 연기
     if (!forceImmediate) {
