@@ -2432,3 +2432,27 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
   5. **검증 및 빌드**:
      - Hugo 빌드(`hugo --minify`) 0 에러 무결점 통과 (public 내 45편 칼럼 및 최신 에포크 정상 반영 확인).
 - **Git 반영**: 메인 브랜치 커밋 및 원격 GitHub 푸시 완료.
+
+---
+
+## 2026-10-15: ?먯쑉?좉꼍 援ы삎 URL ?붿옱 ?꾩닔 泥?냼 諛?301 ?곴뎄 由щ뵒?됱뀡 援ъ텞 (GSC 404 ?щ·留??먮윭 ?먯쿇 ?닿껐)
+- **諛곌꼍 諛??먯씤 遺꾩꽍**:
+  - 援ш? ?쒖튂 肄섏넄(GSC)?먯꽌 https://healim-panic.com/autonomic-symptoms/ 404 ?ㅻ쪟 蹂닿퀬??
+  - ?ъ씠??珥덇린 ?앹꽦 ???먯쑉?좉꼍?ㅼ“利??쒗뵆由?援ъ“瑜?湲곕컲?쇰줈 ?쒖옉?섎㈃??怨쇨굅 URL ?щ윭洹?/autonomic-*)媛 援ш?遊??щ·留??먯뿉 ?깅줉?섏뿀?쇰굹, 怨듯솴?μ븷 ?щ윭洹?/panic-*)濡?媛쒗렪 ??301 由щ뵒?됱뀡???꾨씫?섏뼱 404 諛쒖깮.
+- **?꾩닔 ?먭? 諛?議곗튂 ?댁뿭**:
+  1. **?ㅼ떆媛??쇱씠釉??ъ씠???꾩닔 寃??*:
+     - 硫붿씤 諛?6媛??듭떖 ?섏쐞 ?섏씠吏 HTML ?щ·留?寃利?寃곌낵, ?쇱씠釉??섏씠吏 ??援ы삎 autonomic 留곹겕??0嫄?(?뺤긽).
+  2. **?대? ?곗씠???ㅽ겕由쏀듃 ?붿옱 留곹겕 100% 移섑솚**:
+     - scratch/add_columns.js, scratch/new_panic_faqs.json ?깆뿉 ?붿〈?섎뜕 utonomic-diagnosis, utonomic-treatment 留곹겕 30??媛쒕? panic-diagnosis, panic-treatment濡??꾩닔 ?섏젙.
+     - README.md 紐낆묶???댁븘由?怨듯솴?μ븷 ?대━???쇰줈 媛깆떊.
+  3. **Cloudflare Pages 301 ?곴뎄 由щ뵒?됱뀡(static/_redirects) 援ъ텞**:
+     - /autonomic-symptoms/ -> /panic-symptoms/ 301
+     - /autonomic-diagnosis/ -> /panic-diagnosis/ 301
+     - /autonomic-treatment/ -> /panic-treatment/ 301
+     - /autonomic-dysfunction/ -> /panic-disorder/ 301
+     - /autonomic-clinic/ -> /panic-clinic/ 301
+     - /autonomic* -> / 301 (Fallback)
+     - healim-autonomic.com? 蹂꾧컻???낅┰ ?꾨찓?몄쑝濡?0% ?곹뼢/異⑸룎 ?놁씠 100% ?뺤긽 ?묐룞 蹂댁옣.
+  4. **鍮뚮뱶 諛?諛고룷**:
+     - Hugo 鍮뚮뱶(hugo --minify) ?뺤긽 ?꾨즺 諛?public/_redirects 諛섏쁺 寃利??꾨즺.
+     - GitHub ?먭꺽 ??μ냼(origin/main) ?몄떆 ?꾨즺.

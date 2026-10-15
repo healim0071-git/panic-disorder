@@ -1,0 +1,22 @@
+﻿# ==============================================================================
+# Cloudflare Pages 301 Permanent Redirects
+# Legacy autonomic URLs redirected to panic URLs to eliminate 404 GSC crawl errors
+# ==============================================================================
+
+/autonomic-symptoms/       /panic-symptoms/       301
+/autonomic-symptoms        /panic-symptoms/       301
+
+/autonomic-diagnosis/      /panic-diagnosis/      301
+/autonomic-diagnosis       /panic-diagnosis/      301
+
+/autonomic-treatment/      /panic-treatment/      301
+/autonomic-treatment       /panic-treatment/      301
+
+/autonomic-dysfunction/    /panic-disorder/       301
+/autonomic-dysfunction     /panic-disorder/       301
+
+/autonomic-clinic/         /panic-clinic/         301
+/autonomic-clinic          /panic-clinic/         301
+
+# Fallback for any other residual autonomic links
+/autonomic*                /                      301
