@@ -1,0 +1,17 @@
+/*
+  X-Robots-Tag: index, follow
+
+/community
+  Cache-Control: public, max-age=0, must-revalidate
+
+/community/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/community/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/data/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

@@ -452,7 +452,7 @@ sections:
         <script src="/js/healim_cloud_db.js"></script>
         <script>        (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20261015_panic_v18_harmonized';
+        var CURRENT_COMMUNITY_EPOCH = '20261015_panic_v19_clean_sync';
         try {
           var userEpoch = localStorage.getItem('healim_community_epoch');
           if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
@@ -483,6 +483,10 @@ sections:
             localStorage.removeItem('healim_auto_column_state');
             localStorage.removeItem('healim_auto_faq_state');
             localStorage.removeItem('healim_auto_review_state');
+            localStorage.removeItem('healim_custom_columns_posts');
+            localStorage.removeItem('healim_custom_faq_posts');
+            localStorage.removeItem('healim_custom_reviews_posts');
+            localStorage.removeItem('healim_community_posts_v2');
             localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
           }
         } catch(e) {}
@@ -2896,12 +2900,11 @@ sections:
 
         function isObsoleteMockColumn(item) {
           if (!item) return false;
-          // Never purge user custom or valid auto-published columns
-          if (item.isCustom || item.isAutoPublished) return false;
           var sId = String(item.id || '');
           var pId = String(item.poolId || '');
-          if (/^col(umns)?-\d{8,}/.test(sId) || /^col-auto-/.test(sId) || /^col-fresh-/.test(pId) || /^col-ext-/.test(pId)) return false;
-          if (item.id === 'col-auto-latest') return true;
+          if (sId.startsWith('col-fresh-') || pId.startsWith('col-fresh-') || sId === 'col-auto-latest') return true;
+          if (item.isCustom || item.isAutoPublished) return false;
+          if (/^col(umns)?-\d{8,}/.test(sId) || /^col-auto-/.test(sId) || /^col-ext-/.test(pId)) return false;
           if (!item.title) return false;
           var norm = String(item.title)
             .replace(/^칼럼[\.:\s\-]+/i, '')
@@ -3228,7 +3231,15 @@ sections:
         function getCustomUserPosts(key) {
           try {
             var raw = localStorage.getItem('healim_custom_' + key + '_posts');
-            return raw ? JSON.parse(raw) : [];
+            if (!raw) return [];
+            var list = JSON.parse(raw);
+            if (!Array.isArray(list)) return [];
+            return list.filter(function(p) {
+              if (!p || !p.id) return false;
+              var sId = String(p.id);
+              if (p.isAutoPublished || sId.startsWith('col-fresh-') || sId.startsWith('col-auto-') || sId.startsWith('faq-auto-') || sId.startsWith('rev-auto-')) return false;
+              return true;
+            });
           } catch(e) {
             return [];
           }
@@ -3353,11 +3364,17 @@ sections:
               .then(function(json) {
                 if (json) {
                   var data = json.data || json;
-                  // CRITICAL GUARD: Only accept hub data if epoch strictly matches CURRENT_COMMUNITY_EPOCH!
-                  if (!data || data.epoch !== CURRENT_COMMUNITY_EPOCH || (data.version && data.version < 15)) {
-                    console.warn('[HealimUniversalSync] Remote hub is obsolete (epoch: ' + (data ? data.epoch : 'none') + '). Rejecting remote overwrite to preserve canonical seed.');
-                    if (onDone) onDone(false);
+                  // CRITICAL GUARD: Synchronize hub data and auto-clean if epoch changed
+                  if (!data || (data.version && data.version < 15)) {
+                    console.warn('[HealimUniversalSync] Remote hub invalid or version < 15.');
                     return;
+                  }
+                  if (data.epoch && data.epoch !== localStorage.getItem('healim_community_epoch')) {
+                    console.log('[HealimUniversalSync] Remote epoch updated (' + data.epoch + '). Purging ghost keys...');
+                    ['healim_custom_columns_posts', 'healim_custom_faq_posts', 'healim_custom_reviews_posts', 'healim_community_posts_v2', 'healim_board_columns', 'healim_board_faq', 'healim_board_reviews', 'healim_board_youtube'].forEach(function(k) {
+                      try { localStorage.removeItem(k); } catch(e) {}
+                    });
+                    localStorage.setItem('healim_community_epoch', data.epoch);
                   }
                   hasConnectedHub = true;
                   inMemoryHubData = data;
