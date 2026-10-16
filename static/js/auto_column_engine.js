@@ -833,8 +833,7 @@
     var day = String(d.getDate()).padStart(2, '0');
     var h = String(d.getHours()).padStart(2, '0');
     var min = String(d.getMinutes()).padStart(2, '0');
-    var sec = String(d.getSeconds()).padStart(2, '0');
-    return y + '.' + m + '.' + day + ' ' + h + ':' + min + ':' + sec;
+    return y + '.' + m + '.' + day + ' ' + h + ':' + min;
   }
 
   function formatDateOnly(d) {
@@ -999,9 +998,13 @@
     // Zero-Divergence Guarantee: Background auto-publishing into client localStorage is disabled
     // so that PC, mobile, and all visitors always see 100% identical canonical posts.
     if (!isManual) {
+      if (!state.nextScheduledTime || state.nextScheduledTime <= now) {
+        var nextSchedule = calculateNextColumnSchedule(new Date());
+        state.nextScheduledTime = nextSchedule.getTime();
+        saveAutoColumnState(state);
+      }
       updateStatusBadgeUI(state);
       return false;
-    }
     }
 
     var existingTitles = getExistingColumnTitles();
@@ -1192,8 +1195,8 @@
 
   function updateStatusBadgeUI(state) {
     var el = document.getElementById('autoColumnNextScheduleText');
-    if (el) {
-      el.textContent = formatDateTime(state.nextScheduledTime);
+    if (el && state && state.nextScheduledTime) {
+      el.textContent = '다음 예정: ' + formatDateTime(state.nextScheduledTime);
     }
   }
 
@@ -1241,6 +1244,9 @@
       }
       if (typeof renderColumnsList === 'function') {
         renderColumnsList();
+      }
+      if (typeof syncBottomCommunity === 'function') {
+        syncBottomCommunity();
       }
       var badge = document.getElementById('autoColumnStatusBadge');
       if (badge) badge.style.display = 'flex';

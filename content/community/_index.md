@@ -2900,11 +2900,12 @@ sections:
 
         function isObsoleteMockColumn(item) {
           if (!item) return false;
+          // Never purge user custom or valid auto-published columns
+          if (item.isCustom || item.isAutoPublished) return false;
           var sId = String(item.id || '');
           var pId = String(item.poolId || '');
-          if (sId.startsWith('col-fresh-') || pId.startsWith('col-fresh-') || sId === 'col-auto-latest') return true;
-          if (item.isCustom || item.isAutoPublished) return false;
-          if (/^col(umns)?-\d{8,}/.test(sId) || /^col-auto-/.test(sId) || /^col-ext-/.test(pId)) return false;
+          if (sId.startsWith('col-fresh-') || sId === 'col-auto-latest') return true;
+          if (/^col(umns)?-\d{8,}/.test(sId) || /^col-auto-/.test(sId) || /^col-ext-/.test(pId) || /^col-fresh-/.test(pId)) return false;
           if (!item.title) return false;
           var norm = String(item.title)
             .replace(/^칼럼[\.:\s\-]+/i, '')

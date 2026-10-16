@@ -2471,3 +2471,41 @@ AI 엔진(Gemini, Perplexity) 및 검색 로봇이 신뢰도 높은 의학 정�
   - static/_headers??RSS XML ?쇰뱶 ?꾩슜 X-Robots-Tag: noindex, follow 紐낆떆 (寃???됱씤? ?쒖쇅?섎릺 ?쇰뱶 ??留곹겕 ?먯깋? 蹂댁옣).
   - ?뚯썝媛??諛??몄쬆 ?섏씠吏(/register/, /login/, /site_join_type_choice/, /admin/*)??X-Robots-Tag: noindex, nofollow ?쇱튂 遺??
   - Hugo 鍮뚮뱶 諛?GitHub ?먭꺽 ??μ냼(origin/main) ?몄떆 ?꾨즺.
+
+---
+
+## 🌟 [2026-10-16] 마일스톤 9.85: 공황장애 치료칼럼 '다음 예정: 확인 중...' 고착 및 '즉시 1편 발행' 무반응 결함 근본 분석·해결 및 시뮬레이션 검증 (깃허브 푸시)
+- **사용자 요구사항**:
+  - 커뮤니티 치료칼럼 상단 안내 배너에서 `다음 예정: 확인 중...` 상태가 계속 유지되는 결함 원인 분석.
+  - `⚡ 즉시 1편 발행` 버튼을 클릭해도 새 칼럼이 발행되지 않고 글 목록에 나타나지 않는 문제 해결.
+  - 다시는 재발하지 않도록 근본적인 원인을 심도 있게 분석하여 해결책 적용.
+  - 시뮬레이션을 수행하여 다른 영역(FAQ, 치료후기, 유튜브)과 충돌이 없는지 철저히 점검한 후 GitHub 메인 브랜치로 푸시.
+- **현상 및 원인 심층 분석**:
+  1. **배너 `다음 예정: 확인 중...` 고착 및 `즉시 1편 발행` 무반응의 직접 원인 (SyntaxError 결함)**:
+     - `static/js/auto_column_engine.js` 1005번 라인에 과거 커밋 작업 중 남겨진 불필요한 닫는 중괄호(`}`)가 존재함.
+     - 이로 인해 `checkAndRunAutoColumnPublish()` 함수가 1005번 라인에서 조기 종료되고, 1193번 라인의 `updateStatusBadgeUI()` 및 하위 전역 함수 선언들이 `SyntaxError: Unexpected token 'function'` 에러를 유발하며 스크립트 실행 전체가 브라우저에서 중단됨.
+     - 결과:
+       - 페이지 로드 시 배너 텍스트 갱신 함수(`updateStatusBadgeUI`)가 전혀 실행되지 않아 HTML 초기 텍스트인 `다음 예정: 확인 중...` 상태로 영구 고착됨.
+       - 버튼 클릭 이벤트 핸들러인 `window.triggerAutoColumnPublishManual()` 함수가 `window`에 바인딩되지 않아, 클릭 시 `ReferenceError: triggerAutoColumnPublishManual is not defined` 예외가 발생하며 무반응 현상이 발생함.
+  2. **글 발행 후 글 목록에서 즉시 누락/은폐되던 2차 구조적 원인 (`isObsoleteMockColumn` 필터 버그)**:
+     - `content/community/_index.md` 2905번 라인의 `isObsoleteMockColumn(item)` 함수에서 `pId.startsWith('col-fresh-')`인 경우 구버전 목데이터로 간주하여 `return true`(목록에서 강제 제외/영구 삭제) 처리하도록 구현되어 있었음.
+     - 그러나 `auto_column_engine.js`의 30편 정규 콘텐츠 풀 아이템들의 고유 식별자는 모두 `col-fresh-1`, `col-fresh-2` 형식의 `idPrefix`(게시글의 poolId)를 가짐.
+     - 이로 인해 발행 함수가 정상 동작하더라도 `getBoardData('columns')` 및 `renderColumnsList()`가 실행될 때 `isObsoleteMockColumn`에 의해 신규 발행 글이 즉시 "과거 목데이터"로 오인되어 필터링 및 로컬스토리지에서 제거되는 치명적 모순이 발생함.
+  3. **시간 경과 시 스케줄 만료 롤오버 누락**:
+     - 기존 저장된 `nextScheduledTime`이 현재 시간보다 이전일 경우, FAQ 엔진(`auto_faq_engine.js`)과 달리 다음 주 2~3회(08:00~11:00) 미래 스케줄로 자동 갱신(Rollover)하는 방어 로직이 누락되어 과거 시간 또는 확인 중 상태로 남을 소지가 있었음.
+- **해결 및 최적화 내역**:
+  1. **`static/js/auto_column_engine.js` 구문 오류 해결 및 방어 로직 강화**:
+     - 1005번 라인의 잉여 닫는 중괄호(`}`)를 제거하여 전체 IIFE 및 전역 바인딩(`window.triggerAutoColumnPublishManual`, `window.checkAndRunAutoColumnPublish`)이 100% 정상 작동하도록 복구.
+     - 페이지 로드(`!isManual`) 시 저장된 스케줄이 만료되었거나 비어있으면 다음 주 2~3회 08:00~11:00 랜덤 스케줄로 자동 롤오버(`calculateNextColumnSchedule`)한 뒤 배너에 `다음 예정: YYYY.MM.DD HH:mm` 형식으로 정확히 표시하도록 보강.
+     - 수동 즉시 발행 시 `renderColumnsList()`와 더불어 `syncBottomCommunity()`를 호출하여 하단 섹션까지 실시간 최신화되도록 연동.
+  2. **`content/community/_index.md` 목데이터 판별 필터(`isObsoleteMockColumn`) 정상화**:
+     - `if (item.isCustom || item.isAutoPublished) return false;` 가드 절을 최상단으로 재배치하여, 정상 발행된 신규 칼럼(`isAutoPublished: true`)이 절대 목데이터로 오인되어 삭제되지 않도록 보장.
+     - poolId가 `col-fresh-`인 정규 풀 아이템을 구버전 목데이터로 오인하여 필터링하던 버그 수정.
+  3. **시뮬레이션 및 전수 무결성 검증 통과**:
+     - `scripts/auto_publish_column.js` 검증: 30편 풀 고유성 100%, 치료사례 비율 60% 이상(60.0%), 스케줄 발행 시뮬레이션(08:00~11:00), 의료광고법 5대 원칙 0건 위반, 16:9 메디컬 벡터 일러스트 디스크 실재 100% 전수 통과.
+     - `simulate.js` 브라우저 E2E 환경 시뮬레이션:
+       - 초기 로드 시 배너 텍스트가 `다음 예정: 2026.10.18 09:05` 형태로 정상 반영됨 확인.
+       - `triggerAutoColumnPublishManual()` 실행 시 신규 글이 최상단에 발행되고 `localStorage` 및 `getBoardData`에 100% 보존됨 확인.
+       - 타 게시판(FAQ, 치료후기, 유튜브) 간 데이터 간섭 및 교차 오염 0건(Cross-Board Pollution Zero) 완전 격리 확인.
+     - Hugo 빌드(`hugo --minify`) 32개 페이지 0 에러 무결점 빌드 완료.
+- **Git 반영**: 메인 브랜치 커밋 및 GitHub 원격 저장소 푸시 완료.
