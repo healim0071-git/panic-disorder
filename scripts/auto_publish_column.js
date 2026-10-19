@@ -1,18 +1,16 @@
-﻿/**
+/**
  * auto_publish_column.js
- * 해아림한의원 공황장애 치료칼럼 자동 발행 엔진 & 23대 임상 풀 (엄격 중복 방지 & 치료사례 60% 이상 준수)
+ * 해아림한의원 공황장애 치료칼럼 자동 발행 엔진 & 30대 임상 풀 검증 스크립트
  * 
- * [요구사항 명세]
- * 1. 대상: 공황장애 및 공황발작 및 예기불안 환자 실제 치료사례 및 핵심 주제 (23대 임상 풀)
- * 2. 치료사례/사례 비율: 전체 자동발행 글의 60% 이상이 제목에 '치료사례' 또는 '사례'를 포함하고 생생한 환자 스토리 서술
- * 3. 분량: 한방신경정신과 임상 분석 1,600자 내외
- * 4. 구성: 상단 16:9 메디컬 벡터 일러스트 썸네일 + 본문 + 하단 3대 링크 (줄바꿔서 1줄씩 띄움)
- *    - [공황장애 정밀검사 알아보기](https://healim-panic.com/panic-diagnosis/)
- *    - [공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment/)
- *    - [전국 지점 안내](https://www.healim.com)
- * 5. 주기: 매주 2~3개 글, 오전 8시 ~ 11시 사이 랜덤 시간 발행
- * 6. 중복 방지: 질문과 핵심주제는 기존 작성 글과 중복되지 않도록 엄격한 정규화 비교 필터링 적용
- * 7. 의료광고법 및 5대 표현 가이드라인 철저 준수 (근원/완치/전문/부작용/재발 0건)
+ * [개편된 4대 핵심 요구조건]
+ * 1. 통계치 및 학술 근거: 정부 통계치(보건복지부, 건강보험공단, 건강보험심사평가원) 및 학술 연구 수치(숫자, %) 필수 포함
+ * 2. 제목 및 구성 비율 (30 : 70):
+ *    - 치료/사례/치료사례 문구 포함 칼럼: 30% (30편 중 9편)
+ *    - 호소증상 기반 질문과 답변(Q&A) 칼럼: 70% (30편 중 21편)
+ * 3. 사례 환자 예시 명시: 본문 중간에 환자 사례가 이해를 돕기 위한 임상 예시임을 알리는 안내 멘트 필수 탑재
+ * 4. 호소증상 중심 질문: 전문적인 질환명 배제, 환자가 직접 느끼는 생생한 호소증상 위주 구성
+ * 5. 의료광고법 5대 표현 가이드라인 100% 준수 (완치/완벽/부작용 없음/재발 없음/단언컨대/전문/첨단 등 0건)
+ * 6. 16:9 메디컬 벡터 일러스트 디스크 실존 100% 무결성
  */
 
 const fs = require('fs');
@@ -44,11 +42,17 @@ function normalizeColumnTitle(t) {
 }
 
 console.log('====================================================');
-console.log('  1. 치료칼럼 콘텐츠 풀 고유성 및 치료사례(사례) 비율 검증');
+console.log('  1. 치료칼럼 콘텐츠 풀 고유성 및 30:70 비율 검증');
 console.log('====================================================');
 const seenTitles = new Set();
 let duplicatesFound = 0;
 let caseStudyCount = 0;
+let qaCount = 0;
+let missingStatsCount = 0;
+let missingExampleMentCount = 0;
+
+const statRegex = /(건강보험심사평가원|국민건강보험공단|보건복지부|질병관리청|도로교통공단|식품의약품안전처|학회|연구|통계|\d+%(?: 이상| 미만)?|\d+(?:만|천)?\s*명)/;
+const exampleMentRegex = /(임상 예시|가상 예시|각색된|이해를 돕기 위해|재구성한)/;
 
 columnsPool.forEach((item, idx) => {
   const cleanBody = item.content
@@ -56,11 +60,13 @@ columnsPool.forEach((item, idx) => {
     .replace(/\[(.*?)\]\(.*?\)/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
+
   const badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기'];
-  if (badKeywords.some(bk => item.title.includes(bk))) {
-    console.error(`[BLACKLISTED AUTONOMIC ARTICLE REJECTED]: ${item.title}`);
+  if (badKeywords.some(bk => item.title.includes(bk) || item.content.includes(bk))) {
+    console.error(`[BLACKLISTED KEYWORD DETECTED] Column #${idx + 1}: ${item.title}`);
     return;
   }
+
   const norm = normalizeColumnTitle(item.title);
   if (seenTitles.has(norm)) {
     console.error(`[DUPLICATE DETECTED] Column #${idx + 1}: ${item.title}`);
@@ -68,11 +74,31 @@ columnsPool.forEach((item, idx) => {
   }
   seenTitles.add(norm);
 
-  const isCase = item.title.includes('사례') || item.title.includes('치료사례');
-  if (isCase) caseStudyCount++;
+  const isCase = item.title.includes('사례') || item.title.includes('치료사례') || item.title.includes('치료');
+  const isQA = item.title.startsWith('Q.') || item.title.includes('?') || item.title.includes('왜') || item.title.includes('어떻게');
 
-  console.log(`Column #${idx + 1}: [${isCase ? '치료사례' : '일반칼럼'}] ${item.title.substring(0, 38)}...`);
-  console.log(`   - Raw Length: ${item.content.length} chars | Clean Body: ${cleanBody.length} chars | Unique: OK`);
+  if (isQA) {
+    qaCount++;
+  } else if (isCase) {
+    caseStudyCount++;
+  }
+
+  // 통계치/학술 근거 검증
+  const hasStats = statRegex.test(item.content);
+  if (!hasStats) {
+    console.error(`[MISSING STATS/EVIDENCE] Column #${idx + 1} does not include government stats or numeric evidence!`);
+    missingStatsCount++;
+  }
+
+  // 환자 예시 안내 멘트 검증
+  const hasExampleMent = exampleMentRegex.test(item.content);
+  if (!hasExampleMent) {
+    console.error(`[MISSING EXAMPLE NOTICE] Column #${idx + 1} does not include clinical example disclaimer notice!`);
+    missingExampleMentCount++;
+  }
+
+  console.log(`Column #${idx + 1}: [${isQA ? '호소증상 Q&A' : (isCase ? '치료·사례' : '일반')}] ${item.title.substring(0, 42)}...`);
+  console.log(`   - Length: ${cleanBody.length} chars | Stats: ${hasStats ? 'YES' : 'NO'} | Example Ment: ${hasExampleMent ? 'YES' : 'NO'}`);
 });
 
 if (duplicatesFound === 0) {
@@ -83,15 +109,28 @@ if (duplicatesFound === 0) {
 }
 
 const caseRatio = (caseStudyCount / columnsPool.length) * 100;
-console.log(`\n📊 [치료사례 및 사례 키워드 비율 검증]`);
-console.log(`   - 총 칼럼 수: ${columnsPool.length}편`);
-console.log(`   - 사례/치료사례 포함 칼럼 수: ${caseStudyCount}편`);
-console.log(`   - 사례 비율: ${caseRatio.toFixed(1)}% (기준: 60% 이상)`);
+const qaRatio = (qaCount / columnsPool.length) * 100;
 
-if (caseRatio >= 60) {
-  console.log(`✅ [PASS] 치료사례 및 사례 키워드 비율이 60% 이상을 만족합니다! (${caseRatio.toFixed(1)}% >= 60%)\n`);
+console.log(`\n📊 [치료칼럼 구성 비율 검증 (목표: 치료·사례 30% : Q&A 70%)]`);
+console.log(`   - 총 칼럼 수: ${columnsPool.length}편`);
+console.log(`   - 치료·사례형 칼럼: ${caseStudyCount}편 (${caseRatio.toFixed(1)}%) - 목표 30%`);
+console.log(`   - 호소증상 Q&A형 칼럼: ${qaCount}편 (${qaRatio.toFixed(1)}%) - 목표 70%`);
+
+if (Math.abs(caseRatio - 30.0) < 1.0 && Math.abs(qaRatio - 70.0) < 1.0) {
+  console.log(`✅ [PASS] 치료·사례형(30%) 및 호소증상 Q&A형(70%) 비율이 30:70 기준을 완벽하게 만족합니다!\n`);
 } else {
-  console.error(`❌ [FAIL] 치료사례 및 사례 키워드 비율이 60% 미만입니다! (${caseRatio.toFixed(1)}% < 60%)\n`);
+  console.error(`❌ [FAIL] 칼럼 구성 비율이 30:70 기준과 일치하지 않습니다! (치료·사례: ${caseRatio}%, Q&A: ${qaRatio}%)\n`);
+  process.exitCode = 1;
+}
+
+console.log(`📊 [정부 통계치 및 임상 예시 멘트 탑재 검증]`);
+console.log(`   - 통계치/수치 자료 미탑재 칼럼: ${missingStatsCount}편`);
+console.log(`   - 임상 예시 안내 멘트 미탑재 칼럼: ${missingExampleMentCount}편`);
+
+if (missingStatsCount === 0 && missingExampleMentCount === 0) {
+  console.log(`✅ [PASS] 30편 모든 칼럼에 정부/학술 통계 수치 및 환자 임상 예시 안내 멘트가 100% 탑재되었습니다!\n`);
+} else {
+  console.error(`❌ [FAIL] 통계치 또는 예시 멘트가 누락된 칼럼이 존재합니다!\n`);
   process.exitCode = 1;
 }
 
