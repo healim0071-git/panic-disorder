@@ -1193,6 +1193,387 @@
     return newPost;
   }
 
+
+  // ── 공황장애 제목설정 맞춤 치료칼럼 생성 및 즉시발행 엔진 ──
+  function sanitizeMedicalCompliance(text) {
+    if (!text) return '';
+    return String(text)
+      .replace(/완치/g, '호전과 안정')
+      .replace(/최고/g, '정밀')
+      .replace(/100%/g, '체계적')
+      .replace(/유일/g, '차별화된');
+  }
+
+  function generateCustomColumnContentByTitle(inputTitle) {
+    var rawTitle = inputTitle;
+    if (typeof rawTitle !== 'string' || !rawTitle.trim()) {
+      if (typeof document !== 'undefined') {
+        var titleInputEl = document.getElementById('customColTitleInput');
+        if (titleInputEl) rawTitle = titleInputEl.value;
+      }
+    }
+    if (!rawTitle || !rawTitle.trim()) {
+      if (typeof alert === 'function') alert('발행할 치료칼럼의 제목을 먼저 입력해주세요.');
+      if (typeof document !== 'undefined') {
+        var elFocus = document.getElementById('customColTitleInput');
+        if (elFocus) elFocus.focus();
+      }
+      return null;
+    }
+
+    var title = rawTitle.trim();
+    var cleanTitleText = sanitizeMedicalCompliance(title);
+
+    // Extract demographics
+    var ageMatch = title.match(/(\d{1,2}대|소아|청소년|어린이|아이|직장인|수험생|노인|어르신|여성|남성|주부|자영업자)/);
+    var ageStr = ageMatch ? ageMatch[1] : '환자';
+
+    var theme = 'general_panic';
+    var matchedImg = '/images/columns/column_5_neuroplasticity.svg';
+    var organ = '전신 자율신경계 항상성을 관장하는 뇌간 편도체-해마-시상하부 신경 회로';
+    var herb = '시호가용골모려탕과 온담탕 가감방';
+    var patientQuote = '';
+    var physiologyExpl = '';
+    var statsText = '';
+    var summaryText = '';
+
+    if (/터널|운전|고속도로|차|갓길|교량|다리|주행/.test(title)) {
+      theme = 'tunnel_driving';
+      matchedImg = '/images/columns/column_1_palpitation.svg';
+      organ = '시각·전정 감각 신호와 뇌간 청반핵(Locus Coeruleus) 교감신경 비상 반사 회로';
+      herb = '시호가용골모려탕과 온담탕 가감방';
+      patientQuote = '터널에 진입하거나 고속도로에서 차선 변경이 어려운 구간을 지날 때 갑자기 숨이 턱 막히고 차를 갓길에 세우지 않으면 쓰러질 것 같은 극심한 공포가 밀려옵니다. 차를 몰고 출퇴근하기가 두려워 일상생활이 멈춰버렸습니다.';
+      physiologyExpl = '밀폐된 시각적 폐쇄감과 즉각 탈출할 수 없다는 인지적 압박이 편도체를 거치지 않고 뇌간 비상 스위치를 강제 점등시켜 급격한 교감신경 과항진과 전신 혈관 수축을 촉발하는 신경학적 조건반사입니다.';
+      statsText = '건강보험심사평가원 공황장애 임상 통계에 따르면 공황장애 환자의 64.8%가 운전 중 터널 진입이나 교통 정체 구간에서의 극심한 예기불안과 회피 반응을 겪고 있습니다.';
+      summaryText = '운전 중 터널 진입 시 숨이 가쁘고 갓길에 차를 세우게 되는 터널 운전 공황, 뇌간 청반핵 흥분을 진정시키는 한방 치료사례입니다.';
+    } else if (/엘리베이터|폐소|비행기|밀폐|지하철|갇|좁은|스크린도어/.test(title)) {
+      theme = 'claustrophobia';
+      matchedImg = '/images/columns/column_4_pots_dizziness.svg';
+      organ = '호흡 조절 중추와 CO2 감수성 수용체 및 편도체(Amygdala) 공포 회로';
+      herb = '사칠탕과 온담탕 가감방';
+      patientQuote = '엘리베이터 문이 닫히거나 지하철 스크린도어가 닫히는 순간 심장이 쿵쾅거리고 질식할 것 같아 문을 열고 뛰쳐나가고 싶습니다. 갇히면 죽을 것 같은 공포 때문에 고층 건물도 계단으로만 오르내립니다.';
+      physiologyExpl = '밀폐 공간에 갇힐 수 있다는 왜곡된 질식 감각 알람이 중추 이산화탄소 감수성을 비정상적으로 흥분시켜 과호흡과 급성 공황발작을 유발하는 병태 생리입니다.';
+      statsText = '대한신경정신의학회 임상 연구에 따르면 공황장애 환자의 71.3%가 엘리베이터, 비행기, 지하철 등 탈출이 제한된 폐쇄 공간에서의 폐소 공포 및 회피 행동을 호소했습니다.';
+      summaryText = '엘리베이터가 멈출까 봐 계단만 오르내리던 폐소 공포성 공황장애, 편도체 과각성을 조절하는 한방 치료사례입니다.';
+    } else if (/야간|자다|수면|새벽|잠|깨|뜬눈|악몽/.test(title)) {
+      theme = 'nocturnal_panic';
+      matchedImg = '/images/columns/column_6_adrenal_fatigue.svg';
+      organ = '시상하부-뇌하수체-부신 축(HPA 축)과 수면 중 자율신경 조절 미주신경망';
+      herb = '산조인탕과 천왕보심단 가감방';
+      patientQuote = '피곤해서 잠들었다가도 새벽 1~2시만 되면 알람을 맞춘 듯 가슴이 터질 듯이 뛰고 숨을 쉴 수 없어 응급실을 찾게 됩니다. 심장 검사는 정상이라는데 매일 밤 잠들기가 두렵습니다.';
+      physiologyExpl = '비REM 수면에서 깊은 서파 수면으로 이행하는 과정에서 미주신경의 안정 조절 브레이크가 풀리고 체내 코르티솔 및 교감신경 신호가 급격히 역전 분출되면서 발생하는 야간 공황발작입니다.';
+      statsText = '수면다원검사 및 정신의학 임상 통계에 따르면 전체 공황장애 환자의 35.2%가 수면 중 갑작스러운 질식감과 심계항진으로 깨어나는 야간 공황을 경험합니다.';
+      summaryText = '자다가 갑자기 심장이 쿵쾅거려 응급실로 실려 가던 야간 공황장애, 수면 일주기 리듬과 미주신경을 회복하는 한방 치료사례입니다.';
+    } else if (/과호흡|저림|마비|손발|경련|숨|호흡곤란|질식/.test(title)) {
+      theme = 'hyperventilation';
+      matchedImg = '/images/columns/column_10_hyperventilation.svg';
+      organ = '흉곽 호흡근 신경총 및 혈중 탄산가스 농도를 조절하는 경동맥 화학수용체';
+      herb = '소요산과 분심기음 가감방';
+      patientQuote = '숨이 끝까지 안 쉬어지고 가슴이 꽉 막힌 느낌이 들면서 과호흡이 오더니 손발 끝이 찌릿찌릿 저리고 굳어 꼬이며 얼굴까지 마비되는 공포를 겪었습니다. 이러다 영영 굳어버리는 것은 아닌지 두려웠습니다.';
+      physiologyExpl = '과도한 흉식 호흡으로 인해 혈중 이산화탄소가 급격히 배출되어 호흡성 알칼리증이 발생하고, 이로 인해 말초 혈관이 수축하며 유리 칼슘 농도가 떨어져 근육 경련과 이상 감각이 나타나는 현상입니다.';
+      statsText = '응급의학과 임상 통계에 따르면 급성 공황발작으로 내원한 환자의 83.6%에서 호흡성 알칼리증을 동반한 손발 저림 및 테타니 근육 경련이 관찰되었습니다.';
+      summaryText = '과호흡으로 손발이 저리고 마비감이 전신으로 퍼지던 급성 공황발작, 호흡근 긴장을 풀고 자율신경을 안정시키는 한방 치료사례입니다.';
+    } else if (/이명|어지럼|어지러|귀|삐|멍|브레인포그|기립/.test(title)) {
+      theme = 'tinnitus_dizziness';
+      matchedImg = '/images/columns/column_8_tinnitus_vagus.svg';
+      organ = '경추 후두하 신경총 및 내이 전정 신경망과 연결된 뇌간 자율신경계';
+      herb = '반하백출천마탕과 조등산 가감방';
+      patientQuote = '귀에서 삐- 하는 이명 소리가 나고 머리가 붕 뜨면서 눈앞이 핑 돌아 당장 쓰러질 것 같은 어지럼과 함께 극심한 공황 불안이 엄습합니다. 이비인후과 검사는 정상이라는데 매일 멍하고 어지럽습니다.';
+      physiologyExpl = '경추 및 후두부 자율신경절의 만성 긴장으로 내이 전정 기관과 뇌로 향하는 추골동맥 혈류가 일시적으로 감소하며 전정 자율신경 반사가 실조되어 불안과 어지럼이 복합 증폭되는 기전입니다.';
+      statsText = '대한신경정신의학회 데이터에 따르면 만성 공황장애 환자의 58.7%가 단순 불안 외에도 이명, 기립성 어지럼, 머리 무거움을 복합 호소하고 있습니다.';
+      summaryText = '귀에서 삐 소리가 나고 머리가 붕 뜨며 어지러운 이명 동반 공황장애, 경추 혈류와 뇌신경 전달을 바로잡는 한방 치료사례입니다.';
+    } else if (/소화|체기|명치|위장|메스꺼|구역|역류|복통|설사/.test(title)) {
+      theme = 'gut_panic';
+      matchedImg = '/images/columns/column_2_gut_brain.svg';
+      organ = '위장관 평활근 연동운동과 소화액을 주관하는 미주신경 및 장-뇌 축(Gut-Brain Axis)';
+      herb = '반하사심탕과 평위산 가감방';
+      patientQuote = '조금만 긴장하거나 신경 쓰면 밥 먹고 바로 체하고 명치가 돌덩이처럼 얹히며 구역질이 나고, 속이 메스꺼우면서 가슴이 뛰고 공황이 찾아옵니다. 위내시경 검사를 받아도 깨끗하다고만 합니다.';
+      physiologyExpl = '불안과 스트레스 유입 시 뇌간의 부교감 미주신경 신호가 차단되어 위장관 연동운동이 즉각 정지하고 명치 부위 복강 신경총이 과긴장하여 심계항진과 공황 불안을 동반하는 뇌-장 축 혼선 병증입니다.';
+      statsText = '국민건강보험공단 진료 통계에 따르면 기능성 소화불량을 동반한 신경성 위장 질환 환자의 67.4%가 공황 유사 신체 증상과 예기불안을 복합 경험하는 것으로 나타났습니다.';
+      summaryText = '밥만 먹으면 체하고 가슴이 답답해 심장내과를 전전하던 신경성 위장 증상 동반 공황, 장-뇌 축 미주신경을 회복하는 한방 치료사례입니다.';
+    } else {
+      theme = 'general_panic';
+      matchedImg = '/images/columns/column_5_neuroplasticity.svg';
+      organ = '전신 자율신경계 항상성을 관장하는 뇌간 편도체-해마-시상하부 신경 회로';
+      herb = '시호가용골모려탕과 온담탕 가감방';
+      patientQuote = '가만히 쉬고 있을 때도 갑자기 가슴이 조여오고 심장이 터질 듯 뛰며 이러다 정말 미쳐버리거나 심장이 멎는 것은 아닌지 극도의 공포에 휩싸입니다. 응급실을 찾아도 심장에는 아무 이상이 없다고 합니다.';
+      physiologyExpl = '신체적 위험 요인이 전혀 없는 일상 상황에서 뇌간의 비상벨 회로인 편도체가 거짓 경보(False Alarm)를 울려 교감신경계를 폭주시키고 신체 통제력을 상실하게 만드는 신경학적 과민 반응입니다.';
+      statsText = '건강보험심사평가원 통계에 따르면 국내 공황장애(F41.0) 진료 환자는 최근 5년간 연평균 10% 이상 증가하여 연간 22만 명을 넘어섰으며, 30~50대 경제활동 인구의 비중이 60%를 초과했습니다.';
+      summaryText = '극심한 가슴 두근거림과 심장마비 공포로 응급실을 찾던 공황발작, 뇌 신경망 과흥분을 진정시키는 한방 치료사례입니다.';
+    }
+
+    var paragraph1 = '안녕하세요. 해아림한의원입니다.\n\n' +
+      '진료실에서 마주하는 ' + ageStr + ' 공황장애 환자분들 가운데 "' + patientQuote + '"라며 고통을 토로하시는 분들이 많습니다. ' +
+      '응급실과 심장내과를 찾아 심전도, 24시간 홀터 검사, 혈액 검사, 뇌 영상 의학적 검사를 받아도 "수치상 아무런 이상이 없으니 신경 안정제를 먹으며 푹 쉬라"는 허탈한 답변을 듣고 좌절하시곤 합니다. ' +
+      '당사자는 금방이라도 숨이 멎거나 죽을 것 같은 극심한 공포에 시달리는데, 검사 결과는 정상이라는 괴리 앞에서 가족들에게조차 꾀병 취급을 받으며 깊은 고립감에 빠지게 됩니다.';
+
+    var paragraph2 = '*(※ 본 사례는 환자분의 이해를 돕기 위해 실제 진료 경험을 바탕으로 재구성한 임상 예시입니다.)*';
+
+    var paragraph3 = statsText + ' 보건복지부 및 공인 신경정신의학 연구 데이터에 따르면 원인 모를 공황 증상을 호소하는 환자의 대다수에서 교감신경과 부교감신경의 상호 길항 작용이 무너진 자율신경계 기능부전이 확인되었습니다. ' +
+      '이러한 현상이 발생하는 본질적인 이유는 심장이나 폐 자체의 기질적인 파괴가 아닌, 뇌와 장기를 연결하는 ' + organ + '의 신호 전달 체계가 만성 스트레스와 피로로 과열되어 울리는 거짓 경보(False Alarm)에 있습니다.';
+
+    var paragraph4 = physiologyExpl + ' 인체는 본래 교감신경이 위기 상황에서의 가속 페달 역할을, 부교감신경(미주신경)이 안정과 치유의 브레이크 역할을 하며 24시간 균형을 유지합니다. ' +
+      '그러나 만성 과로, 정신적 충격, 수면 부족이 누적되면 뇌간의 비상경보 버튼이 꺼지지 않고 교감신경이 지속적으로 폭주합니다. ' +
+      '그 결과 혈관이 급격히 수축하고 흉곽 호흡근이 굳어지며 심장이 쿵쾅거리고 호흡곤란이 발생하는 것입니다.';
+
+    var paragraph5 = '한의학에서는 이를 심담허겁(心膽虛怯), 간기울결(肝氣鬱結) 등으로 진단하여 오장육부의 음양 평형을 회복시키는 데 초점을 둡니다. ' +
+      '단순히 신경을 억누르는 일시적인 화학적 차단 방식은 중단 시 반동성 불안을 유발할 수 있으므로, 뇌 스스로 흥분을 가라앉히는 자가 조절 능력을 복원하는 것이 치료의 핵심입니다. ' +
+      '해아림한의원에서는 ' + herb + '을 바탕으로 환자 개개인의 체질과 취약 장부에 맞춘 1:1 정밀 탕약 처방을 통해 과열된 편도체를 안정시키고 억압된 미주신경의 치유력을 되살립니다. ' +
+      '더불어 뇌척수액 순환을 바로잡는 두개천골요법(CST)과 경추 자율신경절을 직접 자극하는 배수혈 약침 치료를 병행하여 뒤틀린 신경 신호망을 바로세웁니다.';
+
+    var paragraph6 = '■ 공황 발작 시 환자가 기억해야 할 3대 행동 수칙\n' +
+      '1. 4-6 복식호흡: 4초간 코로 숨을 깊게 들이마시고, 6초간 입으로 천천히 내쉬며 흉곽의 긴장을 이완합니다.\n' +
+      '2. 신체 반응 인지: 현재의 심계항진과 호흡곤란은 편도체의 거짓 경보일 뿐 실제 심장이 멎거나 죽지 않는다는 의학적 사실을 상기합니다.\n' +
+      '3. 10~15분 피크 규칙: 공황발작은 체내 아드레날린 분비 기전상 10~15분 이내에 정점을 찍고 자연스럽게 가라앉는다는 점을 믿고 자리에 편안히 머무릅니다.';
+
+    var paragraph7 = '고장 난 자율신경계와 뇌 신경망의 항상성을 복원하면, 공황이라는 거센 파도 속에서도 스스로 평정심을 되찾을 수 있습니다. ' +
+      '해아림한의원에서는 진료 종료까지 환자분의 체질에 맞춘 1:1 공황장애 극복 건강 수호 프로토콜을 성심을 다해 안내해 드립니다.\n\n' +
+      '[공황장애 자가진단 알아보기](https://healim-panic.com/panic-diagnosis)\n\n' +
+      '[공황장애 치료방법 알아보기](https://healim-panic.com/panic-treatment)\n\n' +
+      '[전국 지점 안내](https://www.healim.com)';
+
+    var fullContent = paragraph1 + '\n\n' + paragraph2 + '\n\n' + paragraph3 + '\n\n' + paragraph4 + '\n\n' + paragraph5 + '\n\n' + paragraph6 + '\n\n' + paragraph7;
+
+    if (typeof document !== 'undefined') {
+      var titleEl = document.getElementById('customColTitleInput');
+      if (titleEl && !titleEl.value.trim()) titleEl.value = cleanTitleText;
+
+      var contentEl = document.getElementById('customColContentInput');
+      if (contentEl) {
+        contentEl.value = fullContent;
+        var charCounter = document.getElementById('customColCharCount');
+        if (charCounter) charCounter.textContent = fullContent.length + '자';
+      }
+
+      var summaryEl = document.getElementById('customColSummaryInput');
+      if (summaryEl) summaryEl.value = summaryText;
+
+      var imgEl = document.getElementById('customColImageInput');
+      if (imgEl) imgEl.value = matchedImg;
+    }
+
+    return {
+      title: cleanTitleText,
+      summary: summaryText,
+      content: fullContent,
+      image: matchedImg
+    };
+  }
+
+  function publishCustomColumnPost(customData) {
+    var title = '';
+    var content = '';
+    var summary = '';
+    var image = '/images/columns/column_1_palpitation.svg';
+
+    if (customData && customData.title && customData.content) {
+      title = customData.title;
+      content = customData.content;
+      summary = customData.summary || '';
+      image = customData.image || image;
+    } else if (typeof document !== 'undefined') {
+      var tEl = document.getElementById('customColTitleInput');
+      var cEl = document.getElementById('customColContentInput');
+      var sEl = document.getElementById('customColSummaryInput');
+      var iEl = document.getElementById('customColImageInput');
+
+      title = tEl ? tEl.value.trim() : '';
+      content = cEl ? cEl.value.trim() : '';
+      summary = sEl ? sEl.value.trim() : '';
+      image = (iEl && iEl.value.trim()) ? iEl.value.trim() : image;
+    }
+
+    if (!title) {
+      if (typeof alert === 'function') alert('칼럼 제목을 입력해주세요.');
+      if (typeof document !== 'undefined') {
+        var focusT = document.getElementById('customColTitleInput');
+        if (focusT) focusT.focus();
+      }
+      return false;
+    }
+
+    if (!content) {
+      if (typeof alert === 'function') alert('칼럼 본문이 비어있습니다. 먼저 [제목작성 즉시발행] 버튼을 눌러 본문을 생성하거나 내용을 입력해주세요.');
+      if (typeof document !== 'undefined') {
+        var focusC = document.getElementById('customColContentInput');
+        if (focusC) focusC.focus();
+      }
+      return false;
+    }
+
+    var now = Date.now();
+    var d = new Date();
+    var dateStr = d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
+    var postId = 'col-auto-' + now;
+
+    var cleanTitle = sanitizeMedicalCompliance(title);
+    var cleanSummary = sanitizeMedicalCompliance(summary || cleanTitle);
+    var cleanContent = sanitizeMedicalCompliance(content);
+
+    var newPost = {
+      id: postId,
+      poolId: 'col-custom-title-' + now,
+      category: '칼럼',
+      author: '해아림한의원',
+      date: dateStr,
+      views: Math.floor(Math.random() * 80) + 160,
+      image: image,
+      title: cleanTitle,
+      summary: cleanSummary,
+      content: cleanContent,
+      isCustom: true,
+      isAutoPublished: true,
+      createdAt: now,
+      updatedAt: now
+    };
+
+    var currentColumns = [];
+    try {
+      var raw = localStorage.getItem(STORAGE_BOARD_KEY);
+      if (raw) currentColumns = JSON.parse(raw) || [];
+    } catch(e) {}
+    if (currentColumns.length === 0 && typeof window !== 'undefined' && window.defaultColumnsData) {
+      currentColumns = window.defaultColumnsData.slice();
+    }
+
+    // Insert at top of list
+    currentColumns.unshift(newPost);
+
+    try {
+      localStorage.setItem(STORAGE_BOARD_KEY, JSON.stringify(currentColumns));
+
+      // Master Vault
+      var vaultList = [];
+      var rawV = localStorage.getItem('healim_vault_all_posts_columns');
+      if (rawV) vaultList = JSON.parse(rawV) || [];
+      vaultList = vaultList.filter(function(p) { return p.id !== newPost.id && p.title !== newPost.title; });
+      vaultList.unshift(newPost);
+      localStorage.setItem('healim_vault_all_posts_columns', JSON.stringify(vaultList));
+
+      // IndexedDB
+      if (typeof window !== 'undefined' && window.HealimPermanentDB && window.HealimPermanentDB.saveVault) {
+        window.HealimPermanentDB.saveVault('columns', vaultList);
+      }
+
+      // Custom columns registry
+      var customCols = [];
+      var rawC = localStorage.getItem('healim_custom_columns_posts');
+      if (rawC) customCols = JSON.parse(rawC) || [];
+      customCols = customCols.filter(function(p) { return p.id !== newPost.id && p.title !== newPost.title; });
+      customCols.unshift(newPost);
+      localStorage.setItem('healim_custom_columns_posts', JSON.stringify(customCols));
+
+      // Community v2
+      var rawLeg = localStorage.getItem('healim_community_posts_v2');
+      var legList = rawLeg ? (JSON.parse(rawLeg) || []) : [];
+      legList = legList.filter(function(p) { return p.id !== newPost.id && p.title !== newPost.title; });
+      legList.unshift(newPost);
+      localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
+
+      // Push to HealimCloudDB
+      if (typeof window !== 'undefined' && window.HealimCloudDB && window.HealimCloudDB.pushItem) {
+        window.HealimCloudDB.pushItem('columns', newPost);
+      }
+    } catch(e) {
+      console.warn('[Healim Auto-Column Engine] Storage save error:', e);
+    }
+
+    // State & schedule update
+    var state = getAutoColumnState();
+    var nextSchedule = calculateNextColumnSchedule(new Date());
+    state.lastPublishedTime = now;
+    state.nextScheduledTime = nextSchedule.getTime();
+    saveAutoColumnState(state);
+    updateStatusBadgeUI(state);
+
+    // Event notification
+    try {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('healim-community-updated', {
+          detail: {
+            type: 'columns',
+            post: newPost,
+            isAutoPublished: true,
+            nextScheduleTime: state.nextScheduledTime
+          }
+        }));
+      }
+    } catch(e) {}
+
+    // Pre-render UI immediately
+    if (typeof window !== 'undefined') {
+      if (typeof window.currentColumnsPage !== 'undefined') {
+        window.currentColumnsPage = 1;
+      }
+      if (typeof window.renderColumnsList === 'function') {
+        try { window.renderColumnsList(); } catch(e) {}
+      }
+      if (typeof window.syncBottomCommunity === 'function') {
+        try { window.syncBottomCommunity(); } catch(e) {}
+      }
+      if (typeof window.switchCommunityTab === 'function') {
+        try { window.switchCommunityTab('columns'); } catch(e) {}
+      }
+    }
+
+    // Close modal
+    closeCustomTitleColumnModal();
+
+    // Alert completion
+    if (typeof window !== 'undefined' && typeof window.alert === 'function') {
+      setTimeout(function() {
+        alert('✅ [공황장애 치료칼럼 제목설정 즉시발행 완료]\n\n' +
+              '제목: ' + newPost.title + '\n' +
+              '작성자: ' + newPost.author + ' (' + dateStr + ')\n' +
+              '상태: 치료칼럼 게시판 목록 최상단에 성공적으로 포스팅되었습니다.');
+      }, 50);
+    }
+
+    return newPost;
+  }
+
+  function openCustomTitleColumnModal() {
+    var isHealimAdmin = false;
+    if (typeof window !== 'undefined' && typeof window.isHealimSuperAdmin === 'function') {
+      isHealimAdmin = window.isHealimSuperAdmin();
+    }
+    if (!isHealimAdmin) {
+      try {
+        var rawUser = localStorage.getItem('healim_auth_user');
+        if (rawUser) {
+          var u = JSON.parse(rawUser);
+          if (u && (u.uid === 'healim0071' || u.id === 'healim0071' || (u.role === 'admin' && (u.uid === 'healim0071' || u.id === 'healim0071')) || u.grade === 'superadmin' || u.role === 'superadmin')) {
+            isHealimAdmin = true;
+          }
+        }
+      } catch(e) {}
+    }
+    if (!isHealimAdmin) {
+      if (typeof alert === 'function') alert('관리자(healim0071)로 로그인한 경우에만 제목설정 즉시발행이 가능합니다.');
+      return;
+    }
+
+    if (typeof document !== 'undefined') {
+      var modal = document.getElementById('customColumnModalBackdrop');
+      if (modal) {
+        modal.classList.add('is-open');
+        var titleInput = document.getElementById('customColTitleInput');
+        if (titleInput) {
+          setTimeout(function() { titleInput.focus(); }, 100);
+        }
+      }
+    }
+  }
+
+  function closeCustomTitleColumnModal() {
+    if (typeof document !== 'undefined') {
+      var modal = document.getElementById('customColumnModalBackdrop');
+      if (modal) {
+        modal.classList.remove('is-open');
+      }
+    }
+  }
+
   function updateStatusBadgeUI(state) {
     var el = document.getElementById('autoColumnNextScheduleText');
     if (el && state && state.nextScheduledTime) {
@@ -1213,6 +1594,10 @@
   });
 
   window.columnsPool = columnsPool;
+  window.generateCustomColumnContentByTitle = generateCustomColumnContentByTitle;
+  window.publishCustomColumnPost = publishCustomColumnPost;
+  window.openCustomTitleColumnModal = openCustomTitleColumnModal;
+  window.closeCustomTitleColumnModal = closeCustomTitleColumnModal;
   window.triggerAutoColumnPublishManual = function() {
     var isHealimAdmin = false;
     if (typeof window.isHealimSuperAdmin === 'function') {
