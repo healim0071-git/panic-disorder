@@ -37,13 +37,178 @@
       --dark-teal: #0d3a42;
       --light-teal: #edf7f8;
       --border-teal: #badfe3;
+      --healim-container-max: 1280px; /* panic-clinic GNB 바(max-w-7xl)와 동일한 최적 폭 */
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
       color: #333333;
       background-color: #f8fafb;
       line-height: 1.65;
+      overflow-x: hidden;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      margin: 0;
+      padding: 0;
     }
+
+    /* 1. 가로폭 제한 및 중앙 정렬 (panic-clinic 및 상단 GNB 바 정렬 완벽 일치) */
+    .landing-hero-container,
+    .landing-main-container,
+    .max-w-7xl,
+    .max-w-5xl,
+    main {
+      width: 100% !important;
+      max-width: var(--healim-container-max) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Hero 섹션 배경 및 내부 컨테이너 폭 제한 */
+    section.bg-gradient-to-b {
+      width: 100%;
+      background: linear-gradient(180deg, rgba(237, 247, 248, 0.9) 0%, rgba(243, 249, 250, 0.5) 60%, #f8fafb 100%);
+      border-bottom: 1px solid #e0eaec;
+    }
+    section.bg-gradient-to-b > div,
+    .landing-hero-container {
+      width: 100% !important;
+      max-width: var(--healim-container-max) !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+      box-sizing: border-box !important;
+    }
+
+    /* 메인 본문 컨테이너 */
+    main,
+    .landing-main-container {
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+      padding-top: 2.5rem !important;
+      padding-bottom: 3.5rem !important;
+    }
+
+    /* 본문 주요 아티클 카드 스타일 */
+    main section.bg-white {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      border: 1px solid #e0eaec !important;
+      border-radius: 1.25rem !important;
+      box-shadow: 0 4px 20px -2px rgba(13, 58, 66, 0.05) !important;
+      transition: all 0.25s ease !important;
+    }
+    main section.bg-white:hover {
+      box-shadow: 0 10px 25px -3px rgba(13, 58, 66, 0.08) !important;
+      border-color: #badfe3 !important;
+    }
+
+    /* 2. 독립적인 반응형 그리드 시스템 (Tailwind 미디어 쿼리 누락 대비 완전 보장) */
+    .grid {
+      display: grid !important;
+    }
+    .grid-cols-1,
+    [class*="grid-cols-1"] {
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+    .gap-4 { gap: 1rem !important; }
+    .gap-5 { gap: 1.25rem !important; }
+    .gap-6 { gap: 1.5rem !important; }
+    .gap-8 { gap: 2rem !important; }
+
+    @media (min-width: 640px) {
+      [class*="sm:grid-cols-2"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      .sm\:px-6 {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+      }
+      section.bg-gradient-to-b > div,
+      .landing-hero-container,
+      main,
+      .landing-main-container {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+      }
+    }
+
+    @media (min-width: 768px) {
+      [class*="md:grid-cols-2"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      [class*="md:grid-cols-3"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      }
+      main section.bg-white {
+        padding: 2.25rem 2.5rem !important;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      [class*="lg:grid-cols-3"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      }
+      .lg\:px-8 {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+      }
+      section.bg-gradient-to-b > div,
+      .landing-hero-container,
+      main,
+      .landing-main-container {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+      }
+    }
+
+    /* 3. 모바일 최적화 (스마트폰 360px ~ 640px) */
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 1.65rem !important;
+        line-height: 1.35 !important;
+        letter-spacing: -0.02em !important;
+      }
+      .healim-hero-badge {
+        font-size: 0.75rem !important;
+        padding: 0.25rem 0.65rem !important;
+      }
+      main,
+      .landing-main-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+      section.bg-gradient-to-b > div,
+      .landing-hero-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2.25rem !important;
+      }
+      main section.bg-white {
+        padding: 1.25rem 1rem !important;
+        border-radius: 1rem !important;
+        margin-bottom: 1.25rem !important;
+      }
+      .healim-main-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.95rem 1.25rem !important;
+        font-size: 0.98rem !important;
+        box-sizing: border-box !important;
+      }
+      [class*="grid-cols-"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* 4. 공통 UI 컴포넌트 */
     .healim-hero-badge {
       background: rgba(28, 110, 120, 0.08);
       color: #1c6e78;
@@ -380,7 +545,7 @@
 
   <!-- Hero Section with H1 -->
   <section class="relative bg-gradient-to-b from-[#edf7f8]/90 via-[#f3f9fa]/50 to-[#f8fafb] pt-12 pb-14 border-b border-[#e0eaec]">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center landing-hero-container">
       <div class="inline-flex items-center gap-2 healim-hero-badge px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
         <span>16여 년 임상 노하우</span>
         <span class="w-1 h-1 rounded-full bg-[#1c6e78]"></span>
@@ -404,7 +569,7 @@
   </section>
 
   <!-- Main Content Container -->
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 landing-main-container">
     
     <!-- Topic Focus Badge -->
     <div class="mb-8 flex items-center justify-between border-b border-[#e0eaec] pb-4">
