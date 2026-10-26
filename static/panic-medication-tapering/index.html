@@ -264,6 +264,60 @@
       padding-top: 1rem;
       border-top: 1px solid #edf2f4;
     }
+  
+    /* HEALIM NETWORK OFFICIAL 배너 스타일 */
+    .btn-network-banner-click {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      color: #0d3a42 !important;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      padding: 0.95rem 2.5rem;
+      border-radius: 9999px;
+      text-decoration: none !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      white-space: nowrap;
+    }
+    .network-official-banner-link:hover .btn-network-banner-click {
+      background-color: #f2f7f8;
+      color: #1c6e78 !important;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    .network-banner-desc {
+      font-size: clamp(9.5px, 2.75vw, 15px);
+      white-space: nowrap;
+      letter-spacing: -0.03em;
+      word-break: keep-all;
+      line-height: 1.5;
+    }
+    @media (min-width: 640px) {
+      .network-banner-desc {
+        font-size: 0.925rem;
+        letter-spacing: -0.01em;
+      }
+    }
+    @media (min-width: 768px) {
+      .network-banner-desc {
+        font-size: 1rem;
+        letter-spacing: normal;
+      }
+    }
+    @media (max-width: 640px) {
+      .network-banner-desc {
+        white-space: normal;
+      }
+      .btn-network-banner-click {
+        width: 100%;
+        padding: 0.85rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+
   </style>
 
   <!-- Structured Data JSON-LD -->
@@ -998,7 +1052,33 @@
   </main>
 
   <!-- Footer -->
-  <footer class="clinic-footer w-full bg-[#0d3a42] text-slate-200 pt-8 sm:pt-10 pb-12">
+    <!-- HEALIM NETWORK OFFICIAL 배너 섹션 (클릭 시 https://www.healim.com 이동) -->
+  <div id="branches" class="w-full bg-[#fafcfc] pt-2 pb-6 sm:pb-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <a href="https://www.healim.com" target="_blank" rel="noopener noreferrer" class="network-official-banner-link" style="text-decoration:none; display:block;">
+        <div class="bg-gradient-to-r from-[#0d3a42] via-[#1c6e78] to-[#0d3a42] rounded-2xl px-5 py-6 sm:p-8 md:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#2b8894] transition-all hover:shadow-2xl">
+          <div class="text-center md:text-left">
+            <span class="inline-block px-3 py-1 bg-white/15 text-white font-bold text-xs rounded-full uppercase tracking-wider mb-3">
+              HEALIM NETWORK OFFICIAL
+            </span>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">
+              해아림한의원 네트워크 홈페이지 바로가기
+            </h2>
+            <p class="network-banner-desc text-slate-200 font-normal leading-relaxed">
+              전국 16개 네트워크 지점 상세정보 및 예약, 학술연구를 확인하실 수 있습니다.
+            </p>
+          </div>
+          <div class="flex-shrink-0">
+            <span class="btn-network-banner-click">
+              <span>CLICK &nbsp;&gt;</span>
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+<footer class="clinic-footer w-full bg-[#0d3a42] text-slate-200 pt-8 sm:pt-10 pb-12">
 <div class="container mx-auto px-4 max-w-7xl">
 <div class="border-b border-[#1c6e78]/35 pb-6 mb-8 text-center md:text-left">
 <span class="inline-block px-3 py-1 bg-[#c16e1f] text-white font-bold text-xs rounded-full uppercase tracking-wider mb-2">Network Clinic</span>
