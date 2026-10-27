@@ -106,6 +106,17 @@ try {
   const hugoOut = execSync('hugo --gc --minify', { cwd: rootDir, encoding: 'utf8' });
   console.log(hugoOut.trim());
   console.log('✅ Hugo 빌드 성공 완료!\n');
+
+  // 4.5 Clean URLs without trailing slash (/columns, /faq, /reviews, /youtube)
+  ['columns', 'faq', 'reviews', 'youtube'].forEach(name => {
+    const srcIndex = path.join(rootDir, 'public', name, 'index.html');
+    const destHtml = path.join(rootDir, 'public', name + '.html');
+    if (fs.existsSync(srcIndex)) {
+      fs.copyFileSync(srcIndex, destHtml);
+      console.log(`✅ Clean URL file mapped: public/${name}.html created`);
+    }
+  });
+  console.log('');
 } catch (err) {
   console.error('❌ Hugo 빌드 실패:', err.message);
   process.exit(1);

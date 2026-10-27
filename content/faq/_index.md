@@ -4,6 +4,7 @@ seo:
   title: "공황장애 FAQ 32문답, 공황발작 대처법, 치료기간 및 완치 관리 Q&A | 해아림한의원"
 description: "공황발작 시 응급대처, 심장 두근거림과 호흡곤란, 양약 테이퍼링, 한방 치료 방법 등 환자분들이 가장 자주 묻는 32대 핵심 질문과 전문 의료진의 명쾌한 답변입니다."
 keywords: "공황장애FAQ, 공황장애자주묻는질문, 공황발작대처, 공황장애치료기간, 공황장애약물부작용, 공황장애한약, 해아림한의원"
+url: "/faq"
 type: landing
 sections:
   - block: markdown
@@ -26,22 +27,22 @@ sections:
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
-        <a href="/faq/" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/faq" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         FAQ 공황장애 치료 정보
         </a>
         </li>
         <li>
-        <a href="/reviews/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/reviews" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </a>
         </li>
         <li>
-        <a href="/youtube/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/youtube" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 유튜브
         </a>
         </li>
         <li>
-        <a href="/columns/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/columns" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료 칼럼
         </a>
         </li>

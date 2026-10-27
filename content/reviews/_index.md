@@ -4,6 +4,7 @@ seo:
   title: "공황장애 치료후기 74편, 공황발작 극복 및 일상 회복 실제 사례 | 해아림한의원"
 description: "공황장애, 광장공포증, 자율신경실조증을 극복한 환자들의 74편 실제 치료후기와 단계별 호전 과정을 공유합니다 (의료법 제56조 준수 정회원 열람)."
 keywords: "공황장애치료후기, 공황장애극복사례, 공황장애호전후기, 해아림한의원후기, 공황장애완치사례, 공황장애수기"
+url: "/reviews"
 type: landing
 sections:
   - block: markdown
@@ -26,22 +27,22 @@ sections:
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
-        <a href="/faq/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/faq" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         FAQ 공황장애 치료 정보
         </a>
         </li>
         <li>
-        <a href="/reviews/" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/reviews" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </a>
         </li>
         <li>
-        <a href="/youtube/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/youtube" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 유튜브
         </a>
         </li>
         <li>
-        <a href="/columns/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/columns" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료 칼럼
         </a>
         </li>

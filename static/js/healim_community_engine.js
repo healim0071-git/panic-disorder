@@ -3576,7 +3576,7 @@
     var pathMap = { faq: '/faq', reviews: '/reviews', youtube: '/youtube', columns: '/columns' };
     var expectedPath = pathMap[tabName];
     if (expectedPath && curPath !== expectedPath && curPath !== '/community' && curPath !== '') {
-      window.location.href = expectedPath + '/';
+      window.location.href = expectedPath;
       return;
     }
         activeTab = tabName;

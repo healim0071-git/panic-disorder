@@ -12,6 +12,15 @@ www.healim-panic.com {
 healim-panic.com {
     root * ./public
     encode gzip zstd
+
+    # Exact Clean URL Rewrites without trailing slash
+    rewrite /columns /columns.html
+    rewrite /faq /faq.html
+    rewrite /reviews /reviews.html
+    rewrite /youtube /youtube.html
+
+    try_files {path} {path}.html {path}/index.html
+
     file_server
 
     # 검색엔진 피드 및 사이트맵 자동 매핑 (404 방지)

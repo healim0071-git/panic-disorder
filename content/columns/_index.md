@@ -4,6 +4,7 @@ seo:
   title: "공황장애 치료 칼럼, 임상 사례 분석, 자율신경 회복 가이드 | 해아림한의원"
 description: "16여 년 임상 노하우를 바탕으로 한방신경정신과 전문 의료진이 집필한 공황장애 원인, 증상별 대처법, 호흡 및 자율신경 회복 치료사례 칼럼 45편을 제공합니다."
 keywords: "공황장애칼럼, 공황장애치료사례, 공황장애한의원, 자율신경실조증, 공황발작대처, 예기불안극복, 해아림한의원칼럼"
+url: "/columns"
 type: landing
 sections:
   - block: markdown
@@ -26,22 +27,22 @@ sections:
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
-        <a href="/faq/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/faq" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         FAQ 공황장애 치료 정보
         </a>
         </li>
         <li>
-        <a href="/reviews/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/reviews" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </a>
         </li>
         <li>
-        <a href="/youtube/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/youtube" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 유튜브
         </a>
         </li>
         <li>
-        <a href="/columns/" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/columns" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료 칼럼
         </a>
         </li>

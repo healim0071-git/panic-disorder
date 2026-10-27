@@ -26,22 +26,22 @@ sections:
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
-        <a href="/faq/" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/faq" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         FAQ 공황장애 치료 정보
         </a>
         </li>
         <li>
-        <a href="/reviews/" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/reviews" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </a>
         </li>
         <li>
-        <a href="/youtube/" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/youtube" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 유튜브
         </a>
         </li>
         <li>
-        <a href="/columns/" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/columns" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료 칼럼
         </a>
         </li>
@@ -517,7 +517,7 @@ sections:
         (function() {
           // Instant client redirect for legacy hash URLs (#columns, #faq, #reviews, #youtube)
           var hash = (window.location.hash || '').replace('#', '');
-          var pathMap = { columns: '/columns/', faq: '/faq/', reviews: '/reviews/', youtube: '/youtube/' };
+          var pathMap = { columns: '/columns', faq: '/faq', reviews: '/reviews', youtube: '/youtube' };
           if (pathMap[hash]) {
             window.location.replace(pathMap[hash]);
           }

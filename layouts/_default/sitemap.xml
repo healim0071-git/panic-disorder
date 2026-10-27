@@ -17,7 +17,7 @@
         {{- $changefreq = "weekly" -}}
       {{- end -}}
   <url>
-    <loc>{{ .Permalink }}</loc>
+    <loc>{{ .Permalink | strings.TrimSuffix "/" }}</loc>
     <lastmod>{{ if not .Date.IsZero }}{{ .Date.Format "2006-01-02T15:04:05+09:00" }}{{ else }}{{ now.Format "2006-01-02T15:04:05+09:00" }}{{ end }}</lastmod>
     <changefreq>{{ $changefreq }}</changefreq>
     <priority>{{ $priority }}</priority>

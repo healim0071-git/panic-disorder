@@ -4,6 +4,7 @@ seo:
   title: "공황장애 유튜브 영상 15편, 원장단 직강 극복 가이드 | 해아림TV"
 description: "해아림TV 공식 유튜브 채널의 공황장애 원인 분석, 자가치유 호흡법, 약물 부작용 대처 및 예기불안 관리 영상 15편을 한눈에 시청하실 수 있습니다."
 keywords: "공황장애유튜브, 해아림TV, 공황장애영상, 공황발작호흡법, 공황장애의사강의, 알쓸한상, 해아림한의원"
+url: "/youtube"
 type: landing
 sections:
   - block: markdown
@@ -26,22 +27,22 @@ sections:
         <div class="community-tabs-container">
         <ul class="community-tabs-list" id="communityTabList">
         <li>
-        <a href="/faq/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/faq" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         FAQ 공황장애 치료 정보
         </a>
         </li>
         <li>
-        <a href="/reviews/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/reviews" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
         </a>
         </li>
         <li>
-        <a href="/youtube/" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/youtube" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 유튜브
         </a>
         </li>
         <li>
-        <a href="/columns/" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        <a href="/columns" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
         공황장애 치료 칼럼
         </a>
         </li>
