@@ -3617,13 +3617,12 @@
         });
 
         // Permanent elimination of /#columns, /#faq, /#reviews, /#youtube
-          if (window.location.hash && history.replaceState) {
-            try {
-              var cleanUrl = window.location.pathname.replace(/\/+$/, '') + window.location.search;
-              history.replaceState(null, null, cleanUrl);
-            } catch(e) {}
-          }
-          }
+        if (window.location.hash && history.replaceState) {
+          try {
+            var cleanUrl = window.location.pathname.replace(/\/+$/, '') + window.location.search;
+            history.replaceState(null, null, cleanUrl);
+          } catch(e) {}
+        }
 
         // Render content for active tab
         if (tabName === 'faq') {

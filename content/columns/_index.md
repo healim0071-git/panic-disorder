@@ -768,5 +768,16 @@ sections:
         <script src="/js/auto_review_engine.js"></script>
         <script src="/js/healim_cloud_db.js"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'columns';</script>
-        <script src="/js/healim_community_engine.js"></script>
+        
+        <script>
+        // Instant Zero-Delay URL Sanitizer (Ensures NEVER has #hash)
+        (function() {
+          if (window.location.hash) {
+            try {
+              history.replaceState(null, null, window.location.pathname.replace(/\/+$/, '') + window.location.search);
+            } catch(e) {}
+          }
+        })();
+        </script>
+        <script src="/js/healim_community_engine.js?v=20261027_clean_v3_fixed"></script>
 ---

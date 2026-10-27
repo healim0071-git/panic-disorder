@@ -221,9 +221,9 @@
               window.switchCommunityTab(tabName);
             }
             if (window.history && window.history.pushState) {
-              window.history.pushState(null, null, '#' + tabName);
+              
             } else {
-              window.location.hash = tabName;
+              
             }
             var targetEl = document.getElementById(tabName) || document.getElementById('tab-pane-' + tabName) || document.querySelector('.community-tabs-container') || document.getElementById('communityTabList');
             if (targetEl) {
