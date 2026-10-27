@@ -3582,16 +3582,33 @@
         var activeYoutubeFilter = '전체';
         var activeColumnFilter = '전체';
 
+        function getCanonicalPageTab() {
+          var path = (window.location.pathname || '').replace(/\/+$/, '');
+          if (path.indexOf('/columns') !== -1) return 'columns';
+          if (path.indexOf('/reviews') !== -1) return 'reviews';
+          if (path.indexOf('/youtube') !== -1) return 'youtube';
+          if (path.indexOf('/faq') !== -1) return 'faq';
+          if (window.DEFAULT_COMMUNITY_TAB) return window.DEFAULT_COMMUNITY_TAB;
+          var rawHash = (window.location.hash || '').replace('#', '');
+          var hashMatch = rawHash.match(/^(faq|reviews|youtube|columns)/);
+          if (hashMatch) return hashMatch[1];
+          return 'faq';
+        }
+        window.getCanonicalPageTab = getCanonicalPageTab;
+
         // Tab Switching Logic
         window.switchCommunityTab = function(tabName) {
-    var curPath = (window.location.pathname || '').replace(/\/+$/, '');
-    var pathMap = { faq: '/faq', reviews: '/reviews', youtube: '/youtube', columns: '/columns' };
-    var expectedPath = pathMap[tabName];
-    if (expectedPath && curPath !== expectedPath && curPath !== '/community' && curPath !== '') {
-      window.location.href = expectedPath;
-      return;
-    }
-        activeTab = tabName;
+          var curCanonical = getCanonicalPageTab();
+          var path = (window.location.pathname || '').replace(/\/+$/, '');
+          var isCommunityRoot = (path === '/community' || path === '');
+
+          // On dedicated pages (/columns, /reviews, /youtube, /faq), stay on the dedicated tab
+          // Tab navigation to other pages is handled via standard <a> links
+          if (!isCommunityRoot && curCanonical && tabName !== curCanonical) {
+            return;
+          }
+
+          activeTab = tabName;
 
         // Update Tab Button Styles
         var tabBtns = document.querySelectorAll('.community-tab-btn');
@@ -5630,7 +5647,8 @@
         var hashMatch = rawHash.match(/^(faq|reviews|youtube|columns)/);
         var hashIdMatch = rawHash.match(/^(faq|reviews|youtube|columns)[-_](.+)$/);
 
-        var targetTab = qBoard || (hashMatch ? hashMatch[1] : null) || window.DEFAULT_COMMUNITY_TAB || null;
+        var canonicalTab = getCanonicalPageTab();
+        var targetTab = qBoard || (hashMatch ? hashMatch[1] : null) || canonicalTab;
         var targetId = qId || (hashIdMatch ? hashIdMatch[2] : null);
 
         // Session storage fallback
@@ -5656,7 +5674,7 @@
           switchCommunityTab('reviews');
           setTimeout(function() { openWriteModal('reviews'); }, 150);
         } else {
-          switchCommunityTab('faq');
+          switchCommunityTab(canonicalTab);
         }
 
         // Apply admin auto badges visibility check on load
@@ -5764,10 +5782,8 @@
                   }
                 });
                 if (didUpdate) {
-                  var curHash = window.location.hash.replace('#', '') || 'faq';
-                  if (curHash === 'faq' || curHash === 'reviews' || curHash === 'youtube' || curHash === 'columns') {
-                    switchCommunityTab(curHash);
-                  }
+                  var curTab = getCanonicalPageTab();
+                  switchCommunityTab(curTab);
                 }
               }
             })
@@ -5783,10 +5799,8 @@
 
         window.addEventListener('hashchange', initTabFromHash);
         window.addEventListener('healim-cloud-db-updated', function() {
-          var curHash = window.location.hash.replace('#', '') || 'faq';
-          if (curHash === 'faq' || curHash === 'reviews' || curHash === 'youtube' || curHash === 'columns') {
-            switchCommunityTab(curHash);
-          }
+          var curTab = getCanonicalPageTab();
+          switchCommunityTab(curTab);
         });
 
         if (document.readyState === 'loading') {
