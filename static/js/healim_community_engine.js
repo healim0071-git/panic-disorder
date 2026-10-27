@@ -1,3 +1,15 @@
+// Permanent Instant Hash Cleaner (Ensures /#columns, /#faq, /#reviews, /#youtube NEVER exist)
+(function() {
+  if (window.location.hash) {
+    var rawH = window.location.hash.replace('#', '');
+    if (['columns', 'faq', 'reviews', 'youtube'].includes(rawH) || rawH.startsWith('tab-pane-')) {
+      if (window.history && window.history.replaceState) {
+        var cleanPath = window.location.pathname.replace(/\/+$/, '') + window.location.search;
+        window.history.replaceState(null, null, cleanPath);
+      }
+    }
+  }
+})();
 (function() {
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
         var CURRENT_COMMUNITY_EPOCH = '20261015_panic_v19_clean_sync';
@@ -3604,12 +3616,14 @@
         }
         });
 
-        // Update URL Hash
-        if (history.replaceState) {
-        history.replaceState(null, null, '#' + tabName);
-        } else {
-        window.location.hash = tabName;
-        }
+        // Permanent elimination of /#columns, /#faq, /#reviews, /#youtube
+          if (window.location.hash && history.replaceState) {
+            try {
+              var cleanUrl = window.location.pathname.replace(/\/+$/, '') + window.location.search;
+              history.replaceState(null, null, cleanUrl);
+            } catch(e) {}
+          }
+          }
 
         // Render content for active tab
         if (tabName === 'faq') {

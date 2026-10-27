@@ -58,7 +58,7 @@ sections:
         치료 칼럼 전용 본문
         ══════════════════════════════════════════════════════════════ -->
         <div id="tab-pane-columns" class="tab-pane-content">
-        <div id="columns" class="scroll-mt-28"></div>
+        <div id="columns-section" class="scroll-mt-28"></div>
         <div class="board-control-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
         <div id="autoColumnStatusBadge" class="flex items-center gap-2 text-xs text-[#0d3a42] bg-[#f0f7f8] border border-[#badfe3] px-3.5 py-2 rounded-lg" style="display: none;">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>

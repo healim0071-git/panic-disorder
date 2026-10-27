@@ -339,6 +339,7 @@
     }
   }
   </script>
+<script>// Permanent Instant Hash Cleaner (Ensures /#columns, /#faq, /#reviews, /#youtube NEVER exist) (function() {   if (window.location.hash) {     var rawH = window.location.hash.replace('#', '');     if (['columns', 'faq', 'reviews', 'youtube'].includes(rawH) || rawH.startsWith('tab-pane-')) {       if (window.history && window.history.replaceState) {         var cleanPath = window.location.pathname.replace(/\/+$/, '') + window.location.search;         window.history.replaceState(null, null, cleanPath);       }     }   } })(); </script>
 </head>
 <body class="bg-[#f8fafb]">
 

@@ -58,7 +58,7 @@ sections:
         치료후기 전용 본문
         ══════════════════════════════════════════════════════════════ -->
         <div id="tab-pane-reviews" class="tab-pane-content">
-        <div id="reviews" class="scroll-mt-16 md:scroll-mt-24"></div>
+        <div id="reviews-section" class="scroll-mt-16 md:scroll-mt-24"></div>
         <!-- Control Bar with Auto-Publishing Status (healim0071 Superadmin Only) -->
         <div class="board-control-bar" id="reviewAdminControlBar" style="display: none; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
         <div id="autoReviewStatusBadge" class="flex items-center gap-2 text-xs text-[#0d3a42] bg-[#f0f7f8] border border-[#badfe3] px-3.5 py-2 rounded-lg" style="display: none;">

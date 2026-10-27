@@ -58,7 +58,7 @@ sections:
         FAQ 전용 본문
         ══════════════════════════════════════════════════════════════ -->
         <div id="tab-pane-faq" class="tab-pane-content">
-        <div id="faq" class="scroll-mt-28"></div>
+        <div id="faq-section" class="scroll-mt-28"></div>
         <!-- Control Bar with Auto-Publishing Status (healim0071 Admin Only) -->
         <div class="board-control-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
         <div id="autoFaqStatusBadge" class="flex items-center gap-2 text-xs text-[#0d3a42] bg-[#f0f7f8] border border-[#badfe3] px-3.5 py-2 rounded-lg" style="display: none;">

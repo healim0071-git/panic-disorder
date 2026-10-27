@@ -58,7 +58,7 @@ sections:
         유튜브 전용 본문
         ══════════════════════════════════════════════════════════════ -->
         <div id="tab-pane-youtube" class="tab-pane-content">
-        <div id="youtube" class="scroll-mt-28"></div>
+        <div id="youtube-section" class="scroll-mt-28"></div>
         <div class="board-control-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
         <div class="flex items-center gap-2 text-xs text-[#0d3a42] bg-[#f0f7f8] px-3.5 py-2 rounded-lg border border-[#cde3e6]" id="youtubeSyncStatus">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
