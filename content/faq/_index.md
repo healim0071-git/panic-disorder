@@ -1,7 +1,7 @@
 ---
-title: "공황장애 자주 묻는 질문(FAQ) 32문답 | 해아림한의원"
+title: "공황장애 자주묻는 질문 FAQ, 공황발작 대처법, 치료기간 및 완치 가능성 Q&A ㅣ해아림한의원"
 seo:
-  title: "공황장애 FAQ 32문답, 공황발작 대처법, 치료기간 및 완치 관리 Q&A | 해아림한의원"
+  title: "공황장애 자주묻는 질문 FAQ, 공황발작 대처법, 치료기간 및 완치 가능성 Q&A ㅣ해아림한의원"
 description: "공황발작 시 응급대처, 심장 두근거림과 호흡곤란, 양약 테이퍼링, 한방 치료 방법 등 환자분들이 가장 자주 묻는 32대 핵심 질문과 전문 의료진의 명쾌한 답변입니다."
 keywords: "공황장애FAQ, 공황장애자주묻는질문, 공황발작대처, 공황장애치료기간, 공황장애약물부작용, 공황장애한약, 해아림한의원"
 url: "/faq"
@@ -14,8 +14,8 @@ sections:
 
         <div class="mb-8 text-center md:text-left">
         <span class="inline-block px-3 py-1 bg-[#eaf3f4] text-[#1c6e78] font-bold text-xs rounded-full uppercase tracking-wider mb-2">FAQ &amp; Evidence-Based Q&amp;A</span>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-3">
-        해아림 공황장애 FAQ 및 치료 정보
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-3 break-keep">
+        공황장애 자주묻는 질문 FAQ, 공황발작 대처법, 치료기간 및 완치 가능성 Q&A ㅣ해아림한의원
         </h1>
         <p class="text-[#555555] text-base md:text-lg leading-relaxed max-w-none lg:whitespace-nowrap break-keep">
         공황발작, 예기불안, 심장 두근거림, 호흡곤란, 약물 치료 및 생활관리까지 환자분들이 가장 자주 묻는 32대 핵심 질문과 전문의 답변입니다.
