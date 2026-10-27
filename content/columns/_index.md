@@ -779,5 +779,5 @@ sections:
           }
         })();
         </script>
-        <script src="/js/healim_community_engine.js?v=20261028_page_isolation"></script>
+        <script src="/js/healim_community_engine_v4.js?v=20261028_fix_final"></script>
 ---

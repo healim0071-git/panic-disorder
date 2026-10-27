@@ -62,3 +62,29 @@
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+/columns
+  Cache-Control: public, max-age=0, must-revalidate
+
+/columns/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/reviews
+  Cache-Control: public, max-age=0, must-revalidate
+
+/reviews/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/youtube
+  Cache-Control: public, max-age=0, must-revalidate
+
+/youtube/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/faq
+  Cache-Control: public, max-age=0, must-revalidate
+
+/faq/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
