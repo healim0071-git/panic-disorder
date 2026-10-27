@@ -9,7 +9,7 @@
       {{- if .IsHome -}}
         {{- $priority = "1.0" -}}
         {{- $changefreq = "daily" -}}
-      {{- else if in .RelPermalink "/community/" -}}
+      {{- else if or (in .RelPermalink "/community/") (in .RelPermalink "/columns/") (in .RelPermalink "/faq/") (in .RelPermalink "/reviews/") (in .RelPermalink "/youtube/") -}}
         {{- $priority = "0.95" -}}
         {{- $changefreq = "daily" -}}
       {{- else if or (in .RelPermalink "/panic-disorder/") (in .RelPermalink "/panic-symptoms/") (in .RelPermalink "/panic-diagnosis/") (in .RelPermalink "/panic-treatment/") (in .RelPermalink "/panic-clinic/") -}}

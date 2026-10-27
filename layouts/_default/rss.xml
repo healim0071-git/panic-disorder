@@ -33,8 +33,8 @@
       {{- range .columns -}}
     <item>
       <title>{{ .title | plainify }}</title>
-      <link>https://healim-panic.com/community/#columns-{{ .id }}</link>
-      <guid isPermaLink="true">https://healim-panic.com/community/#columns-{{ .id }}</guid>
+      <link>https://healim-panic.com/columns/?id={{ .id }}</link>
+      <guid isPermaLink="true">https://healim-panic.com/columns/?id={{ .id }}</guid>
       <pubDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <author>healim@healim.com (해아림한의원)</author>
       <category>{{ .category | default "공황장애 치료 칼럼" | plainify }}</category>
@@ -46,8 +46,8 @@
       {{- range .faq -}}
     <item>
       <title>{{ .title | plainify }}</title>
-      <link>https://healim-panic.com/community/#faq-{{ .id }}</link>
-      <guid isPermaLink="true">https://healim-panic.com/community/#faq-{{ .id }}</guid>
+      <link>https://healim-panic.com/faq/?id={{ .id }}</link>
+      <guid isPermaLink="true">https://healim-panic.com/faq/?id={{ .id }}</guid>
       <pubDate>{{ now.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <author>healim@healim.com (해아림한의원)</author>
       <category>{{ .category | default "공황장애 FAQ" | plainify }}</category>
