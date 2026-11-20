@@ -575,9 +575,18 @@
   function checkAndRunAutoReviewPublish(isManual) {
     var state = getAutoReviewState();
     var now = Date.now();
+    var nextTs = state && state.nextScheduledTime ? new Date(state.nextScheduledTime).getTime() : 0;
 
     // Zero-Divergence Guarantee: Disable background auto-publishing into client localStorage
     if (!isManual) {
+      if (!nextTs || isNaN(nextTs) || nextTs <= now) {
+        state.nextScheduledTime = calculateNextReviewScheduleTime(new Date()).getTime();
+        saveAutoReviewState(state);
+      } else if (typeof state.nextScheduledTime !== 'number') {
+        state.nextScheduledTime = nextTs;
+        saveAutoReviewState(state);
+      }
+      updateAutoReviewStatusUI(state);
       return false;
     }
     var shouldPublish = isManual || (state.nextScheduledTime && now >= state.nextScheduledTime);
@@ -712,7 +721,7 @@
 
       // Update state
       state.lastPublishedTime = now;
-      state.nextScheduledTime = calculateNextReviewScheduleTime(effectiveDate);
+      state.nextScheduledTime = calculateNextReviewScheduleTime(effectiveDate).getTime();
       state.poolIndex = ((chosenIndex !== -1 ? chosenIndex : state.poolIndex) + 1) % poolLength;
       saveAutoReviewState(state);
 
@@ -767,6 +776,18 @@
     }
     if (!isHealimAdmin) {
       alert('관리자(healim0071)로 로그인한 경우에만 수동 즉시 발행이 가능합니다.');
+      return;
+    }
+
+    var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+    var isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (!hasCloudDb && !isLocalHost) {
+      alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
+            '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
+            '브라우저에서만 단독 즉시 발행을 실행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
+            '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
+            '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
+            '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
       return;
     }
 

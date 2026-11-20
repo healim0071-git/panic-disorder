@@ -477,7 +477,7 @@ sections:
         </div>
         </div>
 
-        <script src="/js/healim_cloud_db.js"></script>
+        <script src="/js/healim_cloud_db.js?v=20261120_sync_v20"></script>
         <script>
         (function() {
           var currentActiveTab = 'all';

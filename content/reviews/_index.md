@@ -396,10 +396,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script src="/js/auto_faq_engine.js"></script>
-        <script src="/js/auto_column_engine.js?v=1792982911417"></script>
-        <script src="/js/auto_review_engine.js"></script>
-        <script src="/js/healim_cloud_db.js"></script>
+        <script src="/js/auto_faq_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/auto_column_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/auto_review_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/healim_cloud_db.js?v=20261120_sync_v20"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'reviews';</script>
         
         <script>
@@ -412,5 +412,5 @@ sections:
           }
         })();
         </script>
-        <script src="/js/healim_community_engine_v4.js?v=20261028_fix_final"></script>
+        <script src="/js/healim_community_engine_v4.js?v=20261120_sync_v20"></script>
 ---

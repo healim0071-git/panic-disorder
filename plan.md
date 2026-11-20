@@ -2569,3 +2569,38 @@ obots.txt濡??됱씤 ?쒖쇅?섎룄濡??섎룄??蹂댁븞/媛쒖씤?뺣낫 ?섏�
   3. **전체 빌드 및 GitHub 푸시 완료**:
      - `hugo --minify` 40개 페이지 0 error 정적 빌드 완료.
      - GitHub 원격 저장소(`origin/main`) 동기화 및 푸시 완료.
+
+---
+
+## 🛡️ [2026-11-20] 마일스톤 9.88: 커뮤니티 FAQ & 치료칼럼 PC/모바일 화면 불일치 근본 원인 분석 및 영구 해결 (Zero-Divergence v20, IndexedDB 좀비 복원 차단, 4편 FAQ 정규 허브 승격)
+- **사용자 요구사항**:
+  - 커뮤니티 FAQ에서 PC 화면(최상단 4편 추가 노출)과 모바일 화면(4편 누락)이 서로 다르게 표시되는 원인 분석 및 해결.
+  - 치료칼럼에서도 동일하게 발생 중인 PC/모바일 불일치 오류 점검 및 해결.
+  - 수정 및 검증 완료 후 GitHub 메인 브랜치로 푸시.
+- **원인 심층 분석**:
+  1. **클라이언트 로컬 전용 발행에 따른 기기 분열 (정적 호스팅 + 클라우드 DB 미연동)**:
+     - 본 사이트는 실시간 클라우드 DB(`DEFAULT_CLOUD_DB_URL = ''`) 없이 GitHub 정적 허브(`/data/healim_community_hub.json`) 기반으로 운영 중.
+     - PC 최고관리자 화면에서 `⚡ 즉시 1편 발행` 또는 `✍️ 제목설정발행` 실행 시(또는 캐시된 구버전 엔진 실행 시) 신규 글이 해당 PC 브라우저의 `localStorage`와 `IndexedDB`에만 단독 저장되고 모바일·타 방문자에는 전혀 반영되지 않아 PC(36편) vs 모바일(32편) 불일치 발생. (PC 최상단 4편은 `auto_faq_engine.js`의 `dynamicFaqPool` 4편과 100% 일치 확인.)
+  2. **`IndexedDB`(`HealimPermanentDB`) 좀비 복원 결함**:
+     - 에포크 업그레이드 시 `localStorage`만 초기화하고 `IndexedDB(HealimCommunityDB)`는 비우지 않아, 페이지 로드 시 `restoreVault`가 비활성 탭(예: 치료칼럼)의 구버전 PC 전용 글을 다시 `localStorage`로 되살리는 결함 확인.
+  3. **정적 허브 동기화 시 로컬 `-auto-` 글 우선 병합 결함**:
+     - `healim_community_engine_v4.js`, `healim_cloud_db.js`, `common_bottom_sections.html`에서 클라우드 DB 미연동 상태임에도 브라우저 로컬 `-auto-` 글을 서버 허브보다 우선 병합하고 있었으며, `initTabFromHash`에 중복 3차 fetch가 잔존해 정적 허브 권위를 무력화함.
+  4. **엔진 스크립트 캐시버스팅 누락 및 부수 결함**:
+     - `auto_faq_engine.js`, `auto_review_engine.js`, `healim_cloud_db.js`에 `?v=` 쿼리 미적용.
+     - `auto_faq_engine.js`의 만료된 스케줄(`2026.11.17`) 자동 롤오버 누락 및 `Date` 객체 직접 저장 버그.
+     - `auto_column_engine.js`의 `sanitizeMedicalCompliance` 중복 함수 덮어쓰기 결함 및 존재하지 않는 `HealimCloudDB.pushItem()` 호출 오타.
+- **해결 및 최적화 내역**:
+  1. **PC 최상단 신규 FAQ 4편 정규 허브 승격 (32편 -> 36편, `v20` 통일)**:
+     - 의료광고법 위반 0건, 900~1,000자 규격, 유효 SVG 썸네일, 3대 CTA 링크 검증 후 `data/healim_community_hub.json`, `static/data/healim_community_hub.json`, `healim_community_engine_v4.js`, `common_bottom_sections.html`, `content/faq/_index.md`(SEO 36문답)에 100% 동기화.
+  2. **신규 에포크(`20261120_panic_v20_unified_sync`) 및 `IndexedDB` 완전 정화·에포크 태그 도입**:
+     - 에포크 전환 시 `localStorage`와 `IndexedDB(community_vault)`를 동시 초기화하고, `HealimPermanentDB` 레코드에 `epoch` 태그를 부여하여 구버전 좀비 복원 원천 차단.
+  3. **정적 배포 모드 단일 진실 공급원(Single Source of Truth) 강제 & 단독 로컬 발행 보호 가드**:
+     - 클라우드 DB 미연동 상태에서는 `/data/healim_community_hub.json`을 절대 기준으로 동기화하고, 중복 3차 fetch 제거.
+     - FAQ·치료칼럼·치료후기 수동 즉시 발행 및 `제목설정발행` 클릭 시 클라우드 DB 미연동 운영 환경에서는 단독 로컬 발행을 차단하고 안내 메시지를 표시하여 향후 PC/모바일 재분열 영구 방지.
+  4. **엔진 결함 수정 및 전 페이지 캐시 무효화(`?v=20261120_sync_v20`)**:
+     - `auto_faq_engine.js` / `auto_review_engine.js` 만료 스케줄 롤오버 및 `.getTime()` 정규화.
+     - `auto_column_engine.js` 중복 `sanitizeMedicalCompliance` 제거 및 `HealimCloudDB.savePost` 정상 연동.
+     - 커뮤니티 5개 페이지, 관리자 페이지, 공통 하단 섹션 및 18개 랜딩페이지(36개 파일) 전체 스크립트에 `?v=20261120_sync_v20` 캐시버스팅 적용.
+  5. **전수 검증 & 빌드 및 GitHub 푸시**:
+     - PC(구버전 v19 + 고스트 localStorage/IndexedDB) vs 모바일(클린) E2E 시뮬레이션: FAQ 및 치료칼럼 100% 동일 일치 검증 통과.
+     - `auto_publish_faq.js`, `auto_publish_column.js`, `sync_seo_feeds.js`(Hugo 빌드·RSS·sitemap) 전수 통과 후 원격 저장소 푸시 완료.

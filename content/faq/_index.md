@@ -88,8 +88,36 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 32문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
-        <h2>공황장애 자주 묻는 질문 32문답 전문</h2>
+        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 36문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h2>공황장애 자주 묻는 질문 36문답 전문</h2>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애 치료 중 한의원 치료와 정신과 치료를 함께 받아도 괜찮은가요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 정신건강의학과 약물 치료와 한방 치료를 안전하게 병행하는 1시간 시간차 복용 원칙과 점진적 감약(테이퍼링) 완충 시너지.</p>
+        </div>
+        </article>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애 환자가 밤에 잠들기 전 스마트폰을 보면 왜 발작 위험이 높아지나요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 취침 전 스마트폰 블루라이트가 멜라토닌을 억제하고 코르티솔 각성을 유발해 야간 공황발작을 촉발하는 기전과 숙면 수칙.</p>
+        </div>
+        </article>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애 환자가 카페인 없는 차를 마실 때 가장 추천하는 한방차는 무엇인가요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 교감신경을 자극하는 카페인 대신 GABA 분비와 심신 안정을 돕는 볶은 산조인차·연자육차·대추차 음용 가이드.</p>
+        </div>
+        </article>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">갑자기 심장이 두근거리고 숨이 막힐 때 찬물을 마시거나 얼굴에 찬물을 끼얹는 것이 도움이 되나요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 얼굴 삼차신경과 미주신경을 자극해 심박수를 낮추는 잠수 반사(Diving Reflex) 원리와 안전한 응급 대처법.</p>
+        </div>
+        </article>
 
         <article itemscope itemtype="https://schema.org/Question">
         <h3 itemprop="name">환절기나 날씨가 흐릴 때 유독 공황장애 증상이 심해지는 이유는 무엇인가요? - 기상 반응</h3>
@@ -624,10 +652,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script src="/js/auto_faq_engine.js"></script>
-        <script src="/js/auto_column_engine.js?v=1792982911417"></script>
-        <script src="/js/auto_review_engine.js"></script>
-        <script src="/js/healim_cloud_db.js"></script>
+        <script src="/js/auto_faq_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/auto_column_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/auto_review_engine.js?v=20261120_sync_v20"></script>
+        <script src="/js/healim_cloud_db.js?v=20261120_sync_v20"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'faq';</script>
         
         <script>
@@ -640,5 +668,5 @@ sections:
           }
         })();
         </script>
-        <script src="/js/healim_community_engine_v4.js?v=20261028_fix_final"></script>
+        <script src="/js/healim_community_engine_v4.js?v=20261120_sync_v20"></script>
 ---

@@ -998,7 +998,8 @@
     // Zero-Divergence Guarantee: Background auto-publishing into client localStorage is disabled
     // so that PC, mobile, and all visitors always see 100% identical canonical posts.
     if (!isManual) {
-      if (!state.nextScheduledTime || state.nextScheduledTime <= now) {
+      var nextColTs = state && state.nextScheduledTime ? new Date(state.nextScheduledTime).getTime() : 0;
+      if (!nextColTs || isNaN(nextColTs) || nextColTs <= now) {
         var nextSchedule = calculateNextColumnSchedule(new Date());
         state.nextScheduledTime = nextSchedule.getTime();
         saveAutoColumnState(state);
@@ -1195,14 +1196,7 @@
 
 
   // ── 공황장애 제목설정 맞춤 치료칼럼 생성 및 즉시발행 엔진 ──
-  function sanitizeMedicalCompliance(text) {
-    if (!text) return '';
-    return String(text)
-      .replace(/완치/g, '호전과 안정')
-      .replace(/최고/g, '정밀')
-      .replace(/100%/g, '체계적')
-      .replace(/유일/g, '차별화된');
-  }
+  // (상단 858행의 종합 의료광고법 필터 sanitizeMedicalCompliance를 그대로 사용)
 
   function generateCustomColumnContentByTitle(inputTitle) {
     var rawTitle = inputTitle;
@@ -1401,6 +1395,20 @@
       return false;
     }
 
+    var hasCloudDbCustom = !!(typeof window !== 'undefined' && window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+    var isLocalCustom = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+    if (!hasCloudDbCustom && !isLocalCustom) {
+      if (typeof alert === 'function') {
+        alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
+              '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
+              '브라우저에서만 단독 발행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
+              '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
+              '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
+              '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
+      }
+      return false;
+    }
+
     var now = Date.now();
     var d = new Date();
     var dateStr = d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0');
@@ -1470,9 +1478,14 @@
       legList.unshift(newPost);
       localStorage.setItem('healim_community_posts_v2', JSON.stringify(legList));
 
-      // Push to HealimCloudDB
-      if (typeof window !== 'undefined' && window.HealimCloudDB && window.HealimCloudDB.pushItem) {
-        window.HealimCloudDB.pushItem('columns', newPost);
+      // Push to HealimCloudDB & Universal Sync
+      if (typeof window !== 'undefined') {
+        if (window.HealimCloudDB && typeof window.HealimCloudDB.savePost === 'function') {
+          window.HealimCloudDB.savePost('columns', newPost);
+        }
+        if (window.HealimUniversalSync && typeof window.HealimUniversalSync.syncPostToRemote === 'function') {
+          window.HealimUniversalSync.syncPostToRemote('columns', newPost, 'create');
+        }
       }
     } catch(e) {
       console.warn('[Healim Auto-Column Engine] Storage save error:', e);
@@ -1616,6 +1629,18 @@
     }
     if (!isHealimAdmin) {
       alert('관리자(healim0071)로 로그인한 경우에만 수동 즉시 발행이 가능합니다.');
+      return;
+    }
+
+    var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+    var isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (!hasCloudDb && !isLocalHost) {
+      alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
+            '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
+            '브라우저에서만 단독 즉시 발행을 실행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
+            '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
+            '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
+            '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
       return;
     }
 

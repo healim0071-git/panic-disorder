@@ -88,7 +88,7 @@
       .then(function(json) {
         if (json && typeof json === 'object') {
           var normalized = normalizeCloudData(json);
-          applyDataToLocal(normalized);
+          applyDataToLocal(normalized, true);
           broadcastUpdate('cloud_pull', normalized);
           if (onDone) onDone(true, normalized);
         } else {
@@ -109,15 +109,15 @@
       })
       .then(function(data) {
         var rawHub = data.data || data;
-        var CURRENT_EPOCH = '20261015_panic_v19_clean_sync';
-        // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH!
-        if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 15)) {
+        var CURRENT_EPOCH = '20261120_panic_v20_unified_sync';
+        // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH or newer 2026 epoch!
+        if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 20)) {
           console.warn('[HealimCloudDB] Remote static hub is outdated (' + (rawHub ? rawHub.epoch : 'none') + '). Preserving local canonical seeds.');
           if (onDone) onDone(false, null);
           return;
         }
         var normalized = normalizeCloudData(rawHub);
-        applyDataToLocal(normalized);
+        applyDataToLocal(normalized, false);
         broadcastUpdate('static_hub_pull', normalized);
         isConnected = true;
         if (onDone) onDone(true, normalized);
@@ -288,12 +288,13 @@
   }
 
   // 7. 로컬 스토리지 및 볼트 병합
-  function applyDataToLocal(data) {
+  function applyDataToLocal(data, isCloudMode) {
     if (!data) return;
     inMemoryData = data;
+    var allowLocalAutoMerge = !!isCloudMode || !!getBaseUrl();
 
     ['faq', 'reviews', 'columns', 'youtube'].forEach(function(bKey) {
-      applyBoardToLocal(bKey, data[bKey] || []);
+      applyBoardToLocal(bKey, data[bKey] || [], allowLocalAutoMerge);
     });
 
     if (Array.isArray(data.deleted_ids) && data.deleted_ids.length > 0) {
@@ -304,7 +305,7 @@
     }
   }
 
-  function applyBoardToLocal(bKey, remoteList) {
+  function applyBoardToLocal(bKey, remoteList, allowLocalAutoMerge) {
     if (!Array.isArray(remoteList)) return;
     var badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기', '교감신경 항진증과 부교감', '기립성'];
     remoteList = remoteList.filter(function(item) {
@@ -323,45 +324,59 @@
 
     var seenIds = {};
     var merged = [];
+    var isStrictStaticHub = !allowLocalAutoMerge && !getBaseUrl();
 
     function isDel(p) {
       if (!p || !p.id) return true;
       return deletedIds.indexOf(String(p.id)) !== -1;
     }
 
-    // 1. Locally created custom posts, auto-published posts, or edited posts have top precedence
-    localList.forEach(function(p) {
-      if (p && p.id && !isDel(p)) {
-        var strId = String(p.id);
-        var isLocalSpecial = p.isCustom || p.isAutoPublished || p.isEdited ||
-          strId.indexOf('custom') !== -1 || strId.indexOf('-auto-') !== -1;
-        if (isLocalSpecial) {
+    if (isStrictStaticHub) {
+      // Zero-Divergence Mode (Static Hub): Canonical server hub is the Single Source of Truth
+      // so PC and mobile always display 100% identical posts (no stale browser-local -auto- drift).
+      remoteList.forEach(function(p) {
+        if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
+          var strId = String(p.id);
           var finalP = editedMap[strId] ? editedMap[strId] : p;
           seenIds[strId] = true;
           merged.push(finalP);
         }
-      }
-    });
+      });
+    } else {
+      // 1. Locally created custom posts, auto-published posts, or edited posts have top precedence
+      localList.forEach(function(p) {
+        if (p && p.id && !isDel(p)) {
+          var strId = String(p.id);
+          var isLocalSpecial = p.isCustom || p.isAutoPublished || p.isEdited ||
+            strId.indexOf('custom') !== -1 || strId.indexOf('-auto-') !== -1;
+          if (isLocalSpecial) {
+            var finalP = editedMap[strId] ? editedMap[strId] : p;
+            seenIds[strId] = true;
+            merged.push(finalP);
+          }
+        }
+      });
 
-    // 2. Authoritative Canonical Hub Posts from server (Primary Baseline)
-    remoteList.forEach(function(p) {
-      if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
-        var strId = String(p.id);
-        var finalP = editedMap[strId] ? editedMap[strId] : p;
-        seenIds[strId] = true;
-        merged.push(finalP);
-      }
-    });
+      // 2. Authoritative Canonical Hub Posts from server (Primary Baseline)
+      remoteList.forEach(function(p) {
+        if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
+          var strId = String(p.id);
+          var finalP = editedMap[strId] ? editedMap[strId] : p;
+          seenIds[strId] = true;
+          merged.push(finalP);
+        }
+      });
 
-    // 3. Remaining local posts
-    localList.forEach(function(p) {
-      if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
-        var strId = String(p.id);
-        var finalP = editedMap[strId] ? editedMap[strId] : p;
-        seenIds[strId] = true;
-        merged.push(finalP);
-      }
-    });
+      // 3. Remaining local posts
+      localList.forEach(function(p) {
+        if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
+          var strId = String(p.id);
+          var finalP = editedMap[strId] ? editedMap[strId] : p;
+          seenIds[strId] = true;
+          merged.push(finalP);
+        }
+      });
+    }
 
     if (typeof window !== 'undefined' && typeof window.sortCommunityItemsByTime === 'function') {
       merged = window.sortCommunityItemsByTime(merged);
