@@ -544,7 +544,7 @@ sections:
         <div class="healim-gallery-container mb-12">
         <div class="healim-paper-tag">&lt; 공황 및 자율신경계(HRV) 조절 메커니즘 &gt;</div>
         <div class="healim-image-frame max-w-2xl mx-auto">
-        <img src="/images/hrv_autonomic_balance.svg" alt="교감신경 대 부교감신경 균형 분석">
+        <img src="/images/hrv_autonomic_balance.svg" alt="교감신경 대 부교감신경 균형 분석" loading="lazy" decoding="async">
         </div>
         </div>
 

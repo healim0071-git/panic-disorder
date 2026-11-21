@@ -477,7 +477,7 @@ sections:
         </div>
         </div>
 
-        <script src="/js/healim_cloud_db.js?v=20261121_sync_v21"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261121_perf_v22"></script>
         <script>
         (function() {
           var currentActiveTab = 'all';
@@ -864,7 +864,7 @@ sections:
               if (window.HealimCloudDB && typeof window.HealimCloudDB.deletePost === 'function') {
                 window.HealimCloudDB.deletePost(board, id);
               }
-              if (window.fetch) {
+              if (window.fetch && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
                 fetch('http://127.0.0.1:3030/api/posts', {
                   method: 'DELETE',
                   headers: { 'Content-Type': 'application/json' },

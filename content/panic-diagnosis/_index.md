@@ -216,14 +216,14 @@ sections:
         <div class="healim-paper-tag">&lt; 뇌파 뇌기능검사 &gt;</div>
         <div class="healim-paper-desc">뇌파 분석을 통해 뇌 기능 상태와 각성 균형을 확인하는 검사 자료입니다.</div>
         <div class="healim-image-frame">
-        <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과">
+        <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과" loading="lazy" decoding="async">
         </div>
         </div>
         <div>
         <div class="healim-paper-tag">&lt; HRV 자율신경검사 &gt;</div>
         <div class="healim-paper-desc">교감신경과 부교감신경의 조절상태를 확인하는 검사 자료입니다.</div>
         <div class="healim-image-frame">
-        <img src="/images/hrv_autonomic_test.png?v=20260907_v2" alt="HRV 자율신경검사 분석 결과">
+        <img src="/images/hrv_autonomic_test.png?v=20260907_v2" alt="HRV 자율신경검사 분석 결과" loading="lazy" decoding="async">
         </div>
         </div>
         </div>
@@ -232,7 +232,7 @@ sections:
         <div>
         <div class="healim-paper-tag">&lt; 공황 및 자율신경 조절 메커니즘 분석 &gt;</div>
         <div class="healim-image-frame max-w-2xl mx-auto">
-        <img src="/images/hrv_autonomic_balance.svg" alt="공황 및 자율신경계 조절 메커니즘 도표">
+        <img src="/images/hrv_autonomic_balance.svg" alt="공황 및 자율신경계 조절 메커니즘 도표" loading="lazy" decoding="async">
         </div>
         </div>
         </div>

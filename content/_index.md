@@ -212,7 +212,7 @@ sections:
         <!-- 6. Clinic Guidebook Showcase (치료 지침서 - 해아림 원장단 저서) -->
         <div class="healim-book-section">
           <div class="max-w-xs mx-auto mb-5">
-            <img src="/images/book_panic_disorder.jpg" alt="해아림한의원 네트워크 원장단 저서 - 걱정마 공황장애" class="rounded-xl shadow-lg mx-auto" style="max-height: 290px; object-fit: contain;">
+            <img src="/images/book_panic_disorder.jpg" alt="해아림한의원 네트워크 원장단 저서 - 걱정마 공황장애" class="rounded-xl shadow-lg mx-auto" style="max-height: 290px; object-fit: contain;" loading="lazy" decoding="async">
           </div>
           <p class="healim-book-label">해아림한의원 네트워크 원장단 저서</p>
           <h3 class="healim-book-title">공황장애·불안장애·자율신경실조증 완치지침서</h3>
@@ -232,14 +232,14 @@ sections:
               <div class="healim-paper-tag">&lt; 공황장애 임상 논문 &gt;</div>
               <div class="healim-paper-desc">공황장애 및 자율신경계 이상 환자의 뇌파 특성을 분석한 연구 자료입니다.</div>
               <div class="healim-image-frame">
-                <img src="/images/thesis_paper_1.png?v=20260907" alt="공황장애 증상 환자의 뇌파비교 분석 임상 논문">
+                <img src="/images/thesis_paper_1.png?v=20260907" alt="공황장애 증상 환자의 뇌파비교 분석 임상 논문" loading="lazy" decoding="async">
               </div>
             </div>
             <div>
               <div class="healim-paper-tag">&lt; 뇌기능 개선 논문 &gt;</div>
               <div class="healim-paper-desc">치료에 따른 인지기능과 뇌기능 변화를 분석한 임상 연구 자료입니다.</div>
               <div class="healim-image-frame">
-                <img src="/images/thesis_paper_2.png" alt="인지기능 및 뇌기능 개선 논문">
+                <img src="/images/thesis_paper_2.png" alt="인지기능 및 뇌기능 개선 논문" loading="lazy" decoding="async">
               </div>
             </div>
           </div>
@@ -250,14 +250,14 @@ sections:
               <div class="healim-paper-tag">&lt; 뇌파 뇌기능검사 &gt;</div>
               <div class="healim-paper-desc">뇌파 분석을 통해 뇌 기능 상태와 각성 균형을 확인하는 검사 자료입니다.</div>
               <div class="healim-image-frame">
-                <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과">
+                <img src="/images/brainwave_chart.png" alt="뇌파 뇌기능검사 분석 결과" loading="lazy" decoding="async">
               </div>
             </div>
             <div>
               <div class="healim-paper-tag">&lt; HRV 자율신경검사 &gt;</div>
               <div class="healim-paper-desc">교감신경과 부교감신경의 조절상태를 확인하는 검사 자료입니다.</div>
               <div class="healim-image-frame">
-                <img src="/images/hrv_autonomic_test.png?v=20260907_v2" alt="HRV 자율신경검사 분석 결과">
+                <img src="/images/hrv_autonomic_test.png?v=20260907_v2" alt="HRV 자율신경검사 분석 결과" loading="lazy" decoding="async">
               </div>
             </div>
           </div>
@@ -266,7 +266,7 @@ sections:
           <div>
             <div class="healim-paper-tag">&lt; 공황 및 자율신경 조절 메커니즘 분석 &gt;</div>
             <div class="healim-image-frame max-w-2xl mx-auto">
-              <img src="/images/hrv_autonomic_balance.svg" alt="교감신경 vs 부교감신경 조절 메커니즘">
+              <img src="/images/hrv_autonomic_balance.svg" alt="교감신경 vs 부교감신경 조절 메커니즘" loading="lazy" decoding="async">
             </div>
           </div>
         </div>

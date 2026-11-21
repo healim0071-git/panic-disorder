@@ -341,7 +341,7 @@ sections:
         <div class="healim-gallery-container mb-12">
         <div class="healim-paper-tag">&lt; CST 두개천골요법 &amp; 뇌신경 이완 메커니즘 &gt;</div>
         <div class="healim-image-frame max-w-2xl mx-auto">
-        <img src="/images/cst_craniosacral.svg?v=2" alt="CST 두개천골요법 메커니즘">
+        <img src="/images/cst_craniosacral.svg?v=2" alt="CST 두개천골요법 메커니즘" loading="lazy" decoding="async">
         </div>
         </div>
 

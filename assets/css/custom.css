@@ -10,7 +10,7 @@
    - Neutral Gray: #555555, #777777 (보조 설명 문구)
    ========================================================================== */
 
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+/* Pretendard font is loaded non-blocking via <link> in head-end/seo_schema.html (avoids CSS @import waterfall) */
 
 :root {
   --color-primary: #1c6e78;

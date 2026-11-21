@@ -1689,8 +1689,9 @@
     }
   }
 
-  // Periodic check every 60s
-  if (typeof setInterval !== 'undefined') {
+  // Periodic check every 60s (local dev only; skip wasteful background interval for public production visitors)
+  if (typeof setInterval !== 'undefined' && typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     setInterval(function() {
       checkAndRunAutoColumnPublish(false);
     }, 60000);

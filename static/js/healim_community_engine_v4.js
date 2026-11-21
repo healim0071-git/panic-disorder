@@ -3007,12 +3007,15 @@
 
           function pullFromHub(onDone) {
             if (!window.fetch) return;
-            // 1. Fetch static hub data from web server (production-ready cross-browser)
-            fetch('/data/healim_community_hub.json?t=' + Date.now(), { cache: 'no-cache' })
-              .then(function(res) {
-                if (!res.ok) throw new Error('Static hub offline');
-                return res.json();
-              })
+            // 1. Fetch static hub data via shared single-flight promise (prevents duplicate concurrent fetches)
+            var hubReq = (!isLocal && typeof window.getHealimCanonicalHubPromise === 'function')
+              ? window.getHealimCanonicalHubPromise(false)
+              : fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+                  .then(function(res) {
+                    if (!res.ok) throw new Error('Static hub offline');
+                    return res.json();
+                  });
+            hubReq
               .then(function(json) {
                 if (json) {
                   var data = json.data || json;
@@ -3219,7 +3222,8 @@
           }
 
           function startEventStream() {
-            if (typeof EventSource === 'undefined') return;
+            // Local dev sync hub (:3030) only; NEVER connect to nonexistent :3030 SSE on production!
+            if (!isLocal || typeof EventSource === 'undefined') return;
             try {
               if (sseSource) sseSource.close();
               sseSource = new EventSource(getHubUrl('/api/events'));
@@ -3321,7 +3325,7 @@
 
           function init() {
             pullFromHub(function(success) {
-              if (success) {
+              if (success && isLocal) {
                 startEventStream();
               }
             });
@@ -3335,9 +3339,12 @@
                 } catch(e) {}
               });
             }
-            setInterval(function() {
-              pullFromHub();
-            }, 10000);
+            // Only poll every 10s on local dev server; static production hub is immutable per deploy
+            if (isLocal) {
+              setInterval(function() {
+                pullFromHub();
+              }, 10000);
+            }
           }
 
           return {
@@ -5924,11 +5931,13 @@
 
         // Static Hub synchronization is authoritatively handled by HealimUniversalSync.init() & HealimCloudDB.init() (Zero-Divergence v20)
 
-        // Trigger daily channel auto-sync (runs once per day, checks at/after 00:00)
-        setTimeout(function() {
-          syncHealimtvChannel(false);
-          scheduleMidnightSync();
-        }, 400);
+        // Trigger daily channel auto-sync ONLY on YouTube tab (avoid unnecessary external RSS calls on Columns/FAQ/Reviews)
+        if (targetTab === 'youtube' || activeTab === 'youtube') {
+          setTimeout(function() {
+            syncHealimtvChannel(false);
+            scheduleMidnightSync();
+          }, 400);
+        }
         }
 
         window.addEventListener('hashchange', initTabFromHash);

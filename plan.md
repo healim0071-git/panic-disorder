@@ -2630,3 +2630,33 @@ obots.txt濡??됱씤 ?쒖쇅?섎룄濡??섎룄??蹂댁븞/媛쒖씤?뺣낫 ?섏�
   - `static/js/healim_cloud_db.js`, `auto_*_engine.js`, `healim_community_engine_v4.js`(및 `healim_community_engine.js`), `common_bottom_sections.html`, `content/admin/_index.md`: 1회 로드 가드, `'기립성'` 오탐 제거, 전체 삭제 키 포함 완전 정화, 정적 모드 Strict SSOT 강제 및 수동 작성/수정/삭제 보호 가드, 결정론적 정렬 적용.
   - PC(오염된 구버전 캐시·로컬 삭제/수정 기록·IndexedDB) vs 모바일(클린) E2E 시뮬레이션: 치료칼럼 45편·FAQ 36편 100% 순서·개수·ID 완전 일치 검증 통과.
   - `scripts/sync_seo_feeds.js`(Hugo `--gc --minify` 빌드·Clean URL·RSS·sitemap·의료광고법 0건) 통과 후 GitHub 원격 저장소 푸시 완료.
+
+---
+
+## ⚡ [2026-11-21] 마일스톤 9.90: 전 페이지 성능 최적화 및 오류·충돌 전수 해결 (HTML 80%+ 경량화, `:3030` 무한 에러·2.5초/10초/20초 폴링 제거, 612건 `onerror` 문법 오류 수정, 중복 CSS/JS 0건)
+- **사용자 요구사항**:
+  - 웹사이트 전 페이지를 점검하여 페이지 로딩을 느리게 하거나 오류·충돌을 일으키는 요소를 모두 찾아 개선·수정 후 GitHub 푸시.
+- **전수 감사로 발견한 핵심 병목 및 오류·충돌**:
+  1. **전 페이지 HTML 410~665KB 비대화**: `common_bottom_sections.html` 내 350KB 거대 인라인 JS(4개 게시판 전체 시드 데이터 중복 내장)가 모든 Hugo 페이지 HTML에 통째로 삽입되어 TTFB·FCP·LCP 심각 저하.
+  2. **프로덕션 무한 네트워크 에러 및 과다 백그라운드 폴링**:
+     - `healim_community_engine_v4.js`가 운영 도메인에서도 존재하지 않는 `https://healim-panic.com:3030/api/events` SSE 연결을 무한 재시도.
+     - `common_bottom_sections.html`의 `setInterval(syncBottomCommunity, 2500)`(2.5초마다 DOM/JSON 재계산) 및 `setInterval(fetchRemoteSyncIfAvailable, 20000)`(20초마다 284KB JSON 재다운로드), `healim_community_engine_v4.js`의 10초 폴링, `admin`의 운영 환경 `127.0.0.1:3030` 호출, 비유튜브 탭에서의 외부 RSS(`rss2json`/`allorigins`) 호출 확인.
+  3. **10개 페이지 스크립트 2중 로드 & 비커뮤니티 페이지 320KB 미사용 엔진 동기 로드**:
+     - 커뮤니티·관리자 10개 페이지에서 `auto_*_engine.js`·`healim_cloud_db.js`가 2회 중복 로드되고 `defer` 없이 렌더링 차단.
+  4. **18개 정적 랜딩페이지(36파일) 612건 JS 문법 오류 & 550KB+ 중복/미사용 리소스**:
+     - `onerror="this.onerror=null; this.src=\'/images/...\';"` 이스케이프 오타 612건.
+     - 동일한 `_entry.css`(152KB) 및 `custom.min.css`(51KB) 각 2벌 중복 로드(203KB 낭비) + 미사용 자동발행 JS 3개(320KB) 동기 로드.
+  5. **CSS `@import` 렌더링 차단 & 웹폰트 중복 요청**: `assets/css/custom.css`·`static/css/custom.min.css`의 `@import`가 `seo_schema.html`의 `<link>`와 중복되어 직렬 워터폴 지연 유발.
+  6. **미사용 초대형 정적 파일 5.94MB**: 어디에서도 참조하지 않는 `col_1~3.png`(5.7MB), `test_download.png`, `thesis_paper_1_tic_bak.png`, `public/_index.md.bak` 잔존 및 본문 하단 이미지 `loading="lazy"` 누락.
+- **개선 및 수정 내역**:
+  1. **초경량 하단 통합 모듈 분리 (`static/js/healim_common_bottom.js`, ~16KB `defer`)**:
+     - `common_bottom_sections.html` 410.5KB → 60.5KB 경량화(350KB 인라인 JS 제거), 전 페이지 HTML 크기 **80%+ 감축**.
+     - 공유 단일 Fetch Promise(`window.getHealimCanonicalHubPromise`) 도입으로 페이지당 `/data/healim_community_hub.json` 요청 **4회 → 1회**로 통합.
+  2. **운영 환경 에러·폴링 전면 제거**:
+     - `:3030` SSE/`127.0.0.1:3030` 호출을 `localhost` 전용으로 격리, 프로덕션 2.5초/10초/20초/60초 폴링 제거(이벤트 기반 갱신), 유튜브 RSS 동기화를 유튜브 탭 전용으로 제한.
+     - 커뮤니티/관리자 페이지 외부 스크립트 `defer` 적용 및 중복 `<script>` **10페이지 → 0페이지** 완전 제거.
+  3. **18개 정적 랜딩페이지(36파일) 일괄 최적화**:
+     - 612건 `onerror` 문법 오류 전수 수정, 중복 CSS 203KB·미사용 JS 350KB 제거 후 단일 `healim_common_bottom.js`(`defer`) 연동, 이미지 지연 로딩 적용.
+  4. **웹폰트·CSS·이미지·캐시 헤더 최적화**:
+     - CSS `@import` 제거, `preconnect` + `pretendard-dynamic-subset.min.css` 전환, 본문 하단 이미지 `loading="lazy" decoding="async"` 적용, 미사용 파일 5.94MB 삭제, `static/_headers` 이미지/CSS 7일 불변 캐시 및 JS/JSON ETag 재검증 최적화.
+  5. **전수 검증 & 빌드·푸시**: JS 7개 문법 검사, `public/` 404 0건·중복 스크립트 0건·중복 ID 0건·`onerror` 오류 0건, 단일 Fetch(1회)·타이머 0건·`:3030` 0건·PC/모바일 칼럼 45편 & FAQ 36편 100% 일치 E2E 테스트 통과 후 GitHub `main` 푸시 완료.

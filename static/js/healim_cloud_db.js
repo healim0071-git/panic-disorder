@@ -104,13 +104,39 @@
   }
 
   function pullFromStaticHub(onDone) {
-    fetch('/data/healim_community_hub.json?t=' + Date.now(), { cache: 'no-cache' })
-      .then(function(res) {
-        if (!res.ok) throw new Error('Static hub 404');
-        return res.json();
-      })
+    if (typeof window !== 'undefined' && typeof window.getHealimCanonicalHubPromise !== 'function') {
+      window.getHealimCanonicalHubPromise = function(forceRefresh) {
+        if (!forceRefresh && window.__HEALIM_HUB_FETCH_PROMISE__) {
+          return window.__HEALIM_HUB_FETCH_PROMISE__;
+        }
+        var p = fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+          .then(function(res) {
+            if (!res.ok) throw new Error('Static hub 404');
+            return res.json();
+          })
+          .then(function(json) {
+            return (json && json.data) ? json.data : json;
+          })
+          .catch(function(err) {
+            window.__HEALIM_HUB_FETCH_PROMISE__ = null;
+            throw err;
+          });
+        window.__HEALIM_HUB_FETCH_PROMISE__ = p;
+        return p;
+      };
+    }
+
+    var hubPromise = (typeof window !== 'undefined' && typeof window.getHealimCanonicalHubPromise === 'function')
+      ? window.getHealimCanonicalHubPromise(false)
+      : fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+          .then(function(res) {
+            if (!res.ok) throw new Error('Static hub 404');
+            return res.json();
+          });
+
+    hubPromise
       .then(function(data) {
-        var rawHub = data.data || data;
+        var rawHub = (data && data.data) ? data.data : data;
         var CURRENT_EPOCH = '20261121_panic_v21_strict_ssot';
         // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH or newer 2026 epoch!
         if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 21)) {

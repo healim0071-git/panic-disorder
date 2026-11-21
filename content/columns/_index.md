@@ -101,7 +101,7 @@ sections:
         ══════════════════════════════════════════════════════════════ -->
         <div class="healim-book-section mt-12">
         <div class="max-w-xs mx-auto mb-5">
-        <img src="/images/book_panic_disorder.jpg" alt="해아림한의원 네트워크 원장단 저서 - 걱정마 공황장애" class="rounded-xl shadow-lg mx-auto" style="max-height: 280px; object-fit: contain;">
+        <img src="/images/book_panic_disorder.jpg" alt="해아림한의원 네트워크 원장단 저서 - 걱정마 공황장애" class="rounded-xl shadow-lg mx-auto" style="max-height: 280px; object-fit: contain;" loading="lazy" decoding="async">
         </div>
         <p class="healim-book-label">해아림한의원 네트워크 원장단 저서</p>
         <h3 class="healim-book-title">불안장애·공황장애 극복지침서</h3>
@@ -763,10 +763,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script src="/js/auto_faq_engine.js?v=20261121_sync_v21"></script>
-        <script src="/js/auto_column_engine.js?v=20261121_sync_v21"></script>
-        <script src="/js/auto_review_engine.js?v=20261121_sync_v21"></script>
-        <script src="/js/healim_cloud_db.js?v=20261121_sync_v21"></script>
+        <script defer src="/js/auto_faq_engine.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/auto_column_engine.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/auto_review_engine.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261121_perf_v22"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'columns';</script>
         
         <script>
@@ -779,5 +779,5 @@ sections:
           }
         })();
         </script>
-        <script src="/js/healim_community_engine_v4.js?v=20261121_sync_v21"></script>
+        <script defer src="/js/healim_community_engine_v4.js?v=20261121_perf_v22"></script>
 ---
