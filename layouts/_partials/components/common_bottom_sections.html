@@ -534,42 +534,55 @@
         </div>
       </div>
     </div>
-<script src="/js/auto_faq_engine.js?v=20261120_sync_v20"></script>
-    <script src="/js/auto_column_engine.js?v=20261120_sync_v20"></script>
-    <script src="/js/auto_review_engine.js?v=20261120_sync_v20"></script>
-    <script src="/js/healim_cloud_db.js?v=20261120_sync_v20"></script>
+<script src="/js/auto_faq_engine.js?v=20261121_sync_v21"></script>
+    <script src="/js/auto_column_engine.js?v=20261121_sync_v21"></script>
+    <script src="/js/auto_review_engine.js?v=20261121_sync_v21"></script>
+    <script src="/js/healim_cloud_db.js?v=20261121_sync_v21"></script>
     <script>
     (function() {
-      // Community Epoch v9 System: isolate & purge obsolete vaults
-      var CURRENT_COMMUNITY_EPOCH = '20261120_panic_v20_unified_sync';
+      // Community Epoch v21 System: isolate & purge obsolete vaults & stale delete blacklists
+      var CURRENT_COMMUNITY_EPOCH = '20261121_panic_v21_strict_ssot';
+      function isStrictStaticHubModeBottom() {
+        var isLocalEnv = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        var hasLiveCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+        return !isLocalEnv && !hasLiveCloudDb;
+      }
+      function purgeBottomClientCaches() {
+        ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
+          localStorage.removeItem('healim_board_' + k);
+          localStorage.removeItem('healim_vault_all_posts_' + k);
+          localStorage.removeItem('healim_custom_' + k + '_posts');
+          localStorage.removeItem('healim_edited_posts_' + k);
+          localStorage.removeItem('healim_deleted_posts_' + k);
+          localStorage.removeItem('healim_deleted_titles_' + k);
+          localStorage.removeItem('healim_deleted_pool_ids_' + k);
+        });
+        localStorage.removeItem('healim_deleted_post_ids');
+        localStorage.removeItem('healim_deleted_posts_all');
+        localStorage.removeItem('healim_auto_column_state');
+        localStorage.removeItem('healim_auto_faq_state');
+        localStorage.removeItem('healim_auto_review_state');
+        localStorage.removeItem('healim_auto_reviews_state');
+        localStorage.removeItem('healim_community_posts_v2');
+        try {
+          if (window.indexedDB) {
+            var idbReq = window.indexedDB.open('HealimCommunityDB', 1);
+            idbReq.onsuccess = function(ev) {
+              try {
+                var db = ev.target.result;
+                if (db && db.objectStoreNames.contains('community_vault')) {
+                  var tx = db.transaction('community_vault', 'readwrite');
+                  tx.objectStore('community_vault').clear();
+                }
+              } catch(err) {}
+            };
+          }
+        } catch(err) {}
+      }
       try {
         if (localStorage.getItem('healim_community_epoch') !== CURRENT_COMMUNITY_EPOCH) {
           window._healimEpochJustUpgraded = true;
-          ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
-            localStorage.removeItem('healim_board_' + k);
-            localStorage.removeItem('healim_vault_all_posts_' + k);
-            localStorage.removeItem('healim_custom_' + k + '_posts');
-            localStorage.removeItem('healim_edited_posts_' + k);
-          });
-          localStorage.removeItem('healim_auto_column_state');
-          localStorage.removeItem('healim_auto_faq_state');
-          localStorage.removeItem('healim_auto_review_state');
-          localStorage.removeItem('healim_auto_reviews_state');
-          localStorage.removeItem('healim_community_posts_v2');
-          try {
-            if (window.indexedDB) {
-              var idbReq = window.indexedDB.open('HealimCommunityDB', 1);
-              idbReq.onsuccess = function(ev) {
-                try {
-                  var db = ev.target.result;
-                  if (db && db.objectStoreNames.contains('community_vault')) {
-                    var tx = db.transaction('community_vault', 'readwrite');
-                    tx.objectStore('community_vault').clear();
-                  }
-                } catch(err) {}
-              };
-            }
-          } catch(err) {}
+          purgeBottomClientCaches();
           localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
         }
       } catch(e) {}
@@ -2651,10 +2664,10 @@
       function getItemSubScore(item, index, totalLength) {
         if (!item) return 0;
         if (item.isAutoPublished) {
-          return 100000000 + (item.createdAt ? (Number(item.createdAt) % 86400000) : 0);
+          return 100000000000000 + (item.createdAt && !isNaN(Number(item.createdAt)) ? Number(item.createdAt) : 0);
         }
         if (item.createdAt && !isNaN(Number(item.createdAt))) {
-          return Number(item.createdAt) % 86400000;
+          return Number(item.createdAt);
         }
         var idStr = String(item.id || '');
         var ytMatch = idStr.match(/^yt-(\d+)$/i);
@@ -3174,6 +3187,18 @@
         }
 
         // For faq, reviews, columns:
+        if (isStrictStaticHubModeBottom()) {
+          var liveCanonical = [];
+          try { liveCanonical = JSON.parse(localStorage.getItem('healim_board_' + boardKey) || '[]'); } catch(e) {}
+          var sourceList = (Array.isArray(liveCanonical) && liveCanonical.length > 0) ? liveCanonical : defaultList;
+          var cleanFiltered = sourceList.filter(function(it) {
+            if (!it || !it.id) return false;
+            if (boardKey === 'reviews' && PERMANENT_DELETED_REVIEW_IDS.indexOf(String(it.id)) !== -1) return false;
+            return true;
+          });
+          return sortItemsByTime(cleanFiltered);
+        }
+
         var liveBoardPosts = [];
         try { liveBoardPosts = JSON.parse(localStorage.getItem('healim_board_' + boardKey) || '[]'); } catch(e) {}
         var customPosts = [];
@@ -3410,33 +3435,20 @@
           .then(function(json) {
             var data = json.data || json;
             if (data) {
-              if (!data || (data.version && data.version < 20)) {
-                console.warn('[CommonBottomSections] Remote hub is invalid or version < 20.');
+              if (!data || (data.version && data.version < 21)) {
+                console.warn('[CommonBottomSections] Remote hub is invalid or version < 21.');
                 return;
               }
               if (data.epoch && data.epoch !== localStorage.getItem('healim_community_epoch')) {
-                console.log('[CommonBottomSections] Remote epoch updated (' + data.epoch + '). Purging ghost keys & IndexedDB...');
+                console.log('[CommonBottomSections] Remote epoch updated (' + data.epoch + '). Purging ghost keys, deleted blacklists & IndexedDB...');
                 window._healimEpochJustUpgraded = true;
-                ['healim_custom_columns_posts', 'healim_custom_faq_posts', 'healim_custom_reviews_posts', 'healim_custom_youtube_posts', 'healim_community_posts_v2', 'healim_board_columns', 'healim_board_faq', 'healim_board_reviews', 'healim_board_youtube', 'healim_vault_all_posts_columns', 'healim_vault_all_posts_faq', 'healim_vault_all_posts_reviews', 'healim_vault_all_posts_youtube', 'healim_edited_posts_columns', 'healim_edited_posts_faq', 'healim_edited_posts_reviews', 'healim_edited_posts_youtube', 'healim_auto_column_state', 'healim_auto_faq_state', 'healim_auto_review_state', 'healim_auto_reviews_state'].forEach(function(k) {
-                  try { localStorage.removeItem(k); } catch(e) {}
-                });
-                try {
-                  if (window.indexedDB) {
-                    var idbReq2 = window.indexedDB.open('HealimCommunityDB', 1);
-                    idbReq2.onsuccess = function(ev) {
-                      try {
-                        var db = ev.target.result;
-                        if (db && db.objectStoreNames.contains('community_vault')) {
-                          db.transaction('community_vault', 'readwrite').objectStore('community_vault').clear();
-                        }
-                      } catch(err) {}
-                    };
-                  }
-                } catch(err) {}
+                purgeBottomClientCaches();
                 localStorage.setItem('healim_community_epoch', data.epoch);
               }
               var didUpdate = false;
+              var serverDeletedSet = {};
               if (Array.isArray(data.deleted_ids) && data.deleted_ids.length > 0) {
+                data.deleted_ids.forEach(function(dId) { serverDeletedSet[String(dId)] = true; });
                 ['faq', 'reviews', 'columns', 'youtube'].forEach(function(bKey) {
                   var dKey = 'healim_deleted_posts_' + bKey;
                   var curDel = [];
@@ -3457,24 +3469,35 @@
                   var bKeyStore = 'healim_board_' + bKey;
                   var cKey = 'healim_custom_' + bKey + '_posts';
 
-                  var localVault = [];
-                  var localBoard = [];
-                  var localCustom = [];
-                  try { localVault = JSON.parse(localStorage.getItem(vKey) || '[]'); } catch(e) {}
-                  try { localBoard = JSON.parse(localStorage.getItem(bKeyStore) || '[]'); } catch(e) {}
-                  try { localCustom = JSON.parse(localStorage.getItem(cKey) || '[]'); } catch(e) {}
+                  var merged;
+                  if (isStrictStaticHubModeBottom()) {
+                    merged = data[bKey].filter(function(it) {
+                      if (!it || !it.id) return false;
+                      var sId = String(it.id);
+                      if (serverDeletedSet[sId]) return false;
+                      if (bKey === 'reviews' && PERMANENT_DELETED_REVIEW_IDS.indexOf(sId) !== -1) return false;
+                      return true;
+                    });
+                    localStorage.setItem(cKey, '[]');
+                    localStorage.removeItem('healim_edited_posts_' + bKey);
+                  } else {
+                    var localVault = [];
+                    var localBoard = [];
+                    var localCustom = [];
+                    try { localVault = JSON.parse(localStorage.getItem(vKey) || '[]'); } catch(e) {}
+                    try { localBoard = JSON.parse(localStorage.getItem(bKeyStore) || '[]'); } catch(e) {}
+                    try { localCustom = JSON.parse(localStorage.getItem(cKey) || '[]'); } catch(e) {}
 
-                  var localActive = mergeUniqueItems(localCustom.concat(localBoard), localVault);
-                  var editedMap = {};
-                  try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
+                    var localActive = mergeUniqueItems(localCustom.concat(localBoard), localVault);
+                    var editedMap = {};
+                    try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
 
-                  var hasLiveCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
-                  var isLocalEnv = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-                  var merged = (!hasLiveCloudDb && !isLocalEnv) ? data[bKey].slice() : mergeUniqueItems(localActive, data[bKey])
-                    .map(function(it) {
-                      return (it && it.id && editedMap[String(it.id)]) ? editedMap[String(it.id)] : it;
-                    })
-                    .filter(function(it) { return !isItemDeleted(bKey, it); });
+                    merged = mergeUniqueItems(localActive, data[bKey])
+                      .map(function(it) {
+                        return (it && it.id && editedMap[String(it.id)]) ? editedMap[String(it.id)] : it;
+                      })
+                      .filter(function(it) { return !isItemDeleted(bKey, it); });
+                  }
 
                   // Always maintain latest-first chronological sorting
                   var sorted = sortItemsByTime(merged);

@@ -1,7 +1,7 @@
 {
-  "version": 20,
-  "epoch": "20261120_panic_v20_unified_sync",
-  "updated_at": "2026-11-20T08:15:00.000Z",
+  "version": 21,
+  "epoch": "20261121_panic_v21_strict_ssot",
+  "updated_at": 1795256997437,
   "faq": [
     {
       "id": "faq-auto-20261115-dyn4",
@@ -2030,7 +2030,6 @@
     }
   ],
   "deleted_ids": [
-    "faq-auto-21-1788884890000",
     "reviews-1788884300000",
     "reviews-1788878779980",
     "reviews-1788884500000",

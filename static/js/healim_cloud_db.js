@@ -11,6 +11,8 @@
 
 (function(window) {
   'use strict';
+  if (window.__HEALIM_CLOUD_DB_LOADED__) return;
+  window.__HEALIM_CLOUD_DB_LOADED__ = true;
 
   var DEFAULT_CLOUD_DB_URL = '';
   var STORAGE_KEY_CONFIG = 'healim_cloud_db_custom_url';
@@ -109,9 +111,9 @@
       })
       .then(function(data) {
         var rawHub = data.data || data;
-        var CURRENT_EPOCH = '20261120_panic_v20_unified_sync';
+        var CURRENT_EPOCH = '20261121_panic_v21_strict_ssot';
         // CRITICAL GUARD: Only apply static hub if epoch strictly matches CURRENT_EPOCH or newer 2026 epoch!
-        if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 20)) {
+        if (!rawHub || (rawHub.epoch !== CURRENT_EPOCH && (!rawHub.epoch || !rawHub.epoch.startsWith('2026'))) || (rawHub.version && rawHub.version < 21)) {
           console.warn('[HealimCloudDB] Remote static hub is outdated (' + (rawHub ? rawHub.epoch : 'none') + '). Preserving local canonical seeds.');
           if (onDone) onDone(false, null);
           return;
@@ -307,24 +309,31 @@
 
   function applyBoardToLocal(bKey, remoteList, allowLocalAutoMerge) {
     if (!Array.isArray(remoteList)) return;
-    var badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기', '교감신경 항진증과 부교감', '기립성'];
-    remoteList = remoteList.filter(function(item) {
-      if (!item || !item.title) return false;
-      var t = String(item.title);
-      return !badKeywords.some(function(bk) { return t.indexOf(bk) !== -1; });
-    });
+    var isStrictStaticHub = !allowLocalAutoMerge && !getBaseUrl();
+    if (!isStrictStaticHub) {
+      var badKeywords = ['골반통', '비뇨생식기', '미각', '후각', '삼차신경', '살이 쭉쭉', '부신 고갈', '동결', '장내 세균총', '이갈이', '배란기', '교감신경 항진증과 부교감'];
+      remoteList = remoteList.filter(function(item) {
+        if (!item || !item.title) return false;
+        var t = String(item.title);
+        return !badKeywords.some(function(bk) { return t.indexOf(bk) !== -1; });
+      });
+    }
     var vKey = 'healim_vault_all_posts_' + bKey;
     var rawV = localStorage.getItem(vKey);
     var localList = rawV ? (JSON.parse(rawV) || []) : [];
     var editedMap = {};
     try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
 
+    var serverDeletedIds = Array.isArray(inMemoryData.deleted_ids) ? inMemoryData.deleted_ids.map(String) : [];
     var deletedIds = [];
-    try { deletedIds = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]'); } catch(e) {}
+    if (!isStrictStaticHub) {
+      try { deletedIds = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]'); } catch(e) {}
+    } else {
+      deletedIds = serverDeletedIds;
+    }
 
     var seenIds = {};
     var merged = [];
-    var isStrictStaticHub = !allowLocalAutoMerge && !getBaseUrl();
 
     function isDel(p) {
       if (!p || !p.id) return true;
@@ -332,14 +341,13 @@
     }
 
     if (isStrictStaticHub) {
-      // Zero-Divergence Mode (Static Hub): Canonical server hub is the Single Source of Truth
-      // so PC and mobile always display 100% identical posts (no stale browser-local -auto- drift).
+      // Zero-Divergence Mode (Static Hub): Canonical server hub is the Single Source of Truth.
+      // Ignore stale browser-local edits, custom posts, and local delete lists so PC & mobile are 100% identical.
       remoteList.forEach(function(p) {
         if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
           var strId = String(p.id);
-          var finalP = editedMap[strId] ? editedMap[strId] : p;
           seenIds[strId] = true;
-          merged.push(finalP);
+          merged.push(p);
         }
       });
     } else {
@@ -387,14 +395,18 @@
     localStorage.setItem(vKey, JSON.stringify(merged));
     localStorage.setItem('healim_board_' + bKey, JSON.stringify(merged));
 
-    // Also update custom posts tier so getCustomUserPosts has it
+    // Also update custom posts tier
     var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
-    var customList = merged.filter(function(p) {
-      if (!p || !p.id) return false;
-      var sId = String(p.id);
-      return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
-    });
-    localStorage.setItem(cKey, JSON.stringify(customList));
+    if (isStrictStaticHub) {
+      localStorage.setItem(cKey, '[]');
+    } else {
+      var customList = merged.filter(function(p) {
+        if (!p || !p.id) return false;
+        var sId = String(p.id);
+        return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
+      });
+      localStorage.setItem(cKey, JSON.stringify(customList));
+    }
   }
 
   function savePostToLocal(bKey, post) {

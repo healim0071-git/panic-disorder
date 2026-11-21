@@ -11,24 +11,28 @@
   }
 })();
 (function() {
+        if (window.__HEALIM_COMMUNITY_ENGINE_V4_LOADED__) return;
+        window.__HEALIM_COMMUNITY_ENGINE_V4_LOADED__ = true;
         // --- Healim Community Epoch System (Zero-Data-Loss & Zero-Cross-Pollution Architecture) ---
-        var CURRENT_COMMUNITY_EPOCH = '20261120_panic_v20_unified_sync';
-        try {
-          var userEpoch = localStorage.getItem('healim_community_epoch');
-          if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
-            console.log('[Healim Master Hub] Epoch upgrade detected (' + userEpoch + ' -> ' + CURRENT_COMMUNITY_EPOCH + '). Harmonizing all boards (localStorage + IndexedDB) to canonical hub...');
-            window._healimEpochJustUpgraded = true;
-            ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
-              localStorage.removeItem('healim_board_' + k);
-              localStorage.removeItem('healim_vault_all_posts_' + k);
-              localStorage.removeItem('healim_custom_' + k + '_posts');
-              localStorage.removeItem('healim_edited_posts_' + k);
-            });
-            localStorage.removeItem('healim_auto_column_state');
-            localStorage.removeItem('healim_auto_faq_state');
-            localStorage.removeItem('healim_auto_review_state');
-            localStorage.removeItem('healim_auto_reviews_state');
-            localStorage.removeItem('healim_community_posts_v2');
+        var CURRENT_COMMUNITY_EPOCH = '20261121_panic_v21_strict_ssot';
+        function purgeAllClientCommunityCaches(clearIndexedDb) {
+          ['faq', 'reviews', 'columns', 'youtube'].forEach(function(k) {
+            localStorage.removeItem('healim_board_' + k);
+            localStorage.removeItem('healim_vault_all_posts_' + k);
+            localStorage.removeItem('healim_custom_' + k + '_posts');
+            localStorage.removeItem('healim_edited_posts_' + k);
+            localStorage.removeItem('healim_deleted_posts_' + k);
+            localStorage.removeItem('healim_deleted_titles_' + k);
+            localStorage.removeItem('healim_deleted_pool_ids_' + k);
+          });
+          localStorage.removeItem('healim_deleted_post_ids');
+          localStorage.removeItem('healim_deleted_posts_all');
+          localStorage.removeItem('healim_auto_column_state');
+          localStorage.removeItem('healim_auto_faq_state');
+          localStorage.removeItem('healim_auto_review_state');
+          localStorage.removeItem('healim_auto_reviews_state');
+          localStorage.removeItem('healim_community_posts_v2');
+          if (clearIndexedDb) {
             try {
               if (window.indexedDB) {
                 var idbReq = window.indexedDB.open('HealimCommunityDB', 1);
@@ -43,6 +47,14 @@
                 };
               }
             } catch(err) {}
+          }
+        }
+        try {
+          var userEpoch = localStorage.getItem('healim_community_epoch');
+          if (userEpoch !== CURRENT_COMMUNITY_EPOCH) {
+            console.log('[Healim Master Hub] Epoch upgrade detected (' + userEpoch + ' -> ' + CURRENT_COMMUNITY_EPOCH + '). Harmonizing all boards (localStorage + deleted blacklists + IndexedDB) to canonical hub...');
+            window._healimEpochJustUpgraded = true;
+            purgeAllClientCommunityCaches(true);
             localStorage.setItem('healim_community_epoch', CURRENT_COMMUNITY_EPOCH);
           }
         } catch(e) {}
@@ -3005,16 +3017,14 @@
                 if (json) {
                   var data = json.data || json;
                   // CRITICAL GUARD: Synchronize hub data and auto-clean if epoch changed
-                  if (!data || (data.version && data.version < 20)) {
-                    console.warn('[HealimUniversalSync] Remote hub invalid or version < 20.');
+                  if (!data || (data.version && data.version < 21)) {
+                    console.warn('[HealimUniversalSync] Remote hub invalid or version < 21.');
                     return;
                   }
                   if (data.epoch && data.epoch !== localStorage.getItem('healim_community_epoch')) {
-                    console.log('[HealimUniversalSync] Remote epoch updated (' + data.epoch + '). Purging ghost keys & IndexedDB...');
+                    console.log('[HealimUniversalSync] Remote epoch updated (' + data.epoch + '). Purging ghost keys, deleted blacklists & IndexedDB...');
                     window._healimEpochJustUpgraded = true;
-                    ['healim_custom_columns_posts', 'healim_custom_faq_posts', 'healim_custom_reviews_posts', 'healim_custom_youtube_posts', 'healim_community_posts_v2', 'healim_board_columns', 'healim_board_faq', 'healim_board_reviews', 'healim_board_youtube', 'healim_vault_all_posts_columns', 'healim_vault_all_posts_faq', 'healim_vault_all_posts_reviews', 'healim_vault_all_posts_youtube', 'healim_edited_posts_columns', 'healim_edited_posts_faq', 'healim_edited_posts_reviews', 'healim_edited_posts_youtube', 'healim_auto_column_state', 'healim_auto_faq_state', 'healim_auto_review_state', 'healim_auto_reviews_state'].forEach(function(k) {
-                      try { localStorage.removeItem(k); } catch(e) {}
-                    });
+                    purgeAllClientCommunityCaches(true);
                     if (typeof HealimPermanentDB !== 'undefined' && HealimPermanentDB.clearAllVaults) {
                       HealimPermanentDB.clearAllVaults();
                     }
@@ -3098,16 +3108,23 @@
                 var seenIds = {};
 
                 var hasLiveCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+                var serverDeletedSet = {};
+                if (Array.isArray(data.deleted_ids)) {
+                  data.deleted_ids.forEach(function(did) { serverDeletedSet[String(did)] = true; });
+                }
+                if (bKey === 'reviews') {
+                  PERMANENT_DELETED_REVIEW_IDS.forEach(function(did) { serverDeletedSet[String(did)] = true; });
+                }
                 if (!hasLiveCloudDb && !isLocal) {
-                  // Zero-Divergence Mode (Production Static Hub): Canonical server hub is the Single Source of Truth.
-                  // Prevents PC-only browser localStorage posts from diverging from mobile & all visitors.
+                  // Strict Single Source of Truth (Production Static Hub):
+                  // Ignore stale browser-local edits, custom posts, and local delete blacklists
+                  // so PC, mobile, and all visitors always see 100% identical canonical posts.
                   remoteList.forEach(function(p) {
-                    if (p && p.id && !isDeletedPostId(bKey, p.id, p)) {
+                    if (p && p.id) {
                       var strId = String(p.id);
-                      if (!seenIds[strId]) {
-                        var finalP = editedMap[strId] ? editedMap[strId] : p;
+                      if (!serverDeletedSet[strId] && !seenIds[strId]) {
                         seenIds[strId] = true;
-                        merged.push(finalP);
+                        merged.push(p);
                       }
                     }
                   });
@@ -3175,11 +3192,16 @@
 
                 // Also update custom posts tier so getCustomUserPosts has it
                 var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
-                localStorage.setItem(cKey, JSON.stringify(merged.filter(function(p) {
-                  if (!p || !p.id) return false;
-                  var sId = String(p.id);
-                  return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
-                })));
+                if (!hasLiveCloudDb && !isLocal) {
+                  localStorage.setItem(cKey, '[]');
+                  localStorage.removeItem('healim_edited_posts_' + bKey);
+                } else {
+                  localStorage.setItem(cKey, JSON.stringify(merged.filter(function(p) {
+                    if (!p || !p.id) return false;
+                    var sId = String(p.id);
+                    return p.isCustom || p.isAutoPublished || sId.indexOf('custom') !== -1 || sId.indexOf('-auto-') !== -1 || sId.indexOf(bKey + '-') === 0 || sId.indexOf('col-') === 0 || sId.indexOf('faq-') === 0 || sId.indexOf('rev-') === 0;
+                  })));
+                }
 
                 didChange = true;
               }
@@ -3369,10 +3391,10 @@
         function getItemSubScore(item, index, totalLength) {
           if (!item) return 0;
           if (item.isAutoPublished) {
-            return 100000000 + (item.createdAt ? (Number(item.createdAt) % 86400000) : 0);
+            return 100000000000000 + (item.createdAt && !isNaN(Number(item.createdAt)) ? Number(item.createdAt) : 0);
           }
           if (item.createdAt && !isNaN(Number(item.createdAt))) {
-            return Number(item.createdAt) % 86400000;
+            return Number(item.createdAt);
           }
           var idStr = String(item.id || '');
           var ytMatch = idStr.match(/^yt-(\d+)$/i);
@@ -3413,7 +3435,70 @@
         window.getItemDateScore = getItemDateScore;
         window.getItemTimeScore = getItemTimeScore;
 
+        function isStrictStaticHubMode() {
+          var isLocalEnv = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+          var hasLiveCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+          return !isLocalEnv && !hasLiveCloudDb;
+        }
+        window.isStrictStaticHubMode = isStrictStaticHubMode;
+
         function getBoardData(key, fallback) {
+        if (key !== 'youtube' && isStrictStaticHubMode()) {
+          // Strict Single Source of Truth (v21):
+          // In production without external Cloud DB, render ONLY the canonical server hub
+          // (or identical bundled canonical seed before fetch completes) so PC and mobile
+          // NEVER diverge due to stale localStorage edits, local custom posts, or local delete lists.
+          var hubMem = (HealimUniversalSync && typeof HealimUniversalSync.getInMemoryHubData === 'function')
+            ? HealimUniversalSync.getInMemoryHubData()
+            : null;
+          var canonicalSource = (hubMem && Array.isArray(hubMem[key]) && hubMem[key].length > 0)
+            ? hubMem[key]
+            : (Array.isArray(fallback) ? fallback : []);
+          var serverDelSet = {};
+          if (hubMem && Array.isArray(hubMem.deleted_ids)) {
+            hubMem.deleted_ids.forEach(function(did) { serverDelSet[String(did)] = true; });
+          }
+          if (key === 'reviews') {
+            PERMANENT_DELETED_REVIEW_IDS.forEach(function(did) { serverDelSet[String(did)] = true; });
+          }
+          var cleanMerged = [];
+          var cleanSeenIds = {};
+          var cleanSeenTitles = {};
+          canonicalSource.forEach(function(item) {
+            if (!item || !item.id) return;
+            var strId = String(item.id);
+            if (serverDelSet[strId] || cleanSeenIds[strId]) return;
+            if (key === 'faq' && isObsoleteMockFaq(item)) return;
+            if (key === 'columns' && isObsoleteMockColumn(item)) return;
+            if (key === 'reviews' && isObsoleteMockReview(item)) return;
+            if (item.title && (key === 'faq' || key === 'columns')) {
+              var normT = String(item.title)
+                .replace(/^Q[\.:\s\-]+/i, '')
+                .replace(/^칼럼[\.:\s\-]+/i, '')
+                .replace(/[\s\*\*_~\`#\?\uFF1F\.,\(\)\[\]:;\-]/g, '')
+                .trim()
+                .toLowerCase();
+              if (normT && cleanSeenTitles[normT]) return;
+              if (normT) cleanSeenTitles[normT] = true;
+            }
+            cleanSeenIds[strId] = true;
+            cleanMerged.push(item);
+          });
+          if (key === 'reviews') {
+            cleanMerged.forEach(function(item, idx) {
+              if (!item.image) {
+                var foundImg = extractFirstImageFromContent(item.content);
+                item.image = foundImg || getReviewFallbackImage(item.id || item.title || idx);
+              }
+            });
+          }
+          cleanMerged = sortCommunityItemsByTime(cleanMerged);
+          try {
+            localStorage.setItem('healim_board_' + key, JSON.stringify(cleanMerged));
+            localStorage.setItem('healim_vault_all_posts_' + key, JSON.stringify(cleanMerged));
+          } catch(e) {}
+          return cleanMerged;
+        }
         if (key === 'youtube') {
           var ytEditedMap = getEditedPostsMap('youtube');
           var customPosts = getCustomYoutubePosts();
@@ -5002,6 +5087,15 @@
             alert('게시글 등록 및 수정 권한은 최고관리자(healim0071)에게만 있습니다.');
             return;
           }
+          if (isStrictStaticHubMode()) {
+            alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
+                  '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
+                  '브라우저에서만 단독으로 글을 등록·수정하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 저장을 차단했습니다.\n\n' +
+                  '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
+                  '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
+                  '2) GitHub 정적 허브 배포를 통해 공식 반영해 주세요.');
+            return;
+          }
           var editId = document.getElementById('postEditId') ? document.getElementById('postEditId').value.trim() : '';
           var boardType = document.getElementById('postBoardType').value;
           var category = (boardType === 'youtube') ? '영상' : ((boardType === 'columns') ? '칼럼' : ((boardType === 'reviews') ? '치료후기' : 'FAQ'));
@@ -5419,6 +5513,15 @@
             alert('게시글 삭제 권한은 최고관리자(healim0071)에게만 있습니다.');
             return;
           }
+          if (isStrictStaticHubMode()) {
+            alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
+                  '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
+                  '브라우저에서만 단독 삭제하면 PC와 모바일 목록이 서로 달라지게 되므로 단독 로컬 삭제를 차단했습니다.\n\n' +
+                  '✅ PC·모바일·모든 방문자에게 동일하게 삭제 반영하는 방법:\n' +
+                  '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
+                  '2) GitHub 정적 허브 배포를 통해 공식 반영해 주세요.');
+            return;
+          }
           if (!boardType || !postId) return;
 
           var boardNames = {
@@ -5777,8 +5880,8 @@
         // Apply admin auto badges visibility check on load
         updateAdminAutoBadgesVisibility();
 
-        // Automated IndexedDB Permanent Recovery Audit (Resurrects posts if localStorage was wiped)
-        if (typeof HealimPermanentDB !== 'undefined' && HealimPermanentDB.restoreVault) {
+        // Automated IndexedDB Permanent Recovery Audit (Local / Live Cloud DB mode only; never resurrect local drift in Static Hub mode)
+        if (!isStrictStaticHubMode() && typeof HealimPermanentDB !== 'undefined' && HealimPermanentDB.restoreVault) {
           ['faq', 'reviews', 'columns', 'youtube'].forEach(function(bKey) {
             HealimPermanentDB.restoreVault(bKey, function(vaultList) {
               if (vaultList && vaultList.length > 0) {

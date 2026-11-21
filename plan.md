@@ -2604,3 +2604,29 @@ obots.txt濡??됱씤 ?쒖쇅?섎룄濡??섎룄??蹂댁븞/媛쒖씤?뺣낫 ?섏�
   5. **전수 검증 & 빌드 및 GitHub 푸시**:
      - PC(구버전 v19 + 고스트 localStorage/IndexedDB) vs 모바일(클린) E2E 시뮬레이션: FAQ 및 치료칼럼 100% 동일 일치 검증 통과.
      - `auto_publish_faq.js`, `auto_publish_column.js`, `sync_seo_feeds.js`(Hugo 빌드·RSS·sitemap) 전수 통과 후 원격 저장소 푸시 완료.
+
+---
+
+## 🔒 [2026-11-21] 마일스톤 9.89: 치료칼럼·FAQ PC/모바일 불일치 잔여 근본 원인 완전 제거 (v21 Strict SSOT, `기립성` 오탐 필터·모순 `deleted_ids`·에포크 삭제키 누락·스크립트 2중 로드 레이스 컨디션 해결)
+- **사용자 요구사항**:
+  - 지난 v20 수정 이후에도 커뮤니티 치료칼럼에서 PC와 모바일 글목록이 여전히 다르게 표시되는 원인 심층 분석 및 완전 수정.
+  - FAQ 게시판도 함께 전수 점검하여 숨어있는 불일치·누락 오류 일괄 수정 후 GitHub 원격 저장소 푸시.
+- **원인 심층 분석 (6대 결함 확인)**:
+  1. **`healim_cloud_db.js`의 `badKeywords`에 `'기립성'` 포함 + 스크립트 2중 로드 레이스 컨디션 (치료칼럼 직격탄)**:
+     - `static/js/healim_cloud_db.js` 310행 필터가 공식 치료칼럼 2편(4번 `2026.10.09 20대 기립성 빈맥 및 공황장애 치료사례`, 29번 `2024.09.02 기립성 어지럼증과 자율신경 치료`)을 매 동기화마다 삭제(45편 → 43편)하며 `localStorage`를 덮어씀.
+     - 동시에 커뮤니티 페이지 본문과 `common_bottom_sections.html`에서 `healim_cloud_db.js` 및 자동발행 엔진이 2번 중복 로드되어 4개의 비동기 fetch가 경합하며 네트워크 응답 순서(PC vs 모바일)에 따라 43편/45편으로 분열.
+  2. **에포크 전환 시 `healim_deleted_*` 삭제 블랙리스트 키 정화 누락 (치료칼럼·FAQ 공통)**:
+     - 기존 에포크 업그레이드 코드가 `healim_deleted_posts_*`, `healim_deleted_post_ids`, `healim_deleted_posts_all`, `healim_deleted_titles_*`, `healim_deleted_pool_ids_*`를 초기화하지 않아, 과거 특정 기기(PC 또는 모바일)에서 삭제했던 기록이 영구 잔존해 공식 허브 글을 해당 기기에서만 숨김.
+  3. **FAQ 허브 데이터 모순(`faq-auto-21-1788884890000`가 `faq` 배열과 `deleted_ids`에 동시 등재) + `common_bottom_sections.html` 삼항 연산자 우선순위 버그**:
+     - 공식 16번 FAQ(`숨이 막히는 느낌과 죽을 것 같은 공포: 공황발작 시 3분 응급 대처법`)가 `deleted_ids`에 중복 등록되어 최초 로드(36편)와 허브 동기화 후(35편) 개수가 어긋나고, `common_bottom_sections.html`의 삼항 연산자 우선순위 결함으로 운영 모드에서 삭제 필터가 누락되어 36편↔35편 충돌 발생.
+  4. **정적 배포 모드 단일 진실 공급원(SSOT) 누수**:
+     - `getBoardData()`, `applyHubData()`, `common_bottom_sections.html`, `content/admin/_index.md`가 정적 호스팅 모드에서도 기기 로컬 `editedMap`/`customList`/`localStorage`/`IndexedDB` 및 로컬 삭제 목록을 병합·적용하고 있었으며, 수동 글작성·수정(`handlePostSubmit`) 및 삭제(`handleDeletePostDirect`, `deleteAdminPost`)에 정적 모드 보호 가드가 누락되어 있었음.
+  5. **동일 날짜 게시물(`2026.10.13` 2편) 정렬 타이브레이커 결함**:
+     - `getItemSubScore`가 `createdAt % 86400000`을 사용해 정확히 1일(86,400,000ms) 차이 나는 두 칼럼의 `subScore`가 동일해지는 문제 -> 전체 `createdAt` 타임스탬프 비교로 100% 결정론적 정렬 확보.
+  6. **Cloudflare `/js/*` 기본 캐시(`max-age=14400`) 대응 강화**:
+     - `static/_headers`의 `/js/*`, `/data/*`를 `Cache-Control: no-cache, no-store, must-revalidate`로 강화하고 전 페이지 쿼리 버전 `?v=20261121_sync_v21` 및 에포크 `20261121_panic_v21_strict_ssot` (`version: 21`)로 강제 갱신.
+- **해결 및 검증 내역**:
+  - `data/healim_community_hub.json`, `static/data/healim_community_hub.json`: `version: 21`, `epoch: 20261121_panic_v21_strict_ssot` 승격 및 `deleted_ids`에서 `faq-auto-21-1788884890000` 제거(FAQ 36편·치료칼럼 45편 무결성 확립).
+  - `static/js/healim_cloud_db.js`, `auto_*_engine.js`, `healim_community_engine_v4.js`(및 `healim_community_engine.js`), `common_bottom_sections.html`, `content/admin/_index.md`: 1회 로드 가드, `'기립성'` 오탐 제거, 전체 삭제 키 포함 완전 정화, 정적 모드 Strict SSOT 강제 및 수동 작성/수정/삭제 보호 가드, 결정론적 정렬 적용.
+  - PC(오염된 구버전 캐시·로컬 삭제/수정 기록·IndexedDB) vs 모바일(클린) E2E 시뮬레이션: 치료칼럼 45편·FAQ 36편 100% 순서·개수·ID 완전 일치 검증 통과.
+  - `scripts/sync_seo_feeds.js`(Hugo `--gc --minify` 빌드·Clean URL·RSS·sitemap·의료광고법 0건) 통과 후 GitHub 원격 저장소 푸시 완료.

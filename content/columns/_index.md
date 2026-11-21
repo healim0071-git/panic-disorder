@@ -763,10 +763,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script src="/js/auto_faq_engine.js?v=20261120_sync_v20"></script>
-        <script src="/js/auto_column_engine.js?v=20261120_sync_v20"></script>
-        <script src="/js/auto_review_engine.js?v=20261120_sync_v20"></script>
-        <script src="/js/healim_cloud_db.js?v=20261120_sync_v20"></script>
+        <script src="/js/auto_faq_engine.js?v=20261121_sync_v21"></script>
+        <script src="/js/auto_column_engine.js?v=20261121_sync_v21"></script>
+        <script src="/js/auto_review_engine.js?v=20261121_sync_v21"></script>
+        <script src="/js/healim_cloud_db.js?v=20261121_sync_v21"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'columns';</script>
         
         <script>
@@ -779,5 +779,5 @@ sections:
           }
         })();
         </script>
-        <script src="/js/healim_community_engine_v4.js?v=20261120_sync_v20"></script>
+        <script src="/js/healim_community_engine_v4.js?v=20261121_sync_v21"></script>
 ---

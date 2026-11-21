@@ -15,6 +15,10 @@
 
 (function() {
   'use strict';
+  if (typeof window !== 'undefined') {
+    if (window.__HEALIM_AUTO_FAQ_ENGINE_LOADED__) return;
+    window.__HEALIM_AUTO_FAQ_ENGINE_LOADED__ = true;
+  }
 
   // ──────────────────────────────────────────────────────────
   // 1. 공황장애 환자 다빈도 질문 18대 고품질 콘텐츠 풀 (Content Pool)

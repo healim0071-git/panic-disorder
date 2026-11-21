@@ -15,6 +15,10 @@
 
 (function() {
   'use strict';
+  if (typeof window !== 'undefined') {
+    if (window.__HEALIM_AUTO_REVIEW_ENGINE_LOADED__) return;
+    window.__HEALIM_AUTO_REVIEW_ENGINE_LOADED__ = true;
+  }
 
   // ──────────────────────────────────────────────────────────
   // 1. 공황장애 30대 고품질 신규 임상 치료후기 풀 (Content Pool)

@@ -18,6 +18,10 @@
 
 (function() {
   'use strict';
+  if (typeof window !== 'undefined') {
+    if (window.__HEALIM_AUTO_COLUMN_ENGINE_LOADED__) return;
+    window.__HEALIM_AUTO_COLUMN_ENGINE_LOADED__ = true;
+  }
 
   // 비정상 동적 조합 생성 글 및 구형 목업 칼럼 자동 정화 (54~61번 등 과다 발행 글 완전 제거)
   (function purgeObsoleteAndOverpublishedColumns() {
