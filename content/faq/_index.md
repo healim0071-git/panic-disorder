@@ -88,8 +88,16 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 36문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
-        <h2>공황장애 자주 묻는 질문 36문답 전문</h2>
+        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 37문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h2>공황장애 자주 묻는 질문 37문답 전문</h2>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애 환자가 영화관이나 공연장처럼 어둡고 붐비는 곳에 갈 때 발작을 예방하는 요령이 있나요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 영화관이나 공연장, 강당처럼 조명이 어둡고 출구까지 바로 빠져나가기 어려운 공간은 공황장애 환자분들에게 광장공포와 예기불안을 강하게 유발하기 쉽습니다. 시각 자극이 제한되...</p>
+        </div>
+        </article>
+
 
         <article itemscope itemtype="https://schema.org/Question">
         <h3 itemprop="name">공황장애 치료 중 한의원 치료와 정신과 치료를 함께 받아도 괜찮은가요?</h3>
@@ -652,10 +660,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script defer src="/js/auto_faq_engine.js?v=20261121_perf_v22"></script>
-        <script defer src="/js/auto_column_engine.js?v=20261121_perf_v22"></script>
-        <script defer src="/js/auto_review_engine.js?v=20261121_perf_v22"></script>
-        <script defer src="/js/healim_cloud_db.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/auto_faq_engine.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/auto_column_engine.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/auto_review_engine.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261123_autopub_v23"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'faq';</script>
         
         <script>
@@ -668,5 +676,5 @@ sections:
           }
         })();
         </script>
-        <script defer src="/js/healim_community_engine_v4.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/healim_community_engine_v4.js?v=20261123_autopub_v23"></script>
 ---

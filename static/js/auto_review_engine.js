@@ -784,26 +784,43 @@
     }
 
     var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
-    var isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    if (!hasCloudDb && !isLocalHost) {
-      alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-            '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-            '브라우저에서만 단독 즉시 발행을 실행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
-            '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
-            '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
-            '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
+    var hasGitHub = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
+    var isLocalHost = !!(window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+    if (!hasCloudDb && !hasGitHub && !isLocalHost) {
+      if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+        window.HealimGitHubPublish.openSetupModal(function() {
+          window.triggerAutoReviewPublishManual();
+        }, '공황장애 치료후기 즉시 1편 발행');
+      } else {
+        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
+      }
       return;
     }
 
+    var useGitHubCommit = hasGitHub && !isLocalHost && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function';
     var published = checkAndRunAutoReviewPublish(true);
     if (published) {
-      alert('⚡ [공황장애 치료후기 신규 글 자동 발행 완료]\n\n' +
-            '제목: ' + published.title + '\n' +
-            '작성자: ' + published.author + '\n' +
-            '발행일자: ' + published.date + '\n\n' +
-            '목록 최상단에 성공적으로 발행되었습니다.');
-      if (typeof renderReviewsList === 'function') renderReviewsList();
-      if (typeof syncBottomCommunity === 'function') syncBottomCommunity();
+      if (useGitHubCommit) {
+        window.HealimGitHubPublish.upsertPost('reviews', published).then(function() {
+          if (typeof renderReviewsList === 'function') renderReviewsList();
+          if (typeof syncBottomCommunity === 'function') syncBottomCommunity();
+          alert('✅ [공황장애 치료후기 공식 즉시 발행 완료]\n\n' +
+                '제목: ' + published.title + '\n' +
+                '작성자: ' + published.author + '\n' +
+                '발행일자: ' + published.date + '\n\n' +
+                'GitHub 공식 허브에 커밋 완료되었으며 약 1분 내 PC·모바일에 동일하게 배포됩니다.');
+        }).catch(function(err) {
+          alert('⚠️ GitHub 공식 발행 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err));
+        });
+      } else {
+        alert('⚡ [공황장애 치료후기 신규 글 자동 발행 완료]\n\n' +
+              '제목: ' + published.title + '\n' +
+              '작성자: ' + published.author + '\n' +
+              '발행일자: ' + published.date + '\n\n' +
+              '목록 최상단에 성공적으로 발행되었습니다.');
+        if (typeof renderReviewsList === 'function') renderReviewsList();
+        if (typeof syncBottomCommunity === 'function') syncBottomCommunity();
+      }
     }
   };
 

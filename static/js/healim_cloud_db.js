@@ -103,22 +103,66 @@
       });
   }
 
+  function getRecentGitHubCommitHub() {
+    try {
+      if (typeof sessionStorage === 'undefined') return null;
+      var raw = sessionStorage.getItem('healim_recent_github_hub');
+      if (!raw) return null;
+      var rec = JSON.parse(raw);
+      if (!rec || !rec.data || !rec.committedAt) return null;
+      // Keep for 3 minutes while Cloudflare Pages builds and deploys the new commit
+      if (Date.now() - rec.committedAt > 180000) {
+        sessionStorage.removeItem('healim_recent_github_hub');
+        return null;
+      }
+      return rec;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyServerScheduleFromHub(rawHub) {
+    if (!rawHub || !rawHub.auto_schedule || typeof window === 'undefined') return;
+    window.__HEALIM_SERVER_AUTO_SCHEDULE__ = rawHub.auto_schedule;
+    try {
+      if (typeof window.updateAutoColumnStatusUI === 'function') window.updateAutoColumnStatusUI();
+      if (typeof window.updateAutoFaqStatusUI === 'function') window.updateAutoFaqStatusUI();
+    } catch (e) {}
+  }
+
   function pullFromStaticHub(onDone) {
     if (typeof window !== 'undefined' && typeof window.getHealimCanonicalHubPromise !== 'function') {
       window.getHealimCanonicalHubPromise = function(forceRefresh) {
         if (!forceRefresh && window.__HEALIM_HUB_FETCH_PROMISE__) {
           return window.__HEALIM_HUB_FETCH_PROMISE__;
         }
-        var p = fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+        var cacheBucket = Math.floor(Date.now() / 60000);
+        var p = fetch('/data/healim_community_hub.json?v=20261123_v23&cb=' + cacheBucket, { cache: 'no-cache' })
           .then(function(res) {
             if (!res.ok) throw new Error('Static hub 404');
             return res.json();
           })
           .then(function(json) {
-            return (json && json.data) ? json.data : json;
+            var fetched = (json && json.data) ? json.data : json;
+            var recent = getRecentGitHubCommitHub();
+            if (recent && recent.data) {
+              var fetchedTs = Number((fetched && fetched.updated_at) || 0);
+              if (fetchedTs < Number(recent.updatedAt || 0)) {
+                applyServerScheduleFromHub(recent.data);
+                return recent.data;
+              }
+              try { sessionStorage.removeItem('healim_recent_github_hub'); } catch (e) {}
+            }
+            applyServerScheduleFromHub(fetched);
+            return fetched;
           })
           .catch(function(err) {
             window.__HEALIM_HUB_FETCH_PROMISE__ = null;
+            var recent = getRecentGitHubCommitHub();
+            if (recent && recent.data) {
+              applyServerScheduleFromHub(recent.data);
+              return recent.data;
+            }
             throw err;
           });
         window.__HEALIM_HUB_FETCH_PROMISE__ = p;
@@ -128,7 +172,7 @@
 
     var hubPromise = (typeof window !== 'undefined' && typeof window.getHealimCanonicalHubPromise === 'function')
       ? window.getHealimCanonicalHubPromise(false)
-      : fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+      : fetch('/data/healim_community_hub.json?v=20261123_v23', { cache: 'no-cache' })
           .then(function(res) {
             if (!res.ok) throw new Error('Static hub 404');
             return res.json();
@@ -144,6 +188,7 @@
           if (onDone) onDone(false, null);
           return;
         }
+        applyServerScheduleFromHub(rawHub);
         var normalized = normalizeCloudData(rawHub);
         applyDataToLocal(normalized, false);
         broadcastUpdate('static_hub_pull', normalized);
@@ -663,6 +708,315 @@
     };
   }
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // 12. GitHub 공식 정적 허브 원자적 즉시발행 엔진 (PC·모바일 100% 동시 반영)
+  //     - 관리자 브라우저(localStorage)에만 토큰을 보관(절대 코드/서버 노출 없음)
+  //     - 1회 커밋으로 data/healim_community_hub.json & static/data/healim_community_hub.json 동시 갱신
+  //     - Cloudflare Pages 자동 배포(약 1분)로 PC·모바일·모든 방문자 100% 동일 일치 보장
+  // ══════════════════════════════════════════════════════════════════════════
+  var GH_OWNER = 'healim0071-git';
+  var GH_REPO = 'panic-disorder';
+  var GH_BRANCH = 'main';
+  var GH_TOKEN_KEY = 'healim_github_publish_token';
+
+  function getGitHubToken() {
+    try {
+      var t = localStorage.getItem(GH_TOKEN_KEY);
+      return (t && t.trim()) ? t.trim() : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function setGitHubToken(token) {
+    try {
+      if (token && token.trim()) {
+        localStorage.setItem(GH_TOKEN_KEY, token.trim());
+      } else {
+        localStorage.removeItem(GH_TOKEN_KEY);
+      }
+    } catch (e) {}
+  }
+
+  function isGitHubConfigured() {
+    return getGitHubToken().length >= 10;
+  }
+
+  function ghRequest(endpoint, options, tokenOverride) {
+    var token = tokenOverride || getGitHubToken();
+    if (!token) return Promise.reject(new Error('GitHub 연동 토큰이 등록되어 있지 않습니다.'));
+    options = options || {};
+    var headers = Object.assign({
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    }, options.headers || {});
+    var url = endpoint.indexOf('http') === 0 ? endpoint : ('https://api.github.com' + endpoint);
+    return fetch(url, Object.assign({}, options, { headers: headers }))
+      .then(function(res) {
+        if (!res.ok) {
+          return res.text().then(function(txt) {
+            var msg = 'GitHub API HTTP ' + res.status;
+            try {
+              var parsed = JSON.parse(txt);
+              if (parsed && parsed.message) msg += ': ' + parsed.message;
+            } catch (e) {}
+            throw new Error(msg);
+          });
+        }
+        return options.rawText ? res.text() : res.json();
+      });
+  }
+
+  function testGitHubConnection(tokenOverride) {
+    return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO, { method: 'GET' }, tokenOverride)
+      .then(function(repo) {
+        var canPush = !!(repo && repo.permissions && repo.permissions.push);
+        return { ok: canPush, repo: repo && repo.full_name, canPush: canPush };
+      });
+  }
+
+  function fetchLatestHubFromGitHub() {
+    return ghRequest(
+      '/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/data/healim_community_hub.json?ref=' + GH_BRANCH + '&t=' + Date.now(),
+      { method: 'GET', headers: { 'Accept': 'application/vnd.github.raw+json' }, rawText: true }
+    ).then(function(text) {
+      return JSON.parse(text);
+    });
+  }
+
+  function commitHubAtomicToGitHub(hubObj, commitMessage) {
+    var serialized = JSON.stringify(hubObj, null, 2);
+    var latestCommitSha = '';
+    var baseTreeSha = '';
+    var blobSha = '';
+
+    return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/ref/heads/' + GH_BRANCH, { method: 'GET' })
+      .then(function(refData) {
+        latestCommitSha = refData.object.sha;
+        return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/commits/' + latestCommitSha, { method: 'GET' });
+      })
+      .then(function(commitData) {
+        baseTreeSha = commitData.tree.sha;
+        return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/blobs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: serialized, encoding: 'utf-8' })
+        });
+      })
+      .then(function(blobData) {
+        blobSha = blobData.sha;
+        return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/trees', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            base_tree: baseTreeSha,
+            tree: [
+              { path: 'data/healim_community_hub.json', mode: '100644', type: 'blob', sha: blobSha },
+              { path: 'static/data/healim_community_hub.json', mode: '100644', type: 'blob', sha: blobSha }
+            ]
+          })
+        });
+      })
+      .then(function(treeData) {
+        return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/commits', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: commitMessage,
+            tree: treeData.sha,
+            parents: [latestCommitSha]
+          })
+        });
+      })
+      .then(function(newCommit) {
+        return ghRequest('/repos/' + GH_OWNER + '/' + GH_REPO + '/git/refs/heads/' + GH_BRANCH, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sha: newCommit.sha, force: false })
+        }).then(function() {
+          return { sha: newCommit.sha, hub: hubObj };
+        });
+      });
+  }
+
+  function applyCommittedHubImmediately(hubObj) {
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('healim_recent_github_hub', JSON.stringify({
+          committedAt: Date.now(),
+          updatedAt: hubObj.updated_at || Date.now(),
+          data: hubObj
+        }));
+      }
+    } catch (e) {}
+
+    window.__HEALIM_HUB_FETCH_PROMISE__ = Promise.resolve(hubObj);
+    applyServerScheduleFromHub(hubObj);
+
+    if (window.HealimUniversalSync && typeof window.HealimUniversalSync.setInMemoryHubData === 'function') {
+      window.HealimUniversalSync.setInMemoryHubData(hubObj);
+    }
+
+    var normalized = normalizeCloudData(hubObj);
+    applyDataToLocal(normalized, false);
+    broadcastUpdate('github_commit_sync', normalized);
+  }
+
+  function upsertPostToGitHub(boardType, post, extraMeta) {
+    extraMeta = extraMeta || {};
+    return fetchLatestHubFromGitHub()
+      .then(function(hub) {
+        if (!Array.isArray(hub[boardType])) hub[boardType] = [];
+        var strId = String(post.id);
+        var idx = hub[boardType].findIndex(function(p) { return p && String(p.id) === strId; });
+        if (idx !== -1) {
+          hub[boardType][idx] = post;
+        } else {
+          hub[boardType].unshift(post);
+        }
+        if (Array.isArray(hub.deleted_ids)) {
+          hub.deleted_ids = hub.deleted_ids.filter(function(did) { return String(did) !== strId; });
+        }
+        if (extraMeta.scheduleUpdate && (boardType === 'columns' || boardType === 'faq')) {
+          if (!hub.auto_schedule || typeof hub.auto_schedule !== 'object') hub.auto_schedule = {};
+          hub.auto_schedule[boardType] = Object.assign({}, hub.auto_schedule[boardType] || {}, extraMeta.scheduleUpdate);
+        }
+        hub.updated_at = Date.now();
+        hub.version = Math.max(Number(hub.version || 21), 21);
+
+        var shortTitle = String(post.title || '').slice(0, 45);
+        var actionTag = idx !== -1 ? 'update' : 'publish';
+        var msg = 'content(' + boardType + '): ' + actionTag + ' "' + shortTitle + '"';
+        return commitHubAtomicToGitHub(hub, msg);
+      })
+      .then(function(result) {
+        applyCommittedHubImmediately(result.hub);
+        return result;
+      });
+  }
+
+  function deletePostFromGitHub(boardType, postId) {
+    var strId = String(postId);
+    return fetchLatestHubFromGitHub()
+      .then(function(hub) {
+        if (Array.isArray(hub[boardType])) {
+          hub[boardType] = hub[boardType].filter(function(p) { return p && String(p.id) !== strId; });
+        }
+        if (!Array.isArray(hub.deleted_ids)) hub.deleted_ids = [];
+        if (hub.deleted_ids.indexOf(strId) === -1) {
+          hub.deleted_ids.push(strId);
+        }
+        hub.updated_at = Date.now();
+        hub.version = Math.max(Number(hub.version || 21), 21);
+        var msg = 'content(' + boardType + '): delete ' + strId;
+        return commitHubAtomicToGitHub(hub, msg);
+      })
+      .then(function(result) {
+        applyCommittedHubImmediately(result.hub);
+        return result;
+      });
+  }
+
+  function openGitHubSetupModal(onConnectedCallback, actionLabel) {
+    if (typeof document === 'undefined') return;
+    var existing = document.getElementById('healimGitHubSetupModal');
+    if (existing) existing.remove();
+
+    var label = actionLabel || '즉시 발행 및 동기화';
+    var backdrop = document.createElement('div');
+    backdrop.id = 'healimGitHubSetupModal';
+    backdrop.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(9,41,46,0.62);display:flex;align-items:center;justify-content:center;padding:16px;font-family:-apple-system,BlinkMacSystemFont,"Pretendard",sans-serif;';
+    backdrop.innerHTML = '' +
+      '<div style="background:#fff;border-radius:14px;max-width:520px;width:100%;padding:24px 26px;box-shadow:0 20px 50px rgba(0,0,0,0.28);border:1px solid #cbd5e1;color:#1e293b;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+          '<h3 style="margin:0;font-size:17px;font-weight:800;color:#0d3a42;">🐙 PC·모바일 동시 즉시발행 1회 연동</h3>' +
+          '<button type="button" id="ghModalCloseBtn" style="border:none;background:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1;">&times;</button>' +
+        '</div>' +
+        '<p style="font-size:13px;line-height:1.6;color:#475569;margin:0 0 14px;">' +
+          '<strong>' + label + '</strong> 결과를 PC와 모바일·모든 방문자에게 100% 동일하게 즉시 반영하려면 ' +
+          'GitHub 정적 허브 쓰기 토큰(무료)을 <strong>현재 관리자 브라우저에 1회만 등록</strong>해 주세요.' +
+        '</p>' +
+        '<div style="background:#f0f7f8;border:1px solid #badfe3;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.65;color:#0d3a42;margin-bottom:14px;">' +
+          '<strong>📌 30초 토큰 발급 방법 (최초 1회만)</strong><br>' +
+          '1) <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color:#0284c7;font-weight:700;text-decoration:underline;">GitHub 토큰 발급 페이지 열기 ↗</a> (계정: <code>healim0071-git</code>)<br>' +
+          '2) Repository access → <strong>Only select repositories</strong> → <code>panic-disorder</code> 선택<br>' +
+          '3) Repository permissions → <strong>Contents: Read and write</strong> 선택 후 [Generate token] 복사' +
+        '</div>' +
+        '<label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:6px;">GitHub Personal Access Token</label>' +
+        '<input type="password" id="ghModalTokenInput" placeholder="github_pat_... 또는 ghp_..." style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #94a3b8;border-radius:8px;font-size:13px;font-family:monospace;margin-bottom:8px;" />' +
+        '<div id="ghModalStatusMsg" style="font-size:12px;min-height:18px;margin-bottom:12px;color:#64748b;">토큰은 서버나 코드에 저장되지 않고 현재 관리자 브라우저에만 안전 보관됩니다.</div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">' +
+          '<a href="https://github.com/healim0071-git/panic-disorder/actions/workflows/auto-publish.yml" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1c6e78;background:#edf7f8;border:1px solid #badfe3;padding:9px 12px;border-radius:8px;text-decoration:none;">⚡ GitHub Actions에서 바로 실행 ↗</a>' +
+          '<button type="button" id="ghModalSaveBtn" style="font-size:13px;font-weight:700;color:#fff;background:#0d3a42;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;">연결 확인 및 즉시 실행</button>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(backdrop);
+    var closeBtn = document.getElementById('ghModalCloseBtn');
+    var saveBtn = document.getElementById('ghModalSaveBtn');
+    var inputEl = document.getElementById('ghModalTokenInput');
+    var statusEl = document.getElementById('ghModalStatusMsg');
+
+    function closeModal() {
+      if (backdrop && backdrop.parentNode) backdrop.parentNode.removeChild(backdrop);
+    }
+
+    closeBtn.onclick = closeModal;
+    backdrop.onclick = function(ev) { if (ev.target === backdrop) closeModal(); };
+    setTimeout(function() { if (inputEl) inputEl.focus(); }, 60);
+
+    saveBtn.onclick = function() {
+      var tok = (inputEl.value || '').trim();
+      if (!tok || tok.length < 10) {
+        statusEl.style.color = '#dc2626';
+        statusEl.textContent = '유효한 GitHub 토큰을 입력해 주세요.';
+        return;
+      }
+      saveBtn.disabled = true;
+      saveBtn.textContent = '⏳ 연결 확인 중...';
+      statusEl.style.color = '#0369a1';
+      statusEl.textContent = 'GitHub 저장소(panic-disorder) 쓰기 권한을 확인하고 있습니다...';
+
+      testGitHubConnection(tok)
+        .then(function(res) {
+          if (!res.canPush) {
+            throw new Error('쓰기 권한(Contents: Read and write)이 없는 토큰입니다.');
+          }
+          setGitHubToken(tok);
+          closeModal();
+          if (typeof onConnectedCallback === 'function') {
+            onConnectedCallback();
+          } else {
+            alert('✅ GitHub 공식 발행 연동이 완료되었습니다! 이제부터 PC·모바일에 동시 반영됩니다.');
+          }
+        })
+        .catch(function(err) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = '연결 확인 및 즉시 실행';
+          statusEl.style.color = '#dc2626';
+          statusEl.textContent = '연결 실패: ' + (err && err.message ? err.message : '토큰 권한을 확인해 주세요.');
+        });
+    };
+  }
+
+  function canPublishToGlobal() {
+    var isLocalEnv = (typeof window !== 'undefined' && window.location &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+    return isLocalEnv || !!getBaseUrl() || isGitHubConfigured();
+  }
+
+  window.HealimGitHubPublish = {
+    getToken: getGitHubToken,
+    setToken: setGitHubToken,
+    isConfigured: isGitHubConfigured,
+    testConnection: testGitHubConnection,
+    upsertPost: upsertPostToGitHub,
+    deletePost: deletePostFromGitHub,
+    openSetupModal: openGitHubSetupModal,
+    getRepoInfo: function() { return { owner: GH_OWNER, repo: GH_REPO, branch: GH_BRANCH }; }
+  };
+
   // Global Export
   window.HealimCloudDB = {
     init: init,
@@ -676,7 +1030,8 @@
     gatherAllLocalCommunityData: gatherAllLocalCommunityData,
     getStatus: getStatus,
     setCustomUrl: setCustomUrl,
-    getBaseUrl: getBaseUrl
+    getBaseUrl: getBaseUrl,
+    canPublishToGlobal: canPublishToGlobal
   };
 
   // Auto-init on page load

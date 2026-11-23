@@ -995,7 +995,8 @@
     return s;
   }
 
-  function checkAndRunAutoColumnPublish(isManual) {
+  function checkAndRunAutoColumnPublish(isManual, options) {
+    options = options || {};
     var state = getAutoColumnState();
     var now = Date.now();
 
@@ -1186,7 +1187,7 @@
 
     console.log('[Healim Auto-Column Engine] Published column: "' + newPost.title + '" | Next schedule: ' + formatDateTime(state.nextScheduledTime));
 
-    if (isManual && typeof window.alert === 'function') {
+    if (isManual && !options.suppressAlert && typeof window.alert === 'function') {
       alert('⚡ [공황장애 치료칼럼 신규 글 자동 발행 완료]\n\n' +
             '제목: ' + newPost.title + '\n' +
             '작성자: ' + newPost.author + ' (' + dateStr + ')\n' +
@@ -1400,15 +1401,15 @@
     }
 
     var hasCloudDbCustom = !!(typeof window !== 'undefined' && window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
-    var isLocalCustom = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
-    if (!hasCloudDbCustom && !isLocalCustom) {
-      if (typeof alert === 'function') {
-        alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-              '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-              '브라우저에서만 단독 발행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
-              '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
-              '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
-              '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
+    var hasGitHubCustom = !!(typeof window !== 'undefined' && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
+    var isLocalCustom = (typeof window !== 'undefined' && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+    if (!hasCloudDbCustom && !hasGitHubCustom && !isLocalCustom) {
+      if (typeof window !== 'undefined' && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+        window.HealimGitHubPublish.openSetupModal(function() {
+          publishCustomColumnPost(customData);
+        }, '치료칼럼 제목설정 즉시발행');
+      } else if (typeof alert === 'function') {
+        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
       }
       return false;
     }
@@ -1536,6 +1537,33 @@
     // Close modal
     closeCustomTitleColumnModal();
 
+    if (hasGitHubCustom && !isLocalCustom && typeof window !== 'undefined' && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function') {
+      window.HealimGitHubPublish.upsertPost('columns', newPost, {
+        scheduleUpdate: {
+          lastPublishedDate: dateStr,
+          lastPublishedTime: now,
+          nextScheduledTime: state.nextScheduledTime,
+          nextScheduledDate: formatDateOnly(new Date(state.nextScheduledTime)),
+          nextScheduledDisplay: formatDateTime(state.nextScheduledTime)
+        }
+      }).then(function() {
+        if (typeof window.renderColumnsList === 'function') try { window.renderColumnsList(); } catch(e) {}
+        if (typeof window.syncBottomCommunity === 'function') try { window.syncBottomCommunity(); } catch(e) {}
+        if (typeof window.alert === 'function') {
+          alert('✅ [치료칼럼 제목설정 공식 즉시발행 완료]\n\n' +
+                '제목: ' + newPost.title + '\n' +
+                '작성자: ' + newPost.author + ' (' + dateStr + ')\n\n' +
+                'GitHub 공식 정적 허브에 커밋 완료되었습니다!\n' +
+                '현재 화면에 즉시 반영되었으며, 약 1분 내 PC·모바일 모든 방문자에게 동일하게 배포됩니다.');
+        }
+      }).catch(function(err) {
+        if (typeof window.alert === 'function') {
+          alert('⚠️ GitHub 공식 발행 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err) + '\n\n[관리자 대시보드(/admin/)]에서 GitHub 토큰 권한(Contents: Read and write)을 확인해 주세요.');
+        }
+      });
+      return newPost;
+    }
+
     // Alert completion
     if (typeof window !== 'undefined' && typeof window.alert === 'function') {
       setTimeout(function() {
@@ -1592,14 +1620,27 @@
   }
 
   function updateStatusBadgeUI(state) {
+    if (typeof document === 'undefined') return;
     var el = document.getElementById('autoColumnNextScheduleText');
-    if (el && state && state.nextScheduledTime) {
-      el.textContent = '다음 예정: ' + formatDateTime(state.nextScheduledTime);
+    var serverSched = (typeof window !== 'undefined' && window.__HEALIM_SERVER_AUTO_SCHEDULE__ && window.__HEALIM_SERVER_AUTO_SCHEDULE__.columns)
+      ? window.__HEALIM_SERVER_AUTO_SCHEDULE__.columns : null;
+    if (el) {
+      if (serverSched && serverSched.nextScheduledDisplay) {
+        el.textContent = '다음 예정: ' + serverSched.nextScheduledDisplay + ' (자동)';
+      } else if (serverSched && serverSched.nextScheduledTime) {
+        el.textContent = '다음 예정: ' + formatDateTime(serverSched.nextScheduledTime) + ' (자동)';
+      } else if (state && state.nextScheduledTime) {
+        el.textContent = '다음 예정: ' + formatDateTime(state.nextScheduledTime);
+      }
     }
   }
 
   // Global exports
   window.checkAndRunAutoColumnPublish = checkAndRunAutoColumnPublish;
+  window.generateContinuousNewColumn = generateContinuousNewColumn;
+  window.sanitizeColumnMedicalCompliance = sanitizeMedicalCompliance;
+  window.normalizeColumnTitle = normalizeColumnTitle;
+  window.updateAutoColumnStatusUI = updateStatusBadgeUI;
   // Normalize literal escaped newlines in columnsPool
   columnsPool.forEach(function(item) {
     if (item && item.content) {
@@ -1637,18 +1678,21 @@
     }
 
     var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
-    var isLocalHost = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    if (!hasCloudDb && !isLocalHost) {
-      alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-            '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-            '브라우저에서만 단독 즉시 발행을 실행하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 발행을 차단했습니다.\n\n' +
-            '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
-            '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
-            '2) GitHub 정적 허브 배포를 통해 공식 발행해 주세요.');
+    var hasGitHub = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
+    var isLocalHost = !!(window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
+    if (!hasCloudDb && !hasGitHub && !isLocalHost) {
+      if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+        window.HealimGitHubPublish.openSetupModal(function() {
+          window.triggerAutoColumnPublishManual();
+        }, '공황장애 치료칼럼 즉시 1편 발행');
+      } else {
+        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
+      }
       return;
     }
 
-    var published = checkAndRunAutoColumnPublish(true);
+    var useGitHubCommit = hasGitHub && !isLocalHost && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function';
+    var published = checkAndRunAutoColumnPublish(true, { suppressAlert: useGitHubCommit });
     if (published) {
       if (typeof currentColumnsPage !== 'undefined') {
         currentColumnsPage = 1;
@@ -1656,11 +1700,41 @@
       if (typeof activeColumnFilter !== 'undefined') {
         activeColumnFilter = '전체';
       }
-      if (typeof renderColumnsList === 'function') {
-        renderColumnsList();
-      }
-      if (typeof syncBottomCommunity === 'function') {
-        syncBottomCommunity();
+      if (useGitHubCommit) {
+        var btnCol = document.getElementById('btnTriggerColumnPublish');
+        var origLabel = btnCol ? btnCol.textContent : '';
+        if (btnCol) { btnCol.disabled = true; btnCol.textContent = '⏳ 공식 발행 중...'; }
+        var stCol = getAutoColumnState();
+        window.HealimGitHubPublish.upsertPost('columns', published, {
+          scheduleUpdate: {
+            lastPublishedDate: published.date,
+            lastPublishedTime: Date.now(),
+            poolIndex: stCol.poolIndex,
+            nextScheduledTime: stCol.nextScheduledTime,
+            nextScheduledDate: formatDateOnly(new Date(stCol.nextScheduledTime)),
+            nextScheduledDisplay: formatDateTime(stCol.nextScheduledTime)
+          }
+        }).then(function() {
+          if (typeof renderColumnsList === 'function') renderColumnsList();
+          if (typeof syncBottomCommunity === 'function') syncBottomCommunity();
+          alert('✅ [공황장애 치료칼럼 공식 즉시 발행 완료]\n\n' +
+                '제목: ' + published.title + '\n' +
+                '발행일자: ' + published.date + '\n' +
+                '다음 자동 발행 예정: ' + formatDateTime(stCol.nextScheduledTime) + '\n\n' +
+                'GitHub 공식 허브에 커밋 완료되었습니다!\n' +
+                '현재 화면에 즉시 반영되었으며, 약 1분 내 PC·모바일 모든 방문자에게 동일하게 배포됩니다.');
+        }).catch(function(err) {
+          alert('⚠️ GitHub 공식 발행 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err) + '\n\n[관리자 대시보드(/admin/)]에서 GitHub 토큰 권한(Contents: Read and write)을 확인해 주세요.');
+        }).finally(function() {
+          if (btnCol) { btnCol.disabled = false; btnCol.textContent = origLabel || '⚡ 즉시 1편 발행'; }
+        });
+      } else {
+        if (typeof renderColumnsList === 'function') {
+          renderColumnsList();
+        }
+        if (typeof syncBottomCommunity === 'function') {
+          syncBottomCommunity();
+        }
       }
       var badge = document.getElementById('autoColumnStatusBadge');
       if (badge) badge.style.display = 'flex';
@@ -1690,7 +1764,7 @@
   }
 
   // Periodic check every 60s (local dev only; skip wasteful background interval for public production visitors)
-  if (typeof setInterval !== 'undefined' && typeof window !== 'undefined' &&
+  if (typeof setInterval !== 'undefined' && typeof window !== 'undefined' && window.location &&
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     setInterval(function() {
       checkAndRunAutoColumnPublish(false);

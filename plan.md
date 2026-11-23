@@ -2660,3 +2660,28 @@ obots.txt濡??됱씤 ?쒖쇅?섎룄濡??섎룄??蹂댁븞/媛쒖씤?뺣낫 ?섏�
   4. **웹폰트·CSS·이미지·캐시 헤더 최적화**:
      - CSS `@import` 제거, `preconnect` + `pretendard-dynamic-subset.min.css` 전환, 본문 하단 이미지 `loading="lazy" decoding="async"` 적용, 미사용 파일 5.94MB 삭제, `static/_headers` 이미지/CSS 7일 불변 캐시 및 JS/JSON ETag 재검증 최적화.
   5. **전수 검증 & 빌드·푸시**: JS 7개 문법 검사, `public/` 404 0건·중복 스크립트 0건·중복 ID 0건·`onerror` 오류 0건, 단일 Fetch(1회)·타이머 0건·`:3030` 0건·PC/모바일 칼럼 45편 & FAQ 36편 100% 일치 E2E 테스트 통과 후 GitHub `main` 푸시 완료.
+
+---
+
+## 🚀 [2026-11-23] 마일스톤 9.91: 치료칼럼·FAQ 자동발행 중단 및 즉시발행 차단 팝업 근본 원인 분석·완전 해결 (GitHub Actions 서버 자동발행 + GitHub API 원클릭 공식 즉시발행 + FAQ 신규 24편 풀 확충)
+- **사용자 보고 문제 (4건)**:
+  1. 치료칼럼 `⚡ 즉시 1편 발행` 클릭 시 `[PC·모바일 화면 일치 보호 안내]` 팝업이 뜨며 발행 차단.
+  2. 치료칼럼 자동발행이 `2026.10.14`(#45)까지만 되고 이후 중단됨.
+  3. FAQ `⚡ 즉시 1편 발행` 클릭 시 동일 보호 팝업이 뜨며 발행 차단.
+  4. FAQ 자동발행이 `2026.11.15`(#36)까지만 되고 이후 중단됨.
+- **원인 심층 분석 (3대 구조적 원인)**:
+  1. **정적 호스팅 모드 단독 로컬 발행 차단 가드 (즉시발행 팝업 원인)**: `healim-panic.com`은 실시간 외부 DB(`DEFAULT_CLOUD_DB_URL = ''`) 없이 Cloudflare Pages(GitHub 정적 허브)로 운영 중이며, PC/모바일 불일치 방지를 위해 v20/v21에서 브라우저 로컬 단독 발행을 전면 차단함.
+  2. **서버 측 자동발행 파이프라인 부재 (자동발행 중단 원인)**: 브라우저 백그라운드 자동발행은 기기 분열 방지를 위해 비활성화(`return false`/`return null`)되어 배너 날짜만 미래로 롤오버되는 상태였으며, 이를 대체할 GitHub Actions 스케줄러(`.github/workflows/`)와 실제 허브 갱신 스크립트가 구축되어 있지 않았음.
+  3. **FAQ 콘텐츠 풀 100% 고갈 및 중복 순회 결함 (FAQ 숨은 치명적 버그)**: 기존 36편(기본 22 + 확장 10 + 동적 4)이 모두 발행 완료되어 `generateContinuousNewFaq()`가 이미 발행된 4편만 순환하며 중복 판정으로 `return null` 반환, 발행 자체가 구조적으로 불가능했음.
+- **해결 및 구축 내역**:
+  1. **FAQ 신규 미발행 고품질 풀 24편 확충 (`static/js/auto_faq_engine.js`)**:
+     - 기존 36편과 중복 0건, 900~1,000자 규격, 의료광고법 5대 금지어 0건, 3대 CTA 링크 및 디스크 실존 SVG 썸네일을 갖춘 신규 FAQ 24편 추가 + 미발행 항목 탐색 루프 및 무한 폴백 생성기 보강.
+  2. **서버/CI 공식 자동발행 파이프라인 구축 (`scripts/publish_hub_article.js`, `.github/workflows/auto-publish.yml`)**:
+     - 매일 한국시간 오전 08:15(`cron: '15 23 * * *'`)에 GitHub Actions가 자동 실행되어 `data/healim_community_hub.json`의 `auto_schedule` 예정일(주 2~3회, +2~3일 간격, 오전 08:00~11:00 KST 랜덤) 도래 시 치료칼럼·FAQ를 1편씩 공식 발행 후 `data/`·`static/data/` 및 `content/columns/_index.md`·`content/faq/_index.md` SEO 아카이브까지 동시 갱신·커밋·푸시 → Cloudflare Pages 자동 배포로 PC·모바일·검색엔진 100% 동시 반영.
+     - 수동 즉시 실행(`workflow_dispatch`) 지원 및 프론트엔드 배너에 실제 서버 예정일(`hub.auto_schedule`) 동기화 표시.
+  3. **브라우저 원클릭 GitHub 공식 즉시발행 엔진 (`HealimGitHubPublish` in `static/js/healim_cloud_db.js` & `/admin/`)**:
+     - 관리자 브라우저에 GitHub Fine-grained PAT(저장소 `Contents: Read and write`)를 1회 등록하면 치료칼럼·FAQ·치료후기의 `⚡ 즉시 1편 발행`, `✍️ 제목설정발행`, 글 작성·수정·삭제가 GitHub Git Data API 단일 원자적 커밋으로 `main`에 즉시 반영(배포 대기 3분간 `sessionStorage` 버퍼로 현재 화면 즉각 표시, 약 1분 내 PC·모바일 전체 배포).
+     - 미연동 상태에서 즉시발행 클릭 시 막히는 경고창 대신 30초 원클릭 연동 모달 및 GitHub Actions 바로가기 제공, `/admin/` 대시보드에 전용 연동·스케줄 현황 카드 추가.
+  4. **미발행 복구 실행 및 전수 검증·푸시**:
+     - 오늘(2026.11.23) 기준 치료칼럼 #46(신규 30편 풀 #1) 및 FAQ #37(신규 24편 풀 #1) 공식 발행 완료 및 다음 자동발행 스케줄 초기화.
+     - JS 전체 구문 검사, 24편 신규 FAQ 전수 검증, `auto_publish_column.js`·`auto_publish_faq.js`·`sync_seo_feeds.js`(Hugo 빌드·RSS·sitemap·의료광고법 0건) 및 E2E 테스트 통과 후 GitHub `main` 푸시 완료.

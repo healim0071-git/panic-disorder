@@ -3010,7 +3010,7 @@
             // 1. Fetch static hub data via shared single-flight promise (prevents duplicate concurrent fetches)
             var hubReq = (!isLocal && typeof window.getHealimCanonicalHubPromise === 'function')
               ? window.getHealimCanonicalHubPromise(false)
-              : fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+              : fetch('/data/healim_community_hub.json?v=20261123_v23', { cache: 'no-cache' })
                   .then(function(res) {
                     if (!res.ok) throw new Error('Static hub offline');
                     return res.json();
@@ -3023,6 +3023,13 @@
                   if (!data || (data.version && data.version < 21)) {
                     console.warn('[HealimUniversalSync] Remote hub invalid or version < 21.');
                     return;
+                  }
+                  if (data.auto_schedule) {
+                    window.__HEALIM_SERVER_AUTO_SCHEDULE__ = data.auto_schedule;
+                    try {
+                      if (typeof window.updateAutoColumnStatusUI === 'function') window.updateAutoColumnStatusUI();
+                      if (typeof window.updateAutoFaqStatusUI === 'function') window.updateAutoFaqStatusUI();
+                    } catch(e) {}
                   }
                   if (data.epoch && data.epoch !== localStorage.getItem('healim_community_epoch')) {
                     console.log('[HealimUniversalSync] Remote epoch updated (' + data.epoch + '). Purging ghost keys, deleted blacklists & IndexedDB...');
@@ -3352,7 +3359,13 @@
             pullFromHub: pullFromHub,
             syncPostToRemote: syncPostToRemote,
             syncDeleteToRemote: syncDeleteToRemote,
-            getInMemoryHubData: function() { return inMemoryHubData; }
+            getInMemoryHubData: function() { return inMemoryHubData; },
+            setInMemoryHubData: function(d) {
+              if (d && typeof d === 'object') {
+                hasConnectedHub = true;
+                inMemoryHubData = d;
+              }
+            }
           };
         })();
         window.HealimUniversalSync = HealimUniversalSync;
@@ -5094,13 +5107,15 @@
             alert('게시글 등록 및 수정 권한은 최고관리자(healim0071)에게만 있습니다.');
             return;
           }
-          if (isStrictStaticHubMode()) {
-            alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-                  '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-                  '브라우저에서만 단독으로 글을 등록·수정하면 PC와 모바일 화면이 서로 달라지게 되므로 단독 로컬 저장을 차단했습니다.\n\n' +
-                  '✅ PC·모바일·모든 방문자에게 동일하게 즉시 반영하는 방법:\n' +
-                  '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
-                  '2) GitHub 정적 허브 배포를 통해 공식 반영해 주세요.');
+          var hasGitHubWrite = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
+          if (isStrictStaticHubMode() && !hasGitHubWrite) {
+            if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+              window.HealimGitHubPublish.openSetupModal(function() {
+                window.handlePostSubmit({ preventDefault: function() {} });
+              }, '게시글 공식 등록·수정');
+            } else {
+              alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
+            }
             return;
           }
           var editId = document.getElementById('postEditId') ? document.getElementById('postEditId').value.trim() : '';
@@ -5243,6 +5258,18 @@
               }
             } catch(e) {}
 
+            if (isStrictStaticHubMode() && hasGitHubWrite && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function') {
+              window.HealimGitHubPublish.upsertPost(boardType, updatedPost).then(function() {
+                alert('✅ 게시글이 GitHub 공식 허브에 수정 반영되었습니다!\n약 1분 내 PC·모바일 모든 방문자에게 동일하게 배포됩니다.');
+                closeWriteModal();
+                switchCommunityTab(boardType);
+                try { window.dispatchEvent(new CustomEvent('healim-community-updated', { detail: { boardType: boardType, post: updatedPost, action: 'edit' } })); } catch(e) {}
+              }).catch(function(err) {
+                alert('⚠️ GitHub 수정 반영 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err));
+              });
+              return;
+            }
+
             alert('게시글이 성공적으로 수정되었습니다.');
             closeWriteModal();
             switchCommunityTab(boardType);
@@ -5331,6 +5358,18 @@
             } catch(e) {}
           } else {
             currentYoutubePage = 1;
+          }
+
+          if (isStrictStaticHubMode() && hasGitHubWrite && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function') {
+            window.HealimGitHubPublish.upsertPost(boardType, newPost).then(function() {
+              alert('✅ 게시글이 GitHub 공식 허브에 등록되었습니다!\n현재 화면에 즉시 반영되었으며, 약 1분 내 PC·모바일 모든 방문자에게 동일하게 배포됩니다.');
+              closeWriteModal();
+              switchCommunityTab(boardType);
+              try { window.dispatchEvent(new CustomEvent('healim-community-updated', { detail: { boardType: boardType, post: newPost, action: 'create' } })); } catch(e) {}
+            }).catch(function(err) {
+              alert('⚠️ GitHub 등록 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err));
+            });
+            return;
           }
 
           alert('게시글이 성공적으로 등록되었습니다.');
@@ -5520,13 +5559,15 @@
             alert('게시글 삭제 권한은 최고관리자(healim0071)에게만 있습니다.');
             return;
           }
-          if (isStrictStaticHubMode()) {
-            alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-                  '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-                  '브라우저에서만 단독 삭제하면 PC와 모바일 목록이 서로 달라지게 되므로 단독 로컬 삭제를 차단했습니다.\n\n' +
-                  '✅ PC·모바일·모든 방문자에게 동일하게 삭제 반영하는 방법:\n' +
-                  '1) [관리자 대시보드(/admin/)]에서 무료 Firebase Realtime DB를 연동하거나\n' +
-                  '2) GitHub 정적 허브 배포를 통해 공식 반영해 주세요.');
+          var hasGitHubDel = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
+          if (isStrictStaticHubMode() && !hasGitHubDel) {
+            if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+              window.HealimGitHubPublish.openSetupModal(function() {
+                window.handleDeletePostDirect(boardType, postId);
+              }, '게시글 공식 영구 삭제');
+            } else {
+              alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
+            }
             return;
           }
           if (!boardType || !postId) return;
@@ -5582,6 +5623,20 @@
             addDeletedPostId(boardType, strId);
           }
           try {
+            if (isStrictStaticHubMode() && hasGitHubDel && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.deletePost === 'function') {
+              window.HealimGitHubPublish.deletePost(boardType, strId).then(function() {
+                if (currentDetailPostId && String(currentDetailPostId) === strId) closeDetailModal();
+                if (boardType === 'faq') renderFaqList();
+                else if (boardType === 'reviews') renderReviewsList();
+                else if (boardType === 'youtube') renderYoutubeList();
+                else if (boardType === 'columns') renderColumnsList();
+                try { window.dispatchEvent(new CustomEvent('healim-community-updated', { detail: { boardType: boardType, deletedId: strId, action: 'delete' } })); } catch(e) {}
+                alert('✅ 게시글이 GitHub 공식 허브에서 영구 삭제되었습니다!\n약 1분 내 PC·모바일 모든 방문자에게 동일하게 반영됩니다.');
+              }).catch(function(err) {
+                alert('⚠️ GitHub 삭제 반영 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err));
+              });
+              return;
+            }
             if (window.HealimUniversalSync && window.HealimUniversalSync.syncDeleteToRemote) {
               window.HealimUniversalSync.syncDeleteToRemote(boardType, strId);
             }

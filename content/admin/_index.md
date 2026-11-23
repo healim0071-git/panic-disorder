@@ -333,6 +333,55 @@ sections:
         </div>
         </div>
 
+        <!-- GitHub Official Instant & Auto-Publish Sync Configuration Section -->
+        <div style="background: #ffffff; border: 1px solid #badfe3; border-radius: 10px; padding: 22px 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(13,58,66,0.05);">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid #edf2f4; padding-bottom: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-size: 18px;">🐙</span>
+                <h2 style="font-size: 15px; font-weight: 700; color: #0d3a42; margin: 0;">GitHub 공식 즉시발행 · 자동발행 연동 관리 (PC·모바일 100% 동시 반영)</h2>
+                <span id="githubPublishStatusBadge" style="font-size: 11px; font-weight: 700; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 9999px;">미연동 (토큰 1회 등록 필요)</span>
+              </div>
+              <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                GitHub Actions 서버 자동발행(주 2~3회, 오전 08:00~11:00 KST)이 매일 자동 점검되며, 아래에 GitHub Personal Access Token을 1회만 등록하시면 웹사이트의 <strong>⚡ 즉시 1편 발행 · ✍️ 제목설정발행 · 글작성/수정/삭제</strong>가 GitHub 정적 허브에 즉시 커밋되어 PC와 모바일 모든 기기에 동일하게 배포됩니다.
+              </p>
+            </div>
+            <div>
+              <a href="https://github.com/healim0071-git/panic-disorder/actions/workflows/auto-publish.yml" target="_blank" rel="noopener noreferrer" style="font-size: 12px; font-weight: 700; color: #0d3a42; background: #edf7f8; border: 1px solid #badfe3; padding: 7px 12px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                ⚡ GitHub Actions 자동발행 현황 열기 ↗
+              </a>
+            </div>
+          </div>
+
+          <div id="adminAutoScheduleSummary" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #334155; display: flex; flex-wrap: wrap; gap: 16px;">
+            <span>📅 <strong>치료칼럼 다음 자동발행:</strong> <span id="admNextColSchedule">확인 중...</span></span>
+            <span>📅 <strong>FAQ 다음 자동발행:</strong> <span id="admNextFaqSchedule">확인 중...</span></span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+                GitHub Fine-grained Personal Access Token (저장소: <code>healim0071-git/panic-disorder</code>, 권한: <code>Contents: Read and write</code>)
+              </label>
+              <input type="password" id="adminGitHubTokenInput" placeholder="github_pat_... 또는 ghp_..." style="width: 100%; font-size: 12px; font-family: monospace; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; box-sizing: border-box; outline: none;" />
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;">
+              <div style="font-size: 11px; color: #64748b;">
+                <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline; font-weight: 600;">GitHub 토큰 30초 발급 바로가기 ↗</a>
+                &nbsp;(토큰은 현재 관리자 브라우저에만 안전하게 보관됩니다)
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button type="button" onclick="resetAdminGitHubConfig()" style="font-size: 12px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 7px 14px; border-radius: 6px; cursor: pointer;">
+                  연동 해제
+                </button>
+                <button type="button" id="btnSaveGitHubToken" onclick="saveAdminGitHubConfig()" style="font-size: 12px; font-weight: 700; color: #ffffff; background: #0d3a42; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer;">
+                  🔗 연결 테스트 및 저장
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Cloud Database Configuration Section -->
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 22px 24px; margin-bottom: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
           <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
@@ -477,7 +526,7 @@ sections:
         </div>
         </div>
 
-        <script defer src="/js/healim_cloud_db.js?v=20261121_perf_v22"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261123_autopub_v23"></script>
         <script>
         (function() {
           var currentActiveTab = 'all';
@@ -724,6 +773,7 @@ sections:
             document.getElementById('tabCountColumns').textContent = cols.length;
 
             loadAdminSnsConfig();
+            loadAdminGitHubConfig();
             loadAdminCloudDbConfig();
             renderAdminTable();
           }
@@ -824,17 +874,28 @@ sections:
 
           window.deleteAdminPost = function(board, id) {
             var hasLiveCloudDbDel = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
+            var hasGitHubDel = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
             var isLocalDel = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-            if (!hasLiveCloudDbDel && !isLocalDel) {
-              alert('🔒 [PC·모바일 화면 일치 보호 안내]\n\n' +
-                    '현재 사이트는 정적 웹 허브(/data/healim_community_hub.json) 동기화 모드로 운영 중입니다.\n' +
-                    '브라우저에서만 단독 삭제하면 PC와 모바일 목록이 서로 달라지게 되므로 단독 로컬 삭제를 차단했습니다.\n\n' +
-                    '✅ PC·모바일·모든 방문자에게 동일하게 삭제 반영하는 방법:\n' +
-                    '1) 상단에서 무료 Firebase Realtime DB를 연동하거나\n' +
-                    '2) GitHub 정적 허브 배포를 통해 공식 반영해 주세요.');
+            if (!hasLiveCloudDbDel && !hasGitHubDel && !isLocalDel) {
+              if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
+                window.HealimGitHubPublish.openSetupModal(function() {
+                  window.deleteAdminPost(board, id);
+                }, '게시글 공식 영구 삭제');
+              } else {
+                alert('🔒 PC·모바일 동시 삭제 반영을 위해 상단에서 GitHub 즉시발행 토큰을 등록해 주세요.');
+              }
               return;
             }
             if (!confirm('👑 최고관리자 권한으로 해당 게시글을 영구 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.')) return;
+            if (hasGitHubDel && !isLocalDel && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.deletePost === 'function') {
+              window.HealimGitHubPublish.deletePost(board, id).then(function() {
+                alert('✅ 게시글이 GitHub 공식 허브에서 영구 삭제되었습니다!\n약 1분 내 PC·모바일 모든 방문자에게 동일하게 반영됩니다.');
+                loadAdminDashboard();
+              }).catch(function(err) {
+                alert('⚠️ GitHub 삭제 반영 중 오류가 발생했습니다:\n' + (err && err.message ? err.message : err));
+              });
+              return;
+            }
             var list = getBoardList(board);
             var filtered = list.filter(function(it) { return String(it.id) !== String(id); });
             saveBoardList(board, filtered);
@@ -1050,6 +1111,76 @@ sections:
               localStorage.removeItem('healim_sns_config');
               loadAdminSnsConfig();
               alert('네이버 Client ID가 공식 기본값으로 복원되었습니다.');
+            }
+          };
+
+          // GitHub Official Instant-Publish Configuration Handler
+          window.loadAdminGitHubConfig = function() {
+            try {
+              var input = document.getElementById('adminGitHubTokenInput');
+              var badge = document.getElementById('githubPublishStatusBadge');
+              var tok = (window.HealimGitHubPublish && window.HealimGitHubPublish.getToken) ? window.HealimGitHubPublish.getToken() : (localStorage.getItem('healim_github_publish_token') || '');
+              if (input) input.value = tok;
+              if (badge) {
+                if (tok && tok.length >= 10) {
+                  badge.textContent = '✅ GitHub 공식 즉시발행 연동됨 (PC·모바일 동시 배포)';
+                  badge.style.background = '#dcfce7';
+                  badge.style.color = '#15803d';
+                } else {
+                  badge.textContent = '미연동 (토큰 1회 등록 필요)';
+                  badge.style.background = '#fef3c7';
+                  badge.style.color = '#b45309';
+                }
+              }
+              var sched = window.__HEALIM_SERVER_AUTO_SCHEDULE__;
+              var colEl = document.getElementById('admNextColSchedule');
+              var faqEl = document.getElementById('admNextFaqSchedule');
+              if (sched) {
+                if (colEl) colEl.textContent = (sched.columns && sched.columns.nextScheduledDisplay) ? (sched.columns.nextScheduledDisplay + ' KST') : '자동 스케줄 활성';
+                if (faqEl) faqEl.textContent = (sched.faq && sched.faq.nextScheduledDisplay) ? (sched.faq.nextScheduledDisplay + ' KST') : '자동 스케줄 활성';
+              }
+            } catch (e) {}
+          };
+
+          window.saveAdminGitHubConfig = function() {
+            var input = document.getElementById('adminGitHubTokenInput');
+            var btn = document.getElementById('btnSaveGitHubToken');
+            var tok = (input ? input.value : '').trim();
+            if (!tok || tok.length < 10) {
+              alert('유효한 GitHub Personal Access Token을 입력해 주세요.');
+              return;
+            }
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ 연결 확인 중...'; }
+            if (window.HealimGitHubPublish && window.HealimGitHubPublish.testConnection) {
+              window.HealimGitHubPublish.testConnection(tok).then(function(res) {
+                if (!res.canPush) {
+                  throw new Error('쓰기 권한(Contents: Read and write)이 없는 토큰입니다.');
+                }
+                window.HealimGitHubPublish.setToken(tok);
+                loadAdminGitHubConfig();
+                alert('✅ GitHub 공식 즉시발행 연동이 완료되었습니다!\n이제 치료칼럼·FAQ의 [⚡ 즉시 1편 발행], [✍️ 제목설정발행], 글작성/수정/삭제가 PC·모바일에 동일하게 공식 반영됩니다.');
+              }).catch(function(err) {
+                alert('❌ GitHub 연결 실패: ' + (err && err.message ? err.message : err) + '\n\npanic-disorder 저장소에 대한 Contents: Read and write 권한을 확인해 주세요.');
+              }).finally(function() {
+                if (btn) { btn.disabled = false; btn.textContent = '🔗 연결 테스트 및 저장'; }
+              });
+            } else {
+              localStorage.setItem('healim_github_publish_token', tok);
+              loadAdminGitHubConfig();
+              if (btn) { btn.disabled = false; btn.textContent = '🔗 연결 테스트 및 저장'; }
+              alert('GitHub 토큰이 저장되었습니다.');
+            }
+          };
+
+          window.resetAdminGitHubConfig = function() {
+            if (confirm('현재 브라우저에 저장된 GitHub 즉시발행 토큰을 해제하시겠습니까?')) {
+              if (window.HealimGitHubPublish && window.HealimGitHubPublish.setToken) {
+                window.HealimGitHubPublish.setToken('');
+              } else {
+                localStorage.removeItem('healim_github_publish_token');
+              }
+              loadAdminGitHubConfig();
+              alert('GitHub 즉시발행 연동이 해제되었습니다.');
             }
           };
 

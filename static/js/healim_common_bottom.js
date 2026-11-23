@@ -92,19 +92,51 @@
         return window.__HEALIM_HUB_FETCH_PROMISE__;
       }
       if (!window.fetch) return Promise.resolve(null);
-      var p = fetch('/data/healim_community_hub.json?v=20261121_v21', { cache: 'no-cache' })
+      var recentRec = null;
+      try {
+        var rawRec = sessionStorage.getItem('healim_recent_github_hub');
+        if (rawRec) {
+          var parsedRec = JSON.parse(rawRec);
+          if (parsedRec && parsedRec.data && parsedRec.committedAt && (Date.now() - parsedRec.committedAt < 180000)) {
+            recentRec = parsedRec;
+          } else {
+            sessionStorage.removeItem('healim_recent_github_hub');
+          }
+        }
+      } catch (e) {}
+      var cacheBucket = Math.floor(Date.now() / 60000);
+      var p = fetch('/data/healim_community_hub.json?v=20261123_v23&cb=' + cacheBucket, { cache: 'no-cache' })
         .then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.json();
         })
         .then(function(json) {
           var data = (json && json.data) ? json.data : json;
+          if (recentRec && recentRec.data) {
+            var fetchedTs = Number((data && data.updated_at) || 0);
+            if (fetchedTs < Number(recentRec.updatedAt || 0)) {
+              data = recentRec.data;
+            } else {
+              try { sessionStorage.removeItem('healim_recent_github_hub'); } catch (e) {}
+            }
+          }
           if (!data || (data.version && data.version < 21)) return null;
           inMemoryCanonicalHub = data;
+          if (data.auto_schedule) {
+            window.__HEALIM_SERVER_AUTO_SCHEDULE__ = data.auto_schedule;
+            try {
+              if (typeof window.updateAutoColumnStatusUI === 'function') window.updateAutoColumnStatusUI();
+              if (typeof window.updateAutoFaqStatusUI === 'function') window.updateAutoFaqStatusUI();
+            } catch (e) {}
+          }
           return data;
         })
         .catch(function() {
           window.__HEALIM_HUB_FETCH_PROMISE__ = null;
+          if (recentRec && recentRec.data) {
+            inMemoryCanonicalHub = recentRec.data;
+            return recentRec.data;
+          }
           return null;
         });
       window.__HEALIM_HUB_FETCH_PROMISE__ = p;
@@ -646,3 +678,4 @@
   window.addEventListener('healim-post-saved', syncBottomCommunity);
   window.addEventListener('healim-post-deleted', syncBottomCommunity);
 })(window, document);
+
