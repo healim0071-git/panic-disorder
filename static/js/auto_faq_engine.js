@@ -1342,19 +1342,8 @@
       return;
     }
 
-    var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
     var hasGitHub = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
     var isLocalHost = !!(window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
-    if (!hasCloudDb && !hasGitHub && !isLocalHost) {
-      if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-        window.HealimGitHubPublish.openSetupModal(function() {
-          window.triggerAutoFaqPublishManual();
-        }, '공황장애 FAQ 즉시 1편 발행');
-      } else {
-        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
-      }
-      return;
-    }
 
     var useGitHubCommit = hasGitHub && !isLocalHost && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function';
     var published = checkAndRunAutoFaqPublish(true);

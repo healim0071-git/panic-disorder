@@ -660,10 +660,10 @@ sections:
         <!-- ══════════════════════════════════════════════════════════════
         COMMUNITY JAVASCRIPT LOGIC
         ══════════════════════════════════════════════════════════════ -->
-        <script defer src="/js/auto_faq_engine.js?v=20261123_autopub_v23"></script>
-        <script defer src="/js/auto_column_engine.js?v=20261123_autopub_v23"></script>
-        <script defer src="/js/auto_review_engine.js?v=20261123_autopub_v23"></script>
-        <script defer src="/js/healim_cloud_db.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/auto_faq_engine.js?v=20261123_notoken_v24"></script>
+        <script defer src="/js/auto_column_engine.js?v=20261123_notoken_v24"></script>
+        <script defer src="/js/auto_review_engine.js?v=20261123_notoken_v24"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261123_notoken_v24"></script>
         <script>window.DEFAULT_COMMUNITY_TAB = 'faq';</script>
         
         <script>
@@ -676,5 +676,5 @@ sections:
           }
         })();
         </script>
-        <script defer src="/js/healim_community_engine_v4.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/healim_community_engine_v4.js?v=20261123_notoken_v24"></script>
 ---

@@ -3126,15 +3126,39 @@
                   PERMANENT_DELETED_REVIEW_IDS.forEach(function(did) { serverDeletedSet[String(did)] = true; });
                 }
                 if (!hasLiveCloudDb && !isLocal) {
-                  // Strict Single Source of Truth (Production Static Hub):
-                  // Ignore stale browser-local edits, custom posts, and local delete blacklists
-                  // so PC, mobile, and all visitors always see 100% identical canonical posts.
+                  // Canonical Static Hub + Local Admin Edits/Custom Posts/Deletes Overlay (Tokenless Direct Save):
+                  // Clean visitor browsers have empty local edits/custom/deletes -> 100% identical to server hub.
+                  // Admin direct edits/creates/instant-publishes/deletes are preserved cleanly without requiring any token.
+                  var localDelSet = {};
+                  try {
+                    (JSON.parse(localStorage.getItem('healim_deleted_posts_' + bKey) || '[]') || []).forEach(function(did) { localDelSet[String(did)] = true; });
+                  } catch(e) {}
+                  var isItemDel = function(id) {
+                    var s = String(id);
+                    return !!serverDeletedSet[s] || !!localDelSet[s];
+                  };
+                  // 1. Local custom / newly created / instant-published posts
+                  var localCustomArr = [];
+                  try {
+                    var cKeyTmp = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
+                    localCustomArr = JSON.parse(localStorage.getItem(cKeyTmp) || '[]') || [];
+                  } catch(e) {}
+                  localCustomArr.forEach(function(p) {
+                    if (p && p.id) {
+                      var strId = String(p.id);
+                      if (!isItemDel(strId) && !seenIds[strId]) {
+                        seenIds[strId] = true;
+                        merged.push(editedMap[strId] ? editedMap[strId] : p);
+                      }
+                    }
+                  });
+                  // 2. Canonical server hub posts (with any admin local edit applied)
                   remoteList.forEach(function(p) {
                     if (p && p.id) {
                       var strId = String(p.id);
-                      if (!serverDeletedSet[strId] && !seenIds[strId]) {
+                      if (!isItemDel(strId) && !seenIds[strId]) {
                         seenIds[strId] = true;
-                        merged.push(p);
+                        merged.push(editedMap[strId] ? editedMap[strId] : p);
                       }
                     }
                   });
@@ -3200,12 +3224,9 @@
                   didChange = true;
                 }
 
-                // Also update custom posts tier so getCustomUserPosts has it
+                // Preserve local custom/edited posts without wiping admin edits
                 var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
-                if (!hasLiveCloudDb && !isLocal) {
-                  localStorage.setItem(cKey, '[]');
-                  localStorage.removeItem('healim_edited_posts_' + bKey);
-                } else {
+                if (hasLiveCloudDb || isLocal) {
                   localStorage.setItem(cKey, JSON.stringify(merged.filter(function(p) {
                     if (!p || !p.id) return false;
                     var sId = String(p.id);
@@ -3464,29 +3485,34 @@
 
         function getBoardData(key, fallback) {
         if (key !== 'youtube' && isStrictStaticHubMode()) {
-          // Strict Single Source of Truth (v21):
-          // In production without external Cloud DB, render ONLY the canonical server hub
-          // (or identical bundled canonical seed before fetch completes) so PC and mobile
-          // NEVER diverge due to stale localStorage edits, local custom posts, or local delete lists.
+          // Canonical Server Hub + Local Admin Edits/Custom Posts/Deletes Overlay (Tokenless Direct Edit):
           var hubMem = (HealimUniversalSync && typeof HealimUniversalSync.getInMemoryHubData === 'function')
             ? HealimUniversalSync.getInMemoryHubData()
             : null;
           var canonicalSource = (hubMem && Array.isArray(hubMem[key]) && hubMem[key].length > 0)
             ? hubMem[key]
             : (Array.isArray(fallback) ? fallback : []);
+          var editedMapLocal = getEditedPostsMap(key);
+          var customLocal = getCustomUserPosts(key);
           var serverDelSet = {};
           if (hubMem && Array.isArray(hubMem.deleted_ids)) {
             hubMem.deleted_ids.forEach(function(did) { serverDelSet[String(did)] = true; });
           }
+          try {
+            (JSON.parse(localStorage.getItem('healim_deleted_posts_' + key) || '[]') || []).forEach(function(did) {
+              serverDelSet[String(did)] = true;
+            });
+          } catch(e) {}
           if (key === 'reviews') {
             PERMANENT_DELETED_REVIEW_IDS.forEach(function(did) { serverDelSet[String(did)] = true; });
           }
           var cleanMerged = [];
           var cleanSeenIds = {};
           var cleanSeenTitles = {};
-          canonicalSource.forEach(function(item) {
-            if (!item || !item.id) return;
-            var strId = String(item.id);
+          function pushCleanItem(rawItem) {
+            if (!rawItem || !rawItem.id) return;
+            var strId = String(rawItem.id);
+            var item = editedMapLocal[strId] ? editedMapLocal[strId] : rawItem;
             if (serverDelSet[strId] || cleanSeenIds[strId]) return;
             if (key === 'faq' && isObsoleteMockFaq(item)) return;
             if (key === 'columns' && isObsoleteMockColumn(item)) return;
@@ -3503,7 +3529,13 @@
             }
             cleanSeenIds[strId] = true;
             cleanMerged.push(item);
-          });
+          }
+          // 1. Local custom / newly created / instant-published posts first
+          if (Array.isArray(customLocal)) {
+            customLocal.forEach(pushCleanItem);
+          }
+          // 2. Canonical server hub posts (with any local admin edits applied)
+          canonicalSource.forEach(pushCleanItem);
           if (key === 'reviews') {
             cleanMerged.forEach(function(item, idx) {
               if (!item.image) {
@@ -5108,16 +5140,6 @@
             return;
           }
           var hasGitHubWrite = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
-          if (isStrictStaticHubMode() && !hasGitHubWrite) {
-            if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-              window.HealimGitHubPublish.openSetupModal(function() {
-                window.handlePostSubmit({ preventDefault: function() {} });
-              }, '게시글 공식 등록·수정');
-            } else {
-              alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
-            }
-            return;
-          }
           var editId = document.getElementById('postEditId') ? document.getElementById('postEditId').value.trim() : '';
           var boardType = document.getElementById('postBoardType').value;
           var category = (boardType === 'youtube') ? '영상' : ((boardType === 'columns') ? '칼럼' : ((boardType === 'reviews') ? '치료후기' : 'FAQ'));
@@ -5171,15 +5193,20 @@
 
             var updatedPost = {
               id: editId,
+              poolId: existingItem && existingItem.poolId ? existingItem.poolId : undefined,
               category: existingItem && existingItem.category ? existingItem.category : category,
               author: author + (isSecret ? ' (비밀)' : ''),
               password: password || (existingItem ? existingItem.password : ''),
               date: dateStr,
               views: (customViewsInput && customViewsInput.value.trim()) ? initialViews : (existingItem ? (existingItem.views || 1) : initialViews),
               title: (isSecret ? '🔒 ' : '') + title,
+              summary: existingItem && existingItem.summary ? existingItem.summary : title,
               content: content,
               answer: content,
               image: finalImage,
+              isAutoPublished: !!(existingItem && existingItem.isAutoPublished),
+              isCustom: !!(existingItem && existingItem.isCustom),
+              createdAt: (existingItem && existingItem.createdAt) ? existingItem.createdAt : Date.now(),
               isEdited: true,
               updatedAt: Date.now()
             };
@@ -5560,16 +5587,6 @@
             return;
           }
           var hasGitHubDel = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
-          if (isStrictStaticHubMode() && !hasGitHubDel) {
-            if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-              window.HealimGitHubPublish.openSetupModal(function() {
-                window.handleDeletePostDirect(boardType, postId);
-              }, '게시글 공식 영구 삭제');
-            } else {
-              alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
-            }
-            return;
-          }
           if (!boardType || !postId) return;
 
           var boardNames = {

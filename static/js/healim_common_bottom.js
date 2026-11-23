@@ -628,18 +628,31 @@
     if (isStrictStaticHubMode()) {
       ['faq', 'reviews', 'columns', 'youtube'].forEach(function(bKey) {
         if (Array.isArray(data[bKey]) && data[bKey].length > 0) {
-          var clean = sortItemsByTime(data[bKey].filter(function(it) {
-            if (!it || !it.id) return false;
+          var editedMapB = {};
+          var customListB = [];
+          var localDelB = [];
+          try { editedMapB = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}') || {}; } catch (e) {}
+          try {
+            var cKeyB = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
+            customListB = JSON.parse(localStorage.getItem(cKeyB) || '[]') || [];
+          } catch (e) {}
+          try { localDelB = JSON.parse(localStorage.getItem('healim_deleted_posts_' + bKey) || '[]').map(String); } catch (e) {}
+          var seenB = {};
+          var combinedB = [];
+          function pushB(it) {
+            if (!it || !it.id) return;
             var sId = String(it.id);
-            if (serverDel.indexOf(sId) !== -1) return false;
-            if (bKey === 'reviews' && PERMANENT_DELETED_REVIEW_IDS.indexOf(sId) !== -1) return false;
-            return true;
-          }));
+            if (seenB[sId] || serverDel.indexOf(sId) !== -1 || localDelB.indexOf(sId) !== -1) return;
+            if (bKey === 'reviews' && PERMANENT_DELETED_REVIEW_IDS.indexOf(sId) !== -1) return;
+            seenB[sId] = true;
+            combinedB.push(editedMapB[sId] ? editedMapB[sId] : it);
+          }
+          customListB.forEach(pushB);
+          data[bKey].forEach(pushB);
+          var clean = sortItemsByTime(combinedB);
           try {
             localStorage.setItem('healim_board_' + bKey, JSON.stringify(clean));
             localStorage.setItem('healim_vault_all_posts_' + bKey, JSON.stringify(clean));
-            localStorage.setItem('healim_custom_' + bKey + '_posts', '[]');
-            localStorage.removeItem('healim_edited_posts_' + bKey);
           } catch (e) {}
         }
       });

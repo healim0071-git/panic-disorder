@@ -396,11 +396,16 @@
     try { editedMap = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}'); } catch(e) {}
 
     var serverDeletedIds = Array.isArray(inMemoryData.deleted_ids) ? inMemoryData.deleted_ids.map(String) : [];
-    var deletedIds = [];
+    var deletedIds = serverDeletedIds.slice();
+    try {
+      var localDelBoard = JSON.parse(localStorage.getItem('healim_deleted_posts_' + bKey) || '[]');
+      if (Array.isArray(localDelBoard)) deletedIds = deletedIds.concat(localDelBoard.map(String));
+    } catch(e) {}
     if (!isStrictStaticHub) {
-      try { deletedIds = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]'); } catch(e) {}
-    } else {
-      deletedIds = serverDeletedIds;
+      try {
+        var globalDel = JSON.parse(localStorage.getItem('healim_deleted_post_ids') || '[]');
+        if (Array.isArray(globalDel)) deletedIds = deletedIds.concat(globalDel.map(String));
+      } catch(e) {}
     }
 
     var seenIds = {};
@@ -412,13 +417,22 @@
     }
 
     if (isStrictStaticHub) {
-      // Zero-Divergence Mode (Static Hub): Canonical server hub is the Single Source of Truth.
-      // Ignore stale browser-local edits, custom posts, and local delete lists so PC & mobile are 100% identical.
+      // Canonical Server Hub + Local Admin Edits/Custom Posts/Deletes Overlay (Tokenless Direct Edit):
+      var cKeyStatic = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
+      var localCustomStatic = [];
+      try { localCustomStatic = JSON.parse(localStorage.getItem(cKeyStatic) || '[]') || []; } catch(e) {}
+      localCustomStatic.forEach(function(p) {
+        if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
+          var strId = String(p.id);
+          seenIds[strId] = true;
+          merged.push(editedMap[strId] ? editedMap[strId] : p);
+        }
+      });
       remoteList.forEach(function(p) {
         if (p && p.id && !isDel(p) && !seenIds[String(p.id)]) {
           var strId = String(p.id);
           seenIds[strId] = true;
-          merged.push(p);
+          merged.push(editedMap[strId] ? editedMap[strId] : p);
         }
       });
     } else {
@@ -466,11 +480,9 @@
     localStorage.setItem(vKey, JSON.stringify(merged));
     localStorage.setItem('healim_board_' + bKey, JSON.stringify(merged));
 
-    // Also update custom posts tier
+    // Preserve local custom posts tier without wiping direct admin creates/edits
     var cKey = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
-    if (isStrictStaticHub) {
-      localStorage.setItem(cKey, '[]');
-    } else {
+    if (!isStrictStaticHub) {
       var customList = merged.filter(function(p) {
         if (!p || !p.id) return false;
         var sId = String(p.id);

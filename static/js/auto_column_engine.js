@@ -1400,19 +1400,8 @@
       return false;
     }
 
-    var hasCloudDbCustom = !!(typeof window !== 'undefined' && window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
     var hasGitHubCustom = !!(typeof window !== 'undefined' && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
     var isLocalCustom = (typeof window !== 'undefined' && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
-    if (!hasCloudDbCustom && !hasGitHubCustom && !isLocalCustom) {
-      if (typeof window !== 'undefined' && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-        window.HealimGitHubPublish.openSetupModal(function() {
-          publishCustomColumnPost(customData);
-        }, '치료칼럼 제목설정 즉시발행');
-      } else if (typeof alert === 'function') {
-        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
-      }
-      return false;
-    }
 
     var now = Date.now();
     var d = new Date();
@@ -1677,19 +1666,8 @@
       return;
     }
 
-    var hasCloudDb = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
     var hasGitHub = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
     var isLocalHost = !!(window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'));
-    if (!hasCloudDb && !hasGitHub && !isLocalHost) {
-      if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-        window.HealimGitHubPublish.openSetupModal(function() {
-          window.triggerAutoColumnPublishManual();
-        }, '공황장애 치료칼럼 즉시 1편 발행');
-      } else {
-        alert('🔒 PC·모바일 동시 반영을 위해 [관리자 대시보드(/admin/)]에서 GitHub 즉시발행 토큰 또는 Firebase DB를 연동해 주세요.');
-      }
-      return;
-    }
 
     var useGitHubCommit = hasGitHub && !isLocalHost && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.upsertPost === 'function';
     var published = checkAndRunAutoColumnPublish(true, { suppressAlert: useGitHubCommit });

@@ -79,3 +79,4 @@ jobs:
           KST_DATE=$(TZ="Asia/Seoul" date +"%Y-%m-%d %H:%M KST")
           git commit -m "chore(auto-publish): publish scheduled column/FAQ (${KST_DATE})"
           git push origin HEAD:main
+

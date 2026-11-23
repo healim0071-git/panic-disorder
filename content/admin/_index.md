@@ -526,7 +526,7 @@ sections:
         </div>
         </div>
 
-        <script defer src="/js/healim_cloud_db.js?v=20261123_autopub_v23"></script>
+        <script defer src="/js/healim_cloud_db.js?v=20261123_notoken_v24"></script>
         <script>
         (function() {
           var currentActiveTab = 'all';
@@ -663,18 +663,37 @@ sections:
                         var seenIds = {};
 
                         if (!hasLiveCloudDbAdm && !isLocalAdm) {
-                          // Strict Static Hub SSOT: mirror canonical server hub without local drift
-                          cloudData[bKey].forEach(function(p) {
+                          // Canonical server hub + local admin edits/custom/deletes overlay (tokenless direct save)
+                          var admEdited = {};
+                          var admCustom = [];
+                          var admDel = serverDelAdm.slice();
+                          try { admEdited = JSON.parse(localStorage.getItem('healim_edited_posts_' + bKey) || '{}') || {}; } catch(e) {}
+                          try {
+                            var cKeyAdm = (bKey === 'youtube') ? 'healim_custom_youtube_posts' : ('healim_custom_' + bKey + '_posts');
+                            admCustom = JSON.parse(localStorage.getItem(cKeyAdm) || '[]') || [];
+                          } catch(e) {}
+                          try {
+                            var lDelAdm = JSON.parse(localStorage.getItem('healim_deleted_posts_' + bKey) || '[]') || [];
+                            admDel = admDel.concat(lDelAdm.map(String));
+                          } catch(e) {}
+                          admCustom.forEach(function(p) {
                             if (p && p.id) {
                               var sId = String(p.id);
-                              if (serverDelAdm.indexOf(sId) === -1 && !seenIds[sId]) {
+                              if (admDel.indexOf(sId) === -1 && !seenIds[sId]) {
                                 seenIds[sId] = true;
-                                merged.push(p);
+                                merged.push(admEdited[sId] ? admEdited[sId] : p);
                               }
                             }
                           });
-                          localStorage.setItem('healim_custom_' + bKey + '_posts', '[]');
-                          localStorage.removeItem('healim_edited_posts_' + bKey);
+                          cloudData[bKey].forEach(function(p) {
+                            if (p && p.id) {
+                              var sId = String(p.id);
+                              if (admDel.indexOf(sId) === -1 && !seenIds[sId]) {
+                                seenIds[sId] = true;
+                                merged.push(admEdited[sId] ? admEdited[sId] : p);
+                              }
+                            }
+                          });
                         } else {
                           var vKey = 'healim_vault_all_posts_' + bKey;
                           var rawV = localStorage.getItem(vKey);
@@ -873,19 +892,8 @@ sections:
           };
 
           window.deleteAdminPost = function(board, id) {
-            var hasLiveCloudDbDel = !!(window.HealimCloudDB && typeof window.HealimCloudDB.getBaseUrl === 'function' && window.HealimCloudDB.getBaseUrl());
             var hasGitHubDel = !!(window.HealimGitHubPublish && typeof window.HealimGitHubPublish.isConfigured === 'function' && window.HealimGitHubPublish.isConfigured());
             var isLocalDel = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-            if (!hasLiveCloudDbDel && !hasGitHubDel && !isLocalDel) {
-              if (window.HealimGitHubPublish && typeof window.HealimGitHubPublish.openSetupModal === 'function') {
-                window.HealimGitHubPublish.openSetupModal(function() {
-                  window.deleteAdminPost(board, id);
-                }, '게시글 공식 영구 삭제');
-              } else {
-                alert('🔒 PC·모바일 동시 삭제 반영을 위해 상단에서 GitHub 즉시발행 토큰을 등록해 주세요.');
-              }
-              return;
-            }
             if (!confirm('👑 최고관리자 권한으로 해당 게시글을 영구 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.')) return;
             if (hasGitHubDel && !isLocalDel && window.HealimGitHubPublish && typeof window.HealimGitHubPublish.deletePost === 'function') {
               window.HealimGitHubPublish.deletePost(board, id).then(function() {
