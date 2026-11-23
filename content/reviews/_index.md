@@ -12,12 +12,12 @@ sections:
       title: ""
       text: |
 
-        <div class="mb-8 text-center md:text-left">
+        <div class="mb-3 md:mb-6 text-center md:text-left">
         <span class="inline-block px-3 py-1 bg-[#eaf3f4] text-[#1c6e78] font-bold text-xs rounded-full uppercase tracking-wider mb-2">Patient Recovery Stories</span>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-3">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-2 md:mb-3">
         해아림 공황장애 치료후기
         </h1>
-        <p class="text-[#555555] text-base md:text-lg leading-relaxed max-w-none lg:whitespace-nowrap break-keep">
+        <p class="text-[#555555] text-sm md:text-lg leading-relaxed max-w-none lg:whitespace-nowrap break-keep">
         해아림한의원에서 공황장애를 극복하고 일상을 되찾은 환자분들의 진솔한 치료후기 및 호전 사례입니다.
         </p>
         </div>
@@ -33,7 +33,7 @@ sections:
         </li>
         <li>
         <a href="/reviews" class="community-tab-btn active" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
-        공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
+        공황장애 치료후기 <span class="lock-tag" aria-label="회원전용">🔒</span>
         </a>
         </li>
         <li>
@@ -48,7 +48,7 @@ sections:
         </li>
         <li>
         <a href="https://www.healim.com/5-6" target="_blank" rel="noopener noreferrer" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
-        한약과 비용고시
+        한약과 비용고시 ↗
         </a>
         </li>
         </ul>

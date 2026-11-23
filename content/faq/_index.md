@@ -12,12 +12,12 @@ sections:
       title: ""
       text: |
 
-        <div class="mb-8 text-center md:text-left">
+        <div class="mb-3 md:mb-6 text-center md:text-left">
         <span class="inline-block px-3 py-1 bg-[#eaf3f4] text-[#1c6e78] font-bold text-xs rounded-full uppercase tracking-wider mb-2">FAQ &amp; Evidence-Based Q&amp;A</span>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-3 break-keep">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0d3a42] leading-tight mb-2 md:mb-3 break-keep">
         공황장애 자주묻는 질문 FAQ, 공황발작 대처법, 치료기간 및 완치 가능성 Q&A ㅣ해아림한의원
         </h1>
-        <p class="text-[#555555] text-base md:text-lg leading-relaxed max-w-none lg:whitespace-nowrap break-keep">
+        <p class="text-[#555555] text-sm md:text-lg leading-relaxed max-w-none lg:whitespace-nowrap break-keep">
         공황발작, 예기불안, 심장 두근거림, 호흡곤란, 약물 치료 및 생활관리까지 환자분들이 가장 자주 묻는 핵심 질문과 답변입니다.
         </p>
         </div>
@@ -33,7 +33,7 @@ sections:
         </li>
         <li>
         <a href="/reviews" class="community-tab-btn " style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
-        공황장애 치료후기 <span class="lock-tag">🔒 회원전용</span>
+        공황장애 치료후기 <span class="lock-tag" aria-label="회원전용">🔒</span>
         </a>
         </li>
         <li>
@@ -48,7 +48,7 @@ sections:
         </li>
         <li>
         <a href="https://www.healim.com/5-6" target="_blank" rel="noopener noreferrer" class="community-tab-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
-        한약과 비용고시
+        한약과 비용고시 ↗
         </a>
         </li>
         </ul>
