@@ -1,8 +1,8 @@
 ---
-title: "공황장애 한방 치료 칼럼 및 임상 사례 분석 46편 | 해아림한의원"
+title: "공황장애 한방 치료 칼럼 및 임상 사례 분석 58편 | 해아림한의원"
 seo:
   title: "공황장애 치료 칼럼, 임상 사례 분석, 자율신경 회복 가이드 | 해아림한의원"
-description: "16여 년 임상 노하우를 바탕으로 한방신경정신과 전문 의료진이 집필한 공황장애 원인, 증상별 대처법, 호흡 및 자율신경 회복 치료사례 칼럼 46편을 제공합니다."
+description: "16여 년 임상 노하우를 바탕으로 한방신경정신과 전문 의료진이 집필한 공황장애 원인, 증상별 대처법, 호흡 및 자율신경 회복 치료사례 칼럼 58편을 제공합니다."
 keywords: "공황장애칼럼, 공황장애치료사례, 공황장애한의원, 자율신경실조증, 공황발작대처, 예기불안극복, 해아림한의원칼럼"
 url: "/columns"
 type: landing
@@ -123,7 +123,7 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 치료칼럼 46편 전체 목록" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <div class="sr-only" aria-label="해아림한의원 공황장애 치료칼럼 58편 전체 목록" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
         <h2>공황장애 치료 칼럼 및 임상 사례 분석 아카이브</h2>
 
         <article itemscope itemtype="https://schema.org/BlogPosting">
@@ -131,6 +131,102 @@ sections:
         <p itemprop="description">수면 중 갑작스러운 질식감과 심계항진으로 깨어나는 야간 공황 증상의 신경학적 원인과 회복 사례.</p>
         <span itemprop="author">해아림한의원</span>
         <time itemprop="datePublished">2026.11.23</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 찬 바람 부는 가을 환절기만 되면 가슴이 두근거리고 불안이 심해지는 이유는 무엇인가요?</h3>
+        <p itemprop="description">일교차와 일조량 변화가 자율신경계 및 세로토닌 대사에 미치는 영향과 계절성 공황 극복법.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.22</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">신경안정제 감약 중 반동 불안과 어지럼증을 이겨낸 자생력 회복 치료사례</h3>
+        <p itemprop="description">항불안제 장기 복용 후 감량 과정에서 나타나는 금단 증상 및 반동성 불안 극복 가이드.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.17</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 지하철이나 버스를 타면 문이 닫히는 순간 도망치고 싶은 충동이 드는데 어떻게 해야 하나요?</h3>
+        <p itemprop="description">대중교통 이용 시 출입문 폐쇄와 함께 덮쳐오는 광장공포증과 탈출 충동의 체계적 치료.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.15</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 자다가 숨이 턱 막혀서 헐떡이며 깨어납니다. 밤마다 왜 이러는 걸까요?</h3>
+        <p itemprop="description">수면 중 돌발적인 질식감과 심장 발작으로 깨어나는 수면 공황(Sleep Panic)의 원인과 대처법.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.10</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">엘리베이터가 멈출까 봐 계단만 오르내리던 폐소 공포 극복 치료사례</h3>
+        <p itemprop="description">밀폐된 공간에서 숨이 차오르고 탈출 충동을 느끼는 폐소 및 광장공포 동반 공황의 한방 치료.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.09</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 자리에 앉았다가 일어설 때 머리가 핑 돌고 가슴이 벌렁거리는데 왜 그런가요?</h3>
+        <p itemprop="description">기립성 빈맥 증후군(POTS)과 어지럼증, 심계항진이 동반되는 자율신경 부조화의 원인과 치료.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.06</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 치과 의자에 눕거나 미용실 천을 덮으면 가슴이 답답하고 숨이 안 쉬어지는데 왜 이러죠?</h3>
+        <p itemprop="description">신체 움직임이 제한되는 상황에서 발생하는 상황성 폐소 공포와 감각 차단 공황 대처법.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.11.01</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">밥만 먹으면 체하고 가슴이 답답해 심장내과를 전전하던 신경성 위장 증상 사례</h3>
+        <p itemprop="description">식사 후 급격한 흉부 압박감과 호흡곤란을 유발하는 장-뇌 축(Gut-Brain Axis) 불균형의 한방 치료.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.10.29</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 긴장하면 혈압이 160~180까지 치솟는데, 혈압약 대신 신경 치료를 받아야 하나요?</h3>
+        <p itemprop="description">급성 불안 시 혈압이 급상승하는 신경성 가성 고혈압과 공황 증상의 감별 및 안전한 치료법.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.10.27</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 일이나 공부에 몰두하다 번아웃이 왔는데, 갑자기 숨이 턱 막히는 건 왜 그럴까요?</h3>
+        <p itemprop="description">만성 피로와 번아웃 증후군 뒤에 찾아오는 자율신경 탈진성 공황 증상의 분석.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.10.24</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">목 어깨 뭉침과 함께 머리가 붕 뜨고 어지럽던 경추 긴장성 공황 치료사례</h3>
+        <p itemprop="description">거북목과 경추부 근막 긴장으로 인한 뇌혈류 저하와 비현실감, 어지럼증 동반 공황의 한방 치료.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.10.19</time>
+        </article>
+
+
+        <article itemscope itemtype="https://schema.org/BlogPosting">
+        <h3 itemprop="headline">Q. 가슴이 쿵쾅거리고 숨이 가쁜데, 응급실 심장 검사는 왜 항상 정상으로 나올까요?</h3>
+        <p itemprop="description">심장내과 검사상 이상이 없으나 참을 수 없는 심계항진과 질식감을 느끼는 자율신경 오작동의 해답.</p>
+        <span itemprop="author">해아림한의원</span>
+        <time itemprop="datePublished">2026.10.16</time>
         </article>
 
 
