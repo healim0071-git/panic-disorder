@@ -88,8 +88,16 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 37문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
-        <h2>공황장애 자주 묻는 질문 37문답 전문</h2>
+        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 38문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h2>공황장애 자주 묻는 질문 38문답 전문</h2>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애 때문에 식사할 때 목에 음식물이 걸린 것처럼 삼키기 힘든데 이것도 공황 증상인가요?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 이비인후과 내시경이나 식도 검사에서는 아무런 염증이나 종양이 없는데도, 목구멍에 이물감이 걸려 침이나 음식을 삼키기 어렵고 숨이 막힐 듯 답답한 증상을 호소하는 공황장애 ...</p>
+        </div>
+        </article>
+
 
         <article itemscope itemtype="https://schema.org/Question">
         <h3 itemprop="name">공황장애 환자가 영화관이나 공연장처럼 어둡고 붐비는 곳에 갈 때 발작을 예방하는 요령이 있나요?</h3>
