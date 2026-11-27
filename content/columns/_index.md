@@ -1,8 +1,8 @@
 ---
-title: "공황장애 한방 치료 칼럼 및 임상 사례 분석 59편 | 해아림한의원"
+title: "공황장애 한방 치료 칼럼 및 임상 사례 분석 60편 | 해아림한의원"
 seo:
   title: "공황장애 치료 칼럼, 임상 사례 분석, 자율신경 회복 가이드 | 해아림한의원"
-description: "16여 년 임상 노하우를 바탕으로 한방신경정신과 전문 의료진이 집필한 공황장애 원인, 증상별 대처법, 호흡 및 자율신경 회복 치료사례 칼럼 59편을 제공합니다."
+description: "16여 년 임상 노하우를 바탕으로 한방신경정신과 전문 의료진이 집필한 공황장애 원인, 증상별 대처법, 호흡 및 자율신경 회복 치료사례 칼럼 60편을 제공합니다."
 keywords: "공황장애칼럼, 공황장애치료사례, 공황장애한의원, 자율신경실조증, 공황발작대처, 예기불안극복, 해아림한의원칼럼"
 url: "/columns"
 type: landing
@@ -123,7 +123,7 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 치료칼럼 59편 전체 목록" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <div class="sr-only" aria-label="해아림한의원 공황장애 치료칼럼 60편 전체 목록" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
         <h2>공황장애 치료 칼럼 및 임상 사례 분석 아카이브</h2>
 
         <article itemscope itemtype="https://schema.org/BlogPosting">
