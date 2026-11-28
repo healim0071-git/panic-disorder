@@ -88,8 +88,16 @@ sections:
 
 
 
-        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 38문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
-        <h2>공황장애 자주 묻는 질문 38문답 전문</h2>
+        <div class="sr-only" aria-label="해아림한의원 공황장애 자주 묻는 질문(FAQ) 39문답" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">
+        <h2>공황장애 자주 묻는 질문 39문답 전문</h2>
+
+        <article itemscope itemtype="https://schema.org/Question">
+        <h3 itemprop="name">공황장애가 있으면 혈압이 갑자기 치솟을 수 있나요? 고혈압과 공황발작의 차이점이 궁금합니다.</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <p itemprop="text"><strong>[핵심 답변]</strong> 공황발작이 찾아와 응급실이나 가정용 혈압계로 측정했을 때 수축기 혈압이 150~170mmHg 이상으로 일시적으로 치솟아 고혈압이나 뇌졸중이 온 것은 아닌지 크게 놀라는 분...</p>
+        </div>
+        </article>
+
 
         <article itemscope itemtype="https://schema.org/Question">
         <h3 itemprop="name">공황장애 때문에 식사할 때 목에 음식물이 걸린 것처럼 삼키기 힘든데 이것도 공황 증상인가요?</h3>
